@@ -2,186 +2,57 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioGames | Nutrició</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <title>Nutri-Challenge | IE Temple</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --p: #2ecc71; --bg: #0f172a; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        body { 
-            background: var(--bg); 
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 40px;
-        }
-
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 40px;
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-        }
-
-        h1 { font-size: 42px; margin-bottom: 10px; background: linear-gradient(to right, #2ecc71, #3498db); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        /* Sistema de Nivells */
-        .level-container { display: none; animation: fadeIn 0.5s ease; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* NIVELL 1: EL PLAT */
-        .plate-zone {
-            width: 300px; height: 300px;
-            border: 8px dashed rgba(255,255,255,0.2);
-            border-radius: 50%;
-            margin: 30px auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-        .plate-zone.hover { border-color: var(--p); background: rgba(46, 204, 113, 0.1); }
-
-        /* NIVELL 2: EL SEMÀFOR */
-        .traffic-light { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
-        .light { width: 80px; height: 80px; border-radius: 50%; opacity: 0.2; transition: 0.5s; font-size: 40px; display: flex; align-items: center; justify-content: center; }
-        .light.red { background: #e74c3c; }
-        .light.green { background: #2ecc71; }
-        .active-light { opacity: 1; box-shadow: 0 0 30px currentColor; }
-
-        /* Elements interactius */
-        .items-grid { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
-        .item { 
-            font-size: 45px; 
-            background: rgba(255,255,255,0.1); 
-            padding: 15px; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            user-select: none;
-        }
-        .item:hover { transform: scale(1.1) rotate(5deg); background: rgba(255,255,255,0.2); }
-
-        .btn-next {
-            margin-top: 40px;
-            background: var(--p);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-weight: 800;
-            cursor: pointer;
-            display: none;
-        }
-
-        .back-home { margin-top: 20px; color: #64748b; text-decoration: none; font-size: 14px; }
+        :root { --bg: #0f172a; --green: #2ecc71; --red: #e74c3c; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 40px; overflow: hidden; }
+        .game-box { background: rgba(255,255,255,0.05); padding: 40px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); max-width: 600px; margin: auto; }
+        .food-display { font-size: 120px; height: 180px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        .btn { padding: 25px; border-radius: 20px; border: none; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.2s; color: white; }
+        .btn-yes { background: var(--green); box-shadow: 0 0 20px rgba(46, 204, 113, 0.4); }
+        .btn-no { background: var(--red); box-shadow: 0 0 20px rgba(231, 76, 60, 0.4); }
+        .btn:active { transform: scale(0.9); }
+        .score { font-size: 24px; margin-bottom: 20px; color: #94a3b8; }
     </style>
 </head>
 <body>
-
-    <div class="game-card">
-        <div id="lvl1" class="level-container active">
-            <h1>Nivell 1: El Plat Ideal</h1>
-            <p>Posa 5 aliments sans al plat per desbloquejar el següent repte.</p>
-            <div class="plate-zone" id="plate"></div>
-            <div class="items-grid">
-                <div class="item" onclick="addToPlate('🥦', true)">🥦</div>
-                <div class="item" onclick="addToPlate('🍕', false)">🍕</div>
-                <div class="item" onclick="addToPlate('🍎', true)">🍎</div>
-                <div class="item" onclick="addToPlate('🍗', true)">🍗</div>
-                <div class="item" onclick="addToPlate('🍩', false)">🍩</div>
-                <div class="item" onclick="addToPlate('🥚', true)">🥚</div>
-                <div class="item" onclick="addToPlate('🥗', true)">🥗</div>
-            </div>
+    <div class="game-box">
+        <h1>Nutri-Reflex 🍎</h1>
+        <div class="score">Puntuació: <span id="score">0</span> / 10</div>
+        <div class="food-display" id="food">❓</div>
+        <div class="controls">
+            <button class="btn btn-yes" onclick="check(true)">ÉS SÀ ✅</button>
+            <button class="btn btn-no" onclick="check(false)">NO ÉS SÀ ❌</button>
         </div>
-
-        <div id="lvl2" class="level-container">
-            <h1>Nivell 2: Semàfor Nutricional</h1>
-            <p>És saludable el que apareix? Clica ràpid!</p>
-            <div class="traffic-light">
-                <div id="light-red" class="light red">❌</div>
-                <div id="light-green" class="light green">✅</div>
-            </div>
-            <div id="food-display" style="font-size: 100px; margin: 30px;">❓</div>
-            <div class="items-grid">
-                <button class="btn-next" id="btn-check" style="display:block" onclick="checkFood()">És bo?</button>
-            </div>
-        </div>
-
-        <button class="btn-next" id="btn-next-lvl" onclick="nextLevel()">Següent Nivell 🚀</button>
-        <br>
-        <a href="index.html" class="back-home">← Abandonar partida</a>
     </div>
-
     <script>
-        // Lògica Nivell 1
-        let plateCount = 0;
-        function addToPlate(emoji, isHealthy) {
-            if(!isHealthy) {
-                alert("Ui! Això no és gaire sa per al plat principal! 😅");
-                return;
-            }
-            const p = document.getElementById('plate');
-            const s = document.createElement('span');
-            s.innerHTML = emoji;
-            s.style.fontSize = "50px";
-            p.appendChild(s);
-            plateCount++;
-            
-            if(plateCount >= 5) {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                document.getElementById('btn-next-lvl').style.display = 'inline-block';
-            }
-        }
-
-        // Lògica Nivell 2
         const foods = [
-            {e: '🥑', h: true}, {e: '🍔', h: false}, {e: '🍌', h: true}, 
-            {e: '🍟', h: false}, {e: '🥦', h: true}, {e: '🍭', h: false}
+            {e: '🥦', h: true}, {e: '🍩', h: false}, {e: '🍎', h: true}, 
+            {e: '🍟', h: false}, {e: '🥑', h: true}, {e: '🍕', h: false},
+            {e: '🥗', h: true}, {e: '🍭', h: false}, {e: '🥚', h: true}, {e: '🥓', h: false}
         ];
-        let currentFoodIdx = 0;
-
-        function nextLevel() {
-            document.getElementById('lvl1').classList.remove('active');
-            document.getElementById('lvl2').classList.add('active');
-            document.getElementById('btn-next-lvl').style.display = 'none';
-            showFood();
-        }
-
-        function showFood() {
-            document.getElementById('food-display').innerText = foods[currentFoodIdx].e;
-            document.getElementById('light-red').classList.remove('active-light');
-            document.getElementById('light-green').classList.remove('active-light');
-        }
-
-        function checkFood() {
-            const food = foods[currentFoodIdx];
-            if(food.h) {
-                document.getElementById('light-green').classList.add('active-light');
+        let score = 0, current = 0;
+        function next() {
+            if(current < foods.length) {
+                document.getElementById('food').innerText = foods[current].e;
             } else {
-                document.getElementById('light-red').classList.add('active-light');
+                document.getElementById('food').innerText = "🏆";
+                confetti();
+                alert("Final! Puntuació: " + score + "/10");
+                window.location.href = 'index.html';
             }
-            
-            setTimeout(() => {
-                currentFoodIdx++;
-                if(currentFoodIdx < foods.length) {
-                    showFood();
-                } else {
-                    alert("HAS GUANYAT! Ets un mestre de la nutrició! 🏆");
-                    window.location.href = 'index.html';
-                }
-            }, 1000);
         }
+        function check(val) {
+            if(foods[current].h === val) {
+                score++;
+                document.getElementById('score').innerText = score;
+            }
+            current++;
+            next();
+        }
+        next();
     </script>
 </body>
 </html>
