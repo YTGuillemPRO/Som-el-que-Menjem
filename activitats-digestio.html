@@ -3,156 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activitats | Portal de Salut</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <title>Digestió Flow | IE Temple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary: #ef6c00;
-            --bg-gradient: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            --glass: rgba(255, 255, 255, 0.95);
+            --bg: #0f172a;
+            --primary: #3b82f6;
+            --success: #2ecc71;
+            --error: #e74c3c;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
         body {
+            background: var(--bg);
+            color: white;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            background: var(--bg-gradient);
+            justify-content: center;
             padding: 20px;
         }
 
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
+        .game-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            border-radius: 40px;
             width: 100%;
+            max-width: 600px;
             text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
-        h1 { color: var(--primary); margin-bottom: 10px; }
-        .subtitle { color: #666; margin-bottom: 30px; }
+        h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; }
+        .desc { color: #94a3b8; margin-bottom: 30px; }
 
-        .quiz-container { text-align: left; margin-top: 20px; }
-
-        .question {
-            background: #fdfdfd;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #eee;
-            margin-bottom: 20px;
-            display: none; /* Amaguem les preguntes per mostrar-les una a una */
+        .food-status {
+            font-size: 60px;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.05);
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .question.active { display: block; animation: fadeIn 0.5s; }
-
-        .options { display: grid; gap: 10px; margin-top: 15px; }
-
-        button.option {
-            padding: 12px 20px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 16px;
-            text-align: left;
+        .organ-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
 
-        button.option:hover { border-color: var(--primary); background: #fff8f1; }
-        
-        button.correct { background: #e8f5e9 !important; border-color: #4caf50 !important; color: #2e7d32; }
-        button.wrong { background: #ffebee !important; border-color: #f44336 !important; color: #c62828; }
-
-        .score-box { display: none; font-size: 20px; font-weight: 700; color: var(--primary); }
-
-        .btn-nav {
-            margin-top: 20px;
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: none;
-            background: var(--primary);
+        .organ-btn {
+            background: rgba(255, 255, 255, 0.07);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             color: white;
+            padding: 18px;
+            border-radius: 20px;
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .organ-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+
+        .organ-btn.correct {
+            background: var(--success);
+            border-color: #ffffff;
+            transform: scale(1.02);
+            pointer-events: none;
+        }
+
+        .organ-btn.wrong {
+            background: var(--error);
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--success);
+            transition: width 0.5s ease;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            color: #64748b;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>📝 Posa't a prova</h1>
-    <p class="subtitle">Demostra el que saps sobre la digestió</p>
+    <div class="game-card">
+        <h1>El Camí del Menjar 🌭</h1>
+        <p class="desc">Clica els òrgans en l'ordre correcte per completar la digestió!</p>
 
-    <div class="quiz-container" id="quiz">
-        <div class="question active" id="q1">
-            <p><strong>1. On comença realment el procés de la digestió?</strong></p>
-            <div class="options">
-                <button class="option" onclick="check(this, false, 'q1')">A l'estómac</button>
-                <button class="option" onclick="check(this, true, 'q1')">A la boca (amb la saliva)</button>
-                <button class="option" onclick="check(this, false, 'q1')">A l'intestí prim</button>
-            </div>
+        <div class="food-status" id="food-icon">🌭</div>
+
+        <div class="organ-list">
+            <button class="organ-btn" onclick="checkStep(2, this)">Esòfag</button>
+            <button class="organ-btn" onclick="checkStep(5, this)">Intestí Gros</button>
+            <button class="organ-btn" onclick="checkStep(1, this)">Boca</button>
+            <button class="organ-btn" onclick="checkStep(4, this)">Intestí Prim</button>
+            <button class="organ-btn" onclick="checkStep(3, this)">Estómac</button>
+            <button class="organ-btn" onclick="checkStep(6, this)">Recte / Anus</button>
         </div>
 
-        <div class="question" id="q2">
-            <p><strong>2. Quin òrgan s'encarrega d'absorbir la majoria dels nutrients?</strong></p>
-            <div class="options">
-                <button class="option" onclick="check(this, false, 'q2')">L'intestí gros</button>
-                <button class="option" onclick="check(this, true, 'q2')">L'intestí prim</button>
-                <button class="option" onclick="check(this, false, 'q2')">L'esòfag</button>
-            </div>
+        <div class="progress-bar">
+            <div id="progress-fill"></div>
         </div>
 
-        <div class="question" id="q3">
-            <p><strong>3. Quina és la funció dels sucs gàstrics de l'estómac?</strong></p>
-            <div class="options">
-                <button class="option" onclick="check(this, true, 'q3')">Descompondre els aliments</button>
-                <button class="option" onclick="check(this, false, 'q3')">Refredar el menjar</button>
-                <button class="option" onclick="check(this, false, 'q3')">Transportar l'oxigen</button>
-            </div>
-        </div>
-
-        <div id="result" class="score-box">
-            <p>🎉 Felicitats! Has acabat l'activitat.</p>
-            <a href="index.html" class="btn-nav" style="margin-top: 20px;">Torna al Menú</a>
-        </div>
+        <a href="index.html" class="back-link">← Abandonar repte</a>
     </div>
-</div>
 
-<script>
-    let currentStep = 1;
-    const totalQuestions = 3;
+    <script>
+        let currentStep = 1;
+        const totalSteps = 6;
+        const foodIcons = ["🌭", "👄", "⬇️", "🔋", "🧪", "💩", "✨"];
 
-    function check(btn, isCorrect, qId) {
-        const options = btn.parentElement.querySelectorAll('.option');
-        options.forEach(opt => opt.disabled = true);
-
-        if (isCorrect) {
-            btn.classList.add('correct');
-        } else {
-            btn.classList.add('wrong');
+        function checkStep(stepNumber, element) {
+            if (stepNumber === currentStep) {
+                // Encert
+                element.classList.add('correct');
+                currentStep++;
+                
+                // Actualitzar icona i progrés
+                document.getElementById('food-icon').innerText = foodIcons[currentStep-1];
+                document.getElementById('progress-fill').style.width = ( (currentStep-1) / totalSteps * 100 ) + "%";
+                
+                if (currentStep > totalSteps) {
+                    setTimeout(finishGame, 500);
+                }
+            } else {
+                // Error
+                element.classList.add('wrong');
+                setTimeout(() => element.classList.remove('wrong'), 500);
+            }
         }
 
-        setTimeout(() => {
-            document.getElementById(qId).classList.remove('active');
-            currentStep++;
-            if (currentStep <= totalQuestions) {
-                document.getElementById('q' + currentStep).classList.add('active');
-            } else {
-                document.getElementById('result').style.display = 'block';
-            }
-        }, 1000);
-    }
-</script>
-
+        function finishGame() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            
+            const card = document.querySelector('.game-card');
+            card.innerHTML = `
+                <h1 style="font-size:40px; margin-bottom:20px;">🏆 Molt bé!</h1>
+                <p style="font-size:20px; color:#94a3b8; margin-bottom:30px;">Has completat tot el procés de la digestió perfectament.</p>
+                <div style="font-size:80px; margin-bottom:30px;">🥇</div>
+                <button class="organ-btn correct" style="width:100%; pointer-events:auto;" onclick="window.location.href='index.html'">TORNAR AL PORTAL</button>
+            `;
+        }
+    </script>
 </body>
 </html>
