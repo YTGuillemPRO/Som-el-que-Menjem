@@ -3,196 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Salut | Digestió i Nutrició</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <title>Portal de Salut | IE Temple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #2e7d32;
-            --primary-dark: #1b5e20;
-            --accent: #8bc34a;
-            --bg-gradient: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%);
-            --glass: rgba(255, 255, 255, 0.95);
+        :root { 
+            --primary: #2e7d32; 
+            --accent: #1976d2;
+            --bg: linear-gradient(135deg, #e8f5e9, #c8e6c9); 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: var(--bg); 
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        .container { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
+            max-width: 650px; 
+            width: 90%; 
+            text-align: center; 
         }
 
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: var(--bg-gradient);
-            color: #333;
+        h1 { color: var(--primary); font-size: 32px; margin-bottom: 30px; }
+        
+        .grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
         }
 
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 50px 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-            max-width: 700px;
-            width: 95%;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        .card { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 30px; 
+            border-radius: 20px; 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            border: none; 
         }
 
-        h1 {
-            color: var(--primary);
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #777;
-            margin-bottom: 40px;
-            font-size: 18px;
-        }
-
-        /* Contenedor del Menú Principal */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            transition: all 0.5s ease;
-        }
-
-        /* Contenedor de Submenú Digestió (Oculto por defecto) */
-        #submenu-digestio {
-            display: none;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            animation: slideIn 0.4s ease-out;
-        }
-
-        .card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 35px 20px;
-            border-radius: 24px;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            border: none;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(46, 125, 50, 0.25);
-        }
-
-        /* Colores */
-        .bg-digestio { background: linear-gradient(135deg, #2e7d32, #43a047); }
-        .bg-nutricio { background: linear-gradient(135deg, #689f38, #8bc34a); }
-        .bg-teoria { background: linear-gradient(135deg, #1565c0, #1e88e5); } /* Azul para teoría */
-        .bg-activitats { background: linear-gradient(135deg, #ef6c00, #fb8c00); } /* Naranja para actividades */
-
-        .icon-box {
-            background: rgba(255, 255, 255, 0.2);
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            font-size: 32px;
-        }
-
-        .btn-tornar {
-            margin-top: 30px;
-            background: none;
-            border: 1px solid #ccc;
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            color: #888;
-            transition: all 0.3s;
-        }
-
-        .btn-tornar:hover {
+        .card:hover { transform: translateY(-5px); filter: brightness(1.1); }
+        
+        /* Colors */
+        .bg-main { background: linear-gradient(135deg, #4caf50, #2e7d32); }
+        .bg-teoria { background: linear-gradient(135deg, #2196f3, #1565c0); }
+        .bg-activitats { background: linear-gradient(135deg, #ff9800, #ef6c00); }
+        
+        /* Botó Institut */
+        .btn-insti {
+            grid-column: 1 / 3;
             background: #f5f5f5;
-            color: var(--primary);
-            border-color: var(--primary);
+            color: var(--accent);
+            padding: 15px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-insti:hover { background: #e3f2fd; border-color: var(--accent); }
+
+        .icon { font-size: 30px; margin-bottom: 5px; }
+        .hidden { display: none; }
+        
+        .btn-tornar { 
+            margin-top: 30px; 
+            background: none; 
+            border: 1px solid #ccc; 
+            padding: 10px 20px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            color: #666; 
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        footer { margin-top: 40px; font-size: 13px; color: #aaa; }
-
-        @media (max-width: 500px) {
-            .menu-grid, #submenu-digestio { grid-template-columns: 1fr; }
-        }
+        footer { margin-top: 30px; font-size: 12px; color: #aaa; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="header-section">
-        <h1>Portal de Salut</h1>
-        <p class="subtitle">Explora i aprèn sobre el teu cos</p>
-    </div>
+    <div class="container">
+        <h1 id="titol">Portal de Salut</h1>
 
-    <div class="menu-grid" id="main-menu">
-        <div class="card bg-digestio" onclick="showDigestio()">
-            <div class="icon-box">🫃</div>
-            <span>Digestió</span>
+        <div id="menu-principal" class="grid">
+            <div class="card bg-main" onclick="obrir('digestio')">
+                <span class="icon">🫃</span>Digestió
+            </div>
+            <div class="card bg-main" onclick="obrir('nutricio')">
+                <span class="icon">🥗</span>Nutrició
+            </div>
+            
+            <a href="https://agora.xtec.cat/ietemple/" target="_blank" class="btn-insti">
+                🏛️ Més informació de l'Institut
+            </a>
         </div>
 
-        <a class="card bg-nutricio" href="nutricio.html">
-            <div class="icon-box">🥗</div>
-            <span>Nutrició</span>
-        </a>
-    </div>
-
-    <div id="submenu-digestio">
-        <a class="card bg-teoria" href="timthumb-alt.jpeg">
-            <div class="icon-box">📖</div>
-            <span>Teoria</span>
-        </a>
-
-        <a class="card bg-activitats" href="activitats.html">
-            <div class="icon-box">✏️</div>
-            <span>Activitats</span>
-        </a>
-        
-        <div style="grid-column: 1 / -1;">
-            <button class="btn-tornar" onclick="showMain()">← Tornar enrere</button>
+        <div id="menu-digestio" class="grid hidden">
+            <a href="timthumb-alt.jpeg" class="card bg-teoria"><span class="icon">📖</span>Teoria</a>
+            <a href="activitats-digestio.html" class="card bg-activitats"><span class="icon">✏️</span>Activitats</a>
+            <div style="grid-column: 1/3"><button class="btn-tornar" onclick="tornar()">← Tornar</button></div>
         </div>
+
+        <div id="menu-nutricio" class="grid hidden">
+            <a href="teoria-nutricio.html" class="card bg-teoria"><span class="icon">📚</span>Teoria</a>
+            <a href="activitats-nutricio.html" class="card bg-activitats"><span class="icon">🍎</span>Activitats</a>
+            <div style="grid-column: 1/3"><button class="btn-tornar" onclick="tornar()">← Tornar</button></div>
+        </div>
+
+        <footer>IE Temple - Projecte de Salut 2026</footer>
     </div>
 
-    <footer>
-        &copy; 2026 Portal de Salut Digital
-    </footer>
-</div>
-
-<script>
-    function showDigestio() {
-        document.getElementById('main-menu').style.display = 'none';
-        document.getElementById('submenu-digestio').style.display = 'grid';
-        document.querySelector('.subtitle').innerText = 'Secció de Digestió';
-    }
-
-    function showMain() {
-        document.getElementById('main-menu').style.display = 'grid';
-        document.getElementById('submenu-digestio').style.display = 'none';
-        document.querySelector('.subtitle').innerText = 'Explora i aprèn sobre el teu cos';
-    }
-</script>
-
+    <script>
+        function obrir(seccio) {
+            document.getElementById('menu-principal').classList.add('hidden');
+            document.getElementById('menu-' + seccio).classList.remove('hidden');
+            document.getElementById('titol').innerText = seccio.charAt(0).toUpperCase() + seccio.slice(1);
+        }
+        function tornar() {
+            document.getElementById('menu-principal').classList.remove('hidden');
+            document.getElementById('menu-digestio').classList.add('hidden');
+            document.getElementById('menu-nutricio').classList.add('hidden');
+            document.getElementById('titol').innerText = "Portal de Salut";
+        }
+    </script>
 </body>
 </html>
