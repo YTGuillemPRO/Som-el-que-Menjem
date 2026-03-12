@@ -292,7 +292,52 @@ h1{
 <a href="https://agora.xtec.cat/ietemple/" target="_blank" class="insti-pill" id="confettiBtn">
   🏛️ IE Temple
 </a>
-  
+
+<script>
+function navTo(type){
+  const panel=document.getElementById('main-panel');
+  panel.style.transform='scale(.95)';
+  panel.style.opacity='0';
+
+  setTimeout(()=>{
+    document.getElementById('home-view').classList.remove('active');
+    document.getElementById('selection-view').classList.add('active');
+
+    const title=document.getElementById('selection-title');
+    const t=document.getElementById('link-teoria');
+    const j=document.getElementById('link-joc');
+
+    if(type==='digestio'){
+      title.innerText="Digestió";
+      t.href="teoria-digestio.html";
+      j.href="activitats-digestio.html";
+    }else{
+      title.innerText="Nutrició";
+      t.href="teoria-nutricio.html";
+      j.href="activitats-nutricio.html";
+    }
+
+    panel.style.transform='scale(1)';
+    panel.style.opacity='1';
+
+    confetti({ particleCount:40, spread:60, origin:{y:.8} });
+  },250);
+}
+
+function goBack(){
+  const panel=document.getElementById('main-panel');
+  panel.style.opacity='0';
+
+  setTimeout(()=>{
+    document.getElementById('selection-view').classList.remove('active');
+    document.getElementById('home-view').classList.add('active');
+    panel.style.opacity='1';
+  },250);
+}
+
+document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
+  confetti({ particleCount:20, spread:40, origin:{x:.9,y:.9}, colors:['#5865F2','#ffffff'] });
+});
 </script>
 
 </body>
