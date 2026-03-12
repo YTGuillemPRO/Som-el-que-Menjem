@@ -1,18 +1,307 @@
+
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioPortal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<style>
+:root{
+  --accent:#22c55e;
+  --blue:#2563eb;
+  --orange:#f59e0b;
+  --discord:#5865F2;
+  --glass:rgba(255,255,255,0.72);
+  --bg-dark:#0b1120;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:#111;
+  background: linear-gradient(-45deg, #0b1120, #0f172a, #1e293b, #0b1120);
+  background-size: 400% 400%;
+  animation: bgMove 25s ease infinite;
+  position: relative;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Glow decorativo */
+body::before{
+  content:"";
+  position:absolute;
+  width:800px;
+  height:800px;
+  background:radial-gradient(circle,#22c55e33,transparent 70%);
+  top:-200px;
+  left:-200px;
+  filter:blur(80px);
+}
+
+body::after{
+  content:"";
+  position:absolute;
+  width:700px;
+  height:700px;
+  background:radial-gradient(circle,#2563eb33,transparent 70%);
+  bottom:-200px;
+  right:-200px;
+  filter:blur(80px);
+}
+
+/* Glass panel */
+.glass-panel{
+  background:var(--glass);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px);
+  border-radius:48px;
+  padding:65px;
+  width:90%;
+  max-width:900px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.3);
+  box-shadow:0 40px 120px rgba(0,0,0,0.6), inset 0 1px rgba(255,255,255,0.4);
+  transition:.5s;
+  position:relative;
+  z-index:1;
+}
+
+h1{
+  font-size:56px;
+  font-weight:800;
+  letter-spacing:-2px;
+  margin-bottom:8px;
+}
+
+.subtitle{
+  color:#e0e0e0;
+  font-size:18px;
+  margin-bottom:50px;
+}
+
+/* Grid */
+.main-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+
+/* Cards */
+.nav-card{
+  background:white;
+  padding:50px 35px;
+  border-radius:32px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  transition:.35s;
+  border:1px solid rgba(0,0,0,0.06);
+  position:relative;
+  overflow:hidden;
+}
+
+.nav-card::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg,transparent,rgba(34,197,94,0.2),transparent);
+  opacity:0;
+  transition:.4s;
+}
+
+.nav-card:hover::before{
+  opacity:1;
+}
+
+.nav-card:hover{
+  transform:translateY(-14px) scale(1.05) rotateX(6deg);
+  box-shadow:0 30px 70px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.2) inset;
+}
+
+.icon-circle{
+  width:95px;
+  height:95px;
+  border-radius:28px;
+  background:#f5f5f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:44px;
+  margin-bottom:20px;
+  transition:.3s;
+  animation:float 4s ease-in-out infinite;
+}
+
+.nav-card:hover .icon-circle{
+  background:#e8f5e9;
+  transform:rotate(-6deg) scale(1.1);
+  box-shadow:0 10px 30px rgba(34,197,94,0.3);
+}
+
+.nav-card h2{
+  font-size:28px;
+  font-weight:700;
+}
+
+/* Float animation */
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+  100%{transform:translateY(0);}
+}
+
+/* Views */
+.view{display:none;}
+.active{display:block;animation:fade .4s;}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Buttons */
+.btn-group{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+
+.btn-action{
+  padding:25px;
+  border-radius:20px;
+  font-weight:700;
+  font-size:18px;
+  text-decoration:none;
+  color:white;
+  transition:.25s;
+  text-align:center;
+}
+
+.btn-teo{background:var(--blue);}
+.btn-joc{background:var(--orange);}
+
+.btn-action:hover{
+  transform:scale(1.06);
+  filter:brightness(1.1);
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* Back button */
+.back-btn{
+  margin-top:40px;
+  display:inline-block;
+  color:#a0a0a0;
+  cursor:pointer;
+  padding:10px 18px;
+  border-radius:30px;
+  transition:.25s;
+}
+
+.back-btn:hover{
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+/* Instituto button */
+.insti-pill{
+  position:fixed;
+  bottom:35px;
+  right:35px;
+  background:linear-gradient(135deg,#5865F2,#7c83ff);
+  color:white;
+  padding:16px 28px;
+  border-radius:16px;
+  font-weight:600;
+  box-shadow:0 10px 40px rgba(88,101,242,.5);
+  transition:.3s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.insti-pill:hover{
+  transform:translateY(-4px) scale(1.07);
+  box-shadow:0 15px 60px rgba(88,101,242,.7);
+}
+
+/* Responsive */
+@media(max-width:700px){
+  .glass-panel{padding:45px 35px;}
+  .main-grid{grid-template-columns:1fr;}
+  .btn-group{grid-template-columns:1fr;}
+  h1{font-size:40px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="glass-panel" id="main-panel">
+
+  <div id="home-view" class="view active">
+    <h1>BioPortal</h1>
+    <p class="subtitle">Fet per: YASSER CHIKHI i GUILLEM VARELA</p>
+
+    <div class="main-grid">
+      <div class="nav-card" onclick="navTo('digestio')">
+        <div class="icon-circle">🍔</div>
+        <h2>Digestió</h2>
+      </div>
+
+      <div class="nav-card" onclick="navTo('nutricio')">
+        <div class="icon-circle">🥗</div>
+        <h2>Nutrició</h2>
+      </div>
+    </div>
+  </div>
+
+  <div id="selection-view" class="view">
+    <h1 id="selection-title">Títol</h1>
+    <p class="subtitle">Tria una activitat per començar</p>
+
+    <div class="btn-group">
+      <a id="link-teoria" class="btn-action btn-teo">📖 Teoria Visual</a>
+      <a id="link-joc" class="btn-action btn-joc">🎮 Joc Interactiu</a>
+    </div>
+
+    <div class="back-btn" onclick="goBack()">← Tornar al menú</div>
+  </div>
+
+</div>
+
+<a href="https://agora.xtec.cat/ietemple/" target="_blank" class="insti-pill" id="confettiBtn">
+  🏛️ IE Temple
+</a>
+
 <script>
-
-/* =========================
-   NAVEGACIÓN ENTRE VISTAS
-========================= */
-
 function navTo(type){
-
-  const panel = document.getElementById('main-panel');
-
+  const panel=document.getElementById('main-panel');
   panel.style.transform='scale(.95)';
   panel.style.opacity='0';
 
   setTimeout(()=>{
-
     document.getElementById('home-view').classList.remove('active');
     document.getElementById('selection-view').classList.add('active');
 
@@ -33,185 +322,59 @@ function navTo(type){
     panel.style.transform='scale(1)';
     panel.style.opacity='1';
 
-    confetti({
-      particleCount:40,
-      spread:60,
-      origin:{y:.8}
-    });
-
+    confetti({ particleCount:40, spread:60, origin:{y:.8} });
   },250);
-
 }
 
-
 function goBack(){
-
   const panel=document.getElementById('main-panel');
-
   panel.style.opacity='0';
 
   setTimeout(()=>{
-
     document.getElementById('selection-view').classList.remove('active');
     document.getElementById('home-view').classList.add('active');
-
     panel.style.opacity='1';
-
   },250);
-
 }
-
-
-/* =========================
-   CONFETTI BOTÓN INSTITUTO
-========================= */
 
 document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
-
-  confetti({
-    particleCount:20,
-    spread:40,
-    origin:{x:.9,y:.9},
-    colors:['#5865F2','#ffffff']
-  });
-
+  confetti({ particleCount:20, spread:40, origin:{x:.9,y:.9}, colors:['#5865F2','#ffffff'] });
 });
+   <!-- Coloca esto dentro de <body>, antes de </body> -->
+<div class="emoji-bg">
+  <span>🍎</span><span>🍔</span><span>🍕</span><span>🥑</span>
+  <span>🍇</span><span>🍉</span><span>🥕</span><span>🍩</span>
+</div>
 
+<script>
+const emojis = document.querySelectorAll('.emoji-bg span');
 
-/* =========================
-   DATOS CURIOSOS COMIDA
-========================= */
-
-const foodFacts=[
-
-"🍯 La mel no caduca mai.",
-"🍌 Els plàtans són tècnicament una baia.",
-"🍎 Una poma té més aire que aigua.",
-"🍫 La xocolata pot millorar l'humor.",
-"🥕 Les pastanagues ajuden a la visió nocturna.",
-"🍍 La pinya conté enzims que ajuden a digerir proteïnes.",
-"🥑 L'alvocat és una fruita.",
-"🍓 Les maduixes tenen llavors per fora.",
-"🍉 El cos humà és aproximadament 60% aigua.",
-"🥦 El bròquil és molt ric en vitamina C."
-
-];
-
-
-function showFoodFact(){
-
-  const factBox=document.getElementById("foodFact");
-
-  if(!factBox) return;
-
-  const fact=foodFacts[Math.floor(Math.random()*foodFacts.length)];
-
-  factBox.innerText=fact;
-
-}
-
-
-/* mostrar al cargar */
-
-window.addEventListener("load",showFoodFact);
-
-
-/* cambiar cada 15s */
-
-setInterval(showFoodFact,15000);
-
-
-/* =========================
-   MINI QUIZ
-========================= */
-
-function startFoodQuiz(){
-
-const answer=prompt(
-
-`🧠 MINI QUIZ
-
-Quin òrgan comença la digestió?
-
-A) Estómac
-B) Boca
-C) Intestí`
-
-);
-
-if(!answer) return;
-
-if(answer.toLowerCase()=="b"){
-
-  alert("✅ Correcte! La digestió comença a la boca.");
-
-  confetti({
-    particleCount:80,
-    spread:70
-  });
-
-  addBioPoints(10);
-
-}else{
-
-  alert("❌ Incorrecte. La resposta correcta és la boca.");
-
-}
-
-}
-
-
-/* =========================
-   SISTEMA DE PUNTOS
-========================= */
-
-let bioPoints=0;
-
-function addBioPoints(p){
-
-bioPoints+=p;
-
-console.log("⭐ Punts BioPortal:",bioPoints);
-
-}
-
-
-/* =========================
-   BOTÓN SECRETO
-========================= */
-
-function bioSecret(){
-
-confetti({
-
-particleCount:200,
-spread:120,
-origin:{y:0.6}
-
+emojis.forEach((emoji, i) => {
+  const duration = Math.random() * 15 + 10; // 10-25s
+  const leftPos = Math.random() * 90; // posición horizontal 0-90%
+  emoji.style.left = leftPos + 'vw';
+  emoji.style.animationDuration = duration + 's';
 });
-
-alert("🍔 MODE MENJAR ACTIVAT");
-
-addBioPoints(20);
-
-}
-
-
-/* =========================
-   EFECTO 3D PANEL
-========================= */
-
-document.addEventListener("mousemove",(e)=>{
-
-const panel=document.querySelector(".glass-panel");
-
-if(!panel) return;
-
-const x=(window.innerWidth/2 - e.pageX)/40;
-const y=(window.innerHeight/2 - e.pageY)/40;
-
-panel.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`;
-
-});
-
 </script>
+
+<style>
+.emoji-bg span {
+  position: fixed;
+  font-size: 40px;
+  opacity: 0.1;
+  animation: floatEmoji linear infinite;
+}
+
+@keyframes floatEmoji {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+  }
+}
+</style>
+</script>
+
+</body>
+</html>
