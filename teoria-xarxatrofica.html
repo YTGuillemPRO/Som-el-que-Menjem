@@ -9,92 +9,61 @@
 
   <h1>La Xarxa Tròfica</h1>
   <p class="subtitle">
-    La <b>xarxa tròfica</b> mostra com circula l'energia entre els éssers vius.  
-    Cada organisme depèn d'altres per alimentar-se i mantenir l’equilibri de l’ecosistema.
+    La <b>xarxa tròfica</b> explica com circula l’energia entre els éssers vius d’un ecosistema.
+    Cada organisme s’alimenta d’altres i forma una cadena d’alimentació.
   </p>
 
   <div class="main-grid" style="margin-top:40px; display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">
 
-    <!-- 1. Productors -->
+    <!-- Productors -->
     <div class="nav-card" style="cursor:default; box-shadow:none; border:2px solid #22c55e; padding:20px;">
       <div class="icon-circle" style="background:#dcfce7; color:#166534;">🌱</div>
       <h2>1. Productors</h2>
       <p>
-        Són els éssers vius que creen el seu propi aliment a partir de la llum del sol.  
+        Són éssers vius que fabriquen el seu propi aliment utilitzant la llum del sol.
         Aquest procés s’anomena <b>fotosíntesi</b>.
       </p>
-      <p>Exemples: arbres, herba, algues.</p>
+      <p><b>Exemples:</b> plantes, arbres, algues.</p>
     </div>
 
-    <!-- 2. Consumidors primaris -->
+    <!-- Consumidors primaris -->
     <div class="nav-card" style="cursor:default; box-shadow:none; border:2px solid #f59e0b; padding:20px;">
       <div class="icon-circle" style="background:#fffbeb; color:#92400e;">🐛</div>
       <h2>2. Consumidors primaris</h2>
-      <p>Són animals <b>herbívors</b> que s’alimenten directament de les plantes.</p>
-      <p>Exemples: conills, insectes, cargols.</p>
+      <p>
+        Són animals <b>herbívors</b> que s’alimenten directament dels productors (plantes).
+      </p>
+      <p><b>Exemples:</b> conills, insectes, cargols.</p>
     </div>
 
-    <!-- 3. Consumidors secundaris -->
+    <!-- Consumidors secundaris -->
     <div class="nav-card" style="cursor:default; box-shadow:none; border:2px solid #ef4444; padding:20px;">
-      <div class="icon-circle" style="background:#fee2e2; color:#991b1b;">🦊</div>
+      <div class="icon-circle" style="background:#fee2e2; color:#991b1b;">🐍</div>
       <h2>3. Consumidors secundaris</h2>
-      <p>Són animals <b>carnívors</b> que es mengen els herbívors.  
-         Ajuden a controlar les poblacions d’herbívors.</p>
-      <p>Exemples: guineus, serps, granotes.</p>
+      <p>
+        Són animals <b>carnívors</b> que mengen els consumidors primaris.
+      </p>
+      <p><b>Exemples:</b> serps, granotes, ocells.</p>
     </div>
 
-    <!-- 4. Superdepredadors -->
+    <!-- Consumidors terciaris / depredadors -->
     <div class="nav-card" style="cursor:default; box-shadow:none; border:2px solid #7c3aed; padding:20px;">
       <div class="icon-circle" style="background:#ede9fe; color:#5b21b6;">🦅</div>
-      <h2>4. Superdepredadors</h2>
-      <p>Són animals que estan al capdamunt de la cadena alimentària.  
-         No tenen gairebé depredadors naturals.</p>
-      <p>Exemples: àguiles, llops.</p>
-    </div>
-
-    <!-- 5. Descomponedors -->
-    <div class="nav-card" style="cursor:default; box-shadow:none; border:2px solid #6b7280; padding:20px;">
-      <div class="icon-circle" style="background:#f3f4f6; color:#374151;">🍄</div>
-      <h2>5. Descomponedors</h2>
-      <p>Transformen restes d’animals i plantes en nutrients que tornen al sòl.  
-         Això tanca el cicle de la matèria.</p>
-      <p>Exemples: fongs, bacteris.</p>
+      <h2>4. Consumidors terciaris (Depredadors)</h2>
+      <p>
+        Són els animals que es troben a la part més alta de la cadena alimentària.
+        S’alimenten d’altres carnívors i gairebé no tenen depredadors.
+      </p>
+      <p><b>Exemples:</b> àguiles, llops, grans felins.</p>
     </div>
 
   </div>
 
   <p style="margin-top:35px; font-style:italic; color:#555;">
-    Tots els éssers vius estan connectats.  
-    Si desapareix una espècie, tota la xarxa tròfica pot canviar.
+    Tots els éssers vius estan connectats dins de la xarxa tròfica.
+    Si desapareix una espècie, pot afectar tot l’ecosistema.
   </p>
 
   <div class="back-btn" onclick="goBackFromXarxa()">← Tornar al menú</div>
 
 </div>
-
-<script>
-function navTo(type){
-  const panel = document.getElementById('main-panel');
-  panel.style.transform = 'scale(.95)';
-  panel.style.opacity = '0';
-
-  setTimeout(() => {
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-    if(type === 'xarxa-trofica'){
-      document.getElementById('xarxa-trofica-view').classList.add('active');
-    }
-    panel.style.transform = 'scale(1)';
-    panel.style.opacity = '1';
-  }, 250);
-}
-
-function goBackFromXarxa(){
-  const panel = document.getElementById('main-panel');
-  panel.style.opacity = '0';
-  setTimeout(() => {
-    document.getElementById('xarxa-trofica-view').classList.remove('active');
-    document.getElementById('home-view').classList.add('active');
-    panel.style.opacity = '1';
-  }, 250);
-}
-</script>
