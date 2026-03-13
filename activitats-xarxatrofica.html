@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activitats Xarxa Tròfica</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+
+.panel{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(40px);
+  padding:60px;
+  border-radius:32px;
+  text-align:center;
+  width:90%;
+  max-width:600px;
+}
+
+h1{
+  font-size:48px;
+  margin-bottom:15px;
+}
+
+.subtitle{
+  font-size:18px;
+  margin-bottom:40px;
+  color:#cbd5e1;
+}
+
+.btn-group{
+  display:grid;
+  gap:20px;
+  grid-template-columns:1fr 1fr;
+}
+
+.btn{
+  padding:25px;
+  border-radius:20px;
+  font-weight:700;
+  font-size:18px;
+  text-decoration:none;
+  color:white;
+  transition:.25s;
+  text-align:center;
+  display:inline-block;
+}
+
+.btn-teo{
+  background:#2563eb;
+}
+
+.btn-joc{
+  background:#f59e0b;
+}
+
+.btn:hover{
+  transform:scale(1.05);
+  filter:brightness(1.1);
+}
+
+.back-btn{
+  display:inline-block;
+  margin-top:40px;
+  padding:10px 18px;
+  border-radius:30px;
+  cursor:pointer;
+  color:#cbd5e1;
+  transition:.25s;
+}
+
+.back-btn:hover{
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h1>Xarxa Tròfica</h1>
+  <p class="subtitle">Tria una activitat per explorar la xarxa tròfica</p>
+
+  <div class="btn-group">
+    <a href="teoria-xarxatrofica.html" class="btn btn-teo">📖 Teoria Visual</a>
+    <a href="joc-xarxatrofica.html" class="btn btn-joc">🎮 Joc Interactiu</a>
+  </div>
+
+  <div class="back-btn" onclick="history.back()">← Tornar al menú</div>
+</div>
+
+</body>
+</html>
