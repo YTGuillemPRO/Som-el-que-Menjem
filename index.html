@@ -258,6 +258,7 @@ h1{
 
 <div class="glass-panel" id="main-panel">
 
+  <!-- VISTA HOME -->
   <div id="home-view" class="view active">
     <h1>BioPortal</h1>
     <p class="subtitle">Fet per: YASSER CHIKHI i GUILLEM VARELA</p>
@@ -272,13 +273,15 @@ h1{
         <div class="icon-circle">🥗</div>
         <h2>Nutrició</h2>
       </div>
+
+      <div class="nav-card" onclick="navTo('xarxa-trofica')">
+        <div class="icon-circle" style="background:#dcfce7; color:#15803d;">🌿</div>
+        <h2>Xarxa tròfica</h2>
+      </div>
     </div>
   </div>
-  <div class="nav-card" onclick="window.location.href='teoria-xarxatrofica.html'">
-  <div class="icon-circle" style="background:#fbbf24; color:#78350f;">🍏</div>
-  <h2>Microplastics lligats a la xarxa trofica</h2>
-</div>
 
+  <!-- VISTA SELECCIÓN -->
   <div id="selection-view" class="view">
     <h1 id="selection-title">Títol</h1>
     <p class="subtitle">Tria una activitat per començar</p>
@@ -291,49 +294,105 @@ h1{
     <div class="back-btn" onclick="goBack()">← Tornar al menú</div>
   </div>
 
+  <!-- VISTA XARXA TRÒFICA -->
+  <div id="xarxa-trofica-view" class="view">
+    <h1>La Xarxa Tròfica</h1>
+    <p class="subtitle">
+      La <b>xarxa tròfica</b> mostra com circula l'energia entre els éssers vius.  
+      Cada organisme depèn d'altres per alimentar-se i mantenir l’equilibri de l’ecosistema.
+    </p>
+
+    <div class="main-grid" style="margin-top:40px; grid-template-columns:1fr 1fr 1fr;">
+      <div class="nav-card" style="cursor:default; border:2px solid #22c55e;">
+        <div class="icon-circle" style="background:#dcfce7; color:#166534;">🌱</div>
+        <h2>Productors</h2>
+        <p>Les plantes creen el seu propi aliment gràcies a la llum del sol (fotosíntesi).</p>
+        <p>Exemples: arbres, herba, algues.</p>
+      </div>
+      <div class="nav-card" style="cursor:default; border:2px solid #f59e0b;">
+        <div class="icon-circle" style="background:#fffbeb; color:#92400e;">🐛</div>
+        <h2>Consumidors primaris</h2>
+        <p>Són animals herbívors que mengen plantes.</p>
+        <p>Exemples: conills, insectes, cargols.</p>
+      </div>
+      <div class="nav-card" style="cursor:default; border:2px solid #ef4444;">
+        <div class="icon-circle" style="background:#fee2e2; color:#991b1b;">🦊</div>
+        <h2>Consumidors secundaris</h2>
+        <p>Són carnívors que mengen herbívors.</p>
+        <p>Exemples: guineus, serps, granotes.</p>
+      </div>
+      <div class="nav-card" style="cursor:default; border:2px solid #7c3aed;">
+        <div class="icon-circle" style="background:#ede9fe; color:#5b21b6;">🦅</div>
+        <h2>Superdepredadors</h2>
+        <p>Animals al capdamunt de la cadena alimentària, sense gairebé depredadors.</p>
+        <p>Exemples: àguiles, llops.</p>
+      </div>
+      <div class="nav-card" style="cursor:default; border:2px solid #6b7280;">
+        <div class="icon-circle" style="background:#f3f4f6; color:#374151;">🍄</div>
+        <h2>Descomponedors</h2>
+        <p>Transformen restes d’éssers vius en nutrients pel sòl.</p>
+        <p>Exemples: fongs, bacteris.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:35px; font-style:italic; color:#555;">
+      Tots els éssers vius estan connectats.  
+      Si desapareix una espècie, tota la xarxa tròfica pot canviar.
+    </p>
+
+    <div class="back-btn" onclick="goBackFromXarxa()">← Tornar al menú</div>
+  </div>
+
 </div>
 
+<!-- Botón instituto -->
 <a href="https://agora.xtec.cat/ietemple/" target="_blank" class="insti-pill" id="confettiBtn">
   🏛️ IE Temple
 </a>
 
 <script>
+const panel = document.getElementById('main-panel');
+
 function navTo(type){
-  const panel=document.getElementById('main-panel');
-  panel.style.transform='scale(.95)';
-  panel.style.opacity='0';
+  panel.style.transform = 'scale(.95)';
+  panel.style.opacity = '0';
 
   setTimeout(()=>{
-    document.getElementById('home-view').classList.remove('active');
-    document.getElementById('selection-view').classList.add('active');
-
-    const title=document.getElementById('selection-title');
-    const t=document.getElementById('link-teoria');
-    const j=document.getElementById('link-joc');
+    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
 
     if(type==='digestio'){
-      title.innerText="Digestió";
-      t.href="teoria-digestio.html";
-      j.href="activitats-digestio.html";
-    }else{
-      title.innerText="Nutrició";
-      t.href="teoria-nutricio.html";
-      j.href="activitats-nutricio.html";
+      document.getElementById('selection-view').classList.add('active');
+      document.getElementById('selection-title').innerText="Digestió";
+      document.getElementById('link-teoria').href="teoria-digestio.html";
+      document.getElementById('link-joc').href="activitats-digestio.html";
+    } else if(type==='nutricio'){
+      document.getElementById('selection-view').classList.add('active');
+      document.getElementById('selection-title').innerText="Nutrició";
+      document.getElementById('link-teoria').href="teoria-nutricio.html";
+      document.getElementById('link-joc').href="activitats-nutricio.html";
+    } else if(type==='xarxa-trofica'){
+      document.getElementById('xarxa-trofica-view').classList.add('active');
     }
 
-    panel.style.transform='scale(1)';
-    panel.style.opacity='1';
-
+    panel.style.transform = 'scale(1)';
+    panel.style.opacity = '1';
     confetti({ particleCount:40, spread:60, origin:{y:.8} });
   },250);
 }
 
 function goBack(){
-  const panel=document.getElementById('main-panel');
   panel.style.opacity='0';
-
   setTimeout(()=>{
-    document.getElementById('selection-view').classList.remove('active');
+    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+    document.getElementById('home-view').classList.add('active');
+    panel.style.opacity='1';
+  },250);
+}
+
+function goBackFromXarxa(){
+  panel.style.opacity='0';
+  setTimeout(()=>{
+    document.getElementById('xarxa-trofica-view').classList.remove('active');
     document.getElementById('home-view').classList.add('active');
     panel.style.opacity='1';
   },250);
