@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faig 2</title>
+<title>BioPortal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -26,11 +26,10 @@
 }
 
 body{
-  height:100vh;
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  overflow-y:auto;
   color:#111;
   background: linear-gradient(-45deg, #0b1120, #0f172a, #1e293b, #0b1120);
   background-size: 400% 400%;
@@ -44,367 +43,164 @@ body{
   100%{background-position:0% 50%;}
 }
 
-/* Glow decorativo */
-body::before{
-  content:"";
-  position:absolute;
-  width:800px;
-  height:800px;
-  background:radial-gradient(circle,#22c55e33,transparent 70%);
-  top:-200px;
-  left:-200px;
-  filter:blur(80px);
-}
-
-body::after{
-  content:"";
-  position:absolute;
-  width:700px;
-  height:700px;
-  background:radial-gradient(circle,#2563eb33,transparent 70%);
-  bottom:-200px;
-  right:-200px;
-  filter:blur(80px);
-}
-
-/* Glass panel */
+/* PANEL */
 .glass-panel{
   background:var(--glass);
-  backdrop-filter:blur(40px) saturate(180%);
-  -webkit-backdrop-filter:blur(40px);
+  backdrop-filter:blur(40px);
   border-radius:48px;
-  padding:65px;
+  padding:60px;
   width:90%;
   max-width:900px;
   text-align:center;
-  border:1px solid rgba(255,255,255,0.3);
-  box-shadow:0 40px 120px rgba(0,0,0,0.6), inset 0 1px rgba(255,255,255,0.4);
-  transition:.5s;
+  box-shadow:0 40px 120px rgba(0,0,0,0.6);
   position:relative;
   z-index:1;
 }
 
 h1{
-  font-size:56px;
+  font-size:52px;
   font-weight:800;
-  letter-spacing:-2px;
-  margin-bottom:8px;
 }
 
 .subtitle{
   color:#e0e0e0;
-  font-size:18px;
-  margin-bottom:50px;
+  margin-bottom:40px;
 }
 
-/* Grid */
+/* GRID */
 .main-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:30px;
+  gap:25px;
 }
 
-/* Cards */
+/* TARJETAS */
 .nav-card{
   background:white;
-  padding:50px 35px;
-  border-radius:32px;
+  padding:45px;
+  border-radius:28px;
   cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  transition:.35s;
-  border:1px solid rgba(0,0,0,0.06);
-  position:relative;
-  overflow:hidden;
-}
-
-.nav-card::before{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:linear-gradient(120deg,transparent,rgba(34,197,94,0.2),transparent);
-  opacity:0;
-  transition:.4s;
-}
-
-.nav-card:hover::before{
-  opacity:1;
+  transition:.3s;
 }
 
 .nav-card:hover{
-  transform:translateY(-14px) scale(1.05) rotateX(6deg);
-  box-shadow:0 30px 70px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.2) inset;
+  transform:translateY(-10px) scale(1.04);
 }
 
 .icon-circle{
-  width:95px;
-  height:95px;
-  border-radius:28px;
-  background:#f5f5f7;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:44px;
-  margin-bottom:20px;
-  transition:.3s;
-  animation:float 4s ease-in-out infinite;
+  font-size:40px;
+  margin-bottom:15px;
 }
 
-.nav-card:hover .icon-circle{
-  background:#e8f5e9;
-  transform:rotate(-6deg) scale(1.1);
-  box-shadow:0 10px 30px rgba(34,197,94,0.3);
-}
-
-.nav-card h2{
-  font-size:28px;
-  font-weight:700;
-}
-
-/* Float animation */
-@keyframes float{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-6px);}
-  100%{transform:translateY(0);}
-}
-
-/* Views */
-.view{display:none;}
-.active{display:block;animation:fade .4s;}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* Buttons */
-.btn-group{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px;
-}
-
-.btn-action{
-  padding:25px;
-  border-radius:20px;
-  font-weight:700;
-  font-size:18px;
-  text-decoration:none;
-  color:white;
-  transition:.25s;
-  text-align:center;
-}
-
-.btn-teo{background:var(--blue);}
-.btn-joc{background:var(--orange);}
-
-.btn-action:hover{
-  transform:scale(1.06);
-  filter:brightness(1.1);
-  box-shadow:0 10px 25px rgba(0,0,0,0.25);
-}
-
-/* Back button */
-.back-btn{
-  margin-top:40px;
-  display:inline-block;
-  color:#a0a0a0;
-  cursor:pointer;
-  padding:10px 18px;
-  border-radius:30px;
-  transition:.25s;
-}
-
-.back-btn:hover{
-  background:rgba(255,255,255,0.1);
-  color:white;
-}
-
-/* Instituto button */
+/* BOTÓN INSTI MEJORADO */
 .insti-pill{
   position:fixed;
-  bottom:35px;
-  right:35px;
+  bottom:30px;
+  right:30px;
   background:linear-gradient(135deg,#5865F2,#7c83ff);
   color:white;
-  padding:16px 28px;
-  border-radius:16px;
-  font-weight:600;
-  box-shadow:0 10px 40px rgba(88,101,242,.5);
+  padding:18px 32px;
+  border-radius:18px;
+  font-weight:700;
+  font-size:18px;
+  box-shadow:0 15px 50px rgba(88,101,242,.6);
   transition:.3s;
-  display:flex;
-  align-items:center;
-  gap:10px;
+  z-index:999;
+  animation:pulse 2.5s infinite;
+}
+
+/* Glow detrás */
+.insti-pill::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  background:linear-gradient(135deg,#5865F2,#7c83ff);
+  filter:blur(20px);
+  opacity:.6;
+  z-index:-1;
 }
 
 .insti-pill:hover{
-  transform:translateY(-4px) scale(1.07);
-  box-shadow:0 15px 60px rgba(88,101,242,.7);
+  transform:scale(1.08) translateY(-5px);
 }
 
-/* Responsive */
+/* Animación suave */
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+  100%{transform:scale(1);}
+}
+
+/* RESPONSIVE */
 @media(max-width:700px){
-  .glass-panel{padding:45px 35px;}
   .main-grid{grid-template-columns:1fr;}
-  .btn-group{grid-template-columns:1fr;}
-  h1{font-size:40px;}
+
+  .insti-pill{
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+    bottom:20px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="glass-panel" id="main-panel">
+<div class="glass-panel">
 
-  <!-- VISTA HOME -->
-  <div id="home-view" class="view active">
-    <h1>BioPortal</h1>
-    <p class="subtitle">Fet per: GUILLEM VARELA</p>
+  <h1>BioPortal</h1>
+  <p class="subtitle">Fet per: GUILLEM VARELA</p>
 
-    <div class="main-grid">
-      <div class="nav-card" onclick="navTo('digestio')">
-        <div class="icon-circle">🍔</div>
-        <h2>Digestió</h2>
-      </div>
-
-      <div class="nav-card" onclick="navTo('nutricio')">
-        <div class="icon-circle">🥗</div>
-        <h2>Nutrició</h2>
-      </div>
-
-<div class="nav-card" onclick="window.location.href='teoria-xarxatrofica.html'" 
-     style="grid-column: span 2; padding:70px 40px; transform:scale(1.05);">
-
-  <div class="icon-circle" style="background:#dcfce7; color:#15803d; font-size:54px; width:120px; height:120px;">
-    🌿
-  </div>
-
-  <h2 style="font-size:34px;">Xarxa tròfica</h2>
-</div>
-    </div>
-  </div>
-
-  <!-- VISTA SELECCIÓN -->
-  <div id="selection-view" class="view">
-    <h1 id="selection-title">Títol</h1>
-    <p class="subtitle">Tria una activitat per començar</p>
-
-    <div class="btn-group">
-      <a id="link-teoria" class="btn-action btn-teo">📖 Teoria Visual</a>
-      <a id="link-joc" class="btn-action btn-joc">🎮 Joc Interactiu</a>
+  <div class="main-grid">
+    <div class="nav-card" onclick="navTo('digestio')">
+      <div class="icon-circle">🍔</div>
+      <h2>Digestió</h2>
     </div>
 
-    <div class="back-btn" onclick="goBack()">← Tornar al menú</div>
-  </div>
-
-  <!-- VISTA XARXA TRÒFICA -->
-  <div id="xarxa-trofica-view" class="view">
-    <h1>La Xarxa Tròfica</h1>
-    <p class="subtitle">
-      La <b>xarxa tròfica</b> mostra com circula l'energia entre els éssers vius.  
-      Cada organisme depèn d'altres per alimentar-se i mantenir l’equilibri de l’ecosistema.
-    </p>
-
-    <div class="main-grid" style="margin-top:40px; grid-template-columns:1fr 1fr 1fr;">
-      <div class="nav-card" style="cursor:default; border:2px solid #22c55e;">
-        <div class="icon-circle" style="background:#dcfce7; color:#166534;">🌱</div>
-        <h2>Productors</h2>
-        <p>Les plantes creen el seu propi aliment gràcies a la llum del sol (fotosíntesi).</p>
-        <p>Exemples: arbres, herba, algues.</p>
-      </div>
-      <div class="nav-card" style="cursor:default; border:2px solid #f59e0b;">
-        <div class="icon-circle" style="background:#fffbeb; color:#92400e;">🐛</div>
-        <h2>Consumidors primaris</h2>
-        <p>Són animals herbívors que mengen plantes.</p>
-        <p>Exemples: conills, insectes, cargols.</p>
-      </div>
-      <div class="nav-card" style="cursor:default; border:2px solid #ef4444;">
-        <div class="icon-circle" style="background:#fee2e2; color:#991b1b;">🦊</div>
-        <h2>Consumidors secundaris</h2>
-        <p>Són carnívors que mengen herbívors.</p>
-        <p>Exemples: guineus, serps, granotes.</p>
-      </div>
-      <div class="nav-card" style="cursor:default; border:2px solid #7c3aed;">
-        <div class="icon-circle" style="background:#ede9fe; color:#5b21b6;">🦅</div>
-        <h2>Superdepredadors</h2>
-        <p>Animals al capdamunt de la cadena alimentària, sense gairebé depredadors.</p>
-        <p>Exemples: àguiles, llops.</p>
-      </div>
-      <div class="nav-card" style="cursor:default; border:2px solid #6b7280;">
-        <div class="icon-circle" style="background:#f3f4f6; color:#374151;">🍄</div>
-        <h2>Descomponedors</h2>
-        <p>Transformen restes d’éssers vius en nutrients pel sòl.</p>
-        <p>Exemples: fongs, bacteris.</p>
-      </div>
+    <div class="nav-card" onclick="navTo('nutricio')">
+      <div class="icon-circle">🥗</div>
+      <h2>Nutrició</h2>
     </div>
 
-    <p style="margin-top:35px; font-style:italic; color:#555;">
-      Tots els éssers vius estan connectats.  
-      Si desapareix una espècie, tota la xarxa tròfica pot canviar.
-    </p>
-
-    <div class="back-btn" onclick="goBackFromXarxa()">← Tornar al menú</div>
+    <div class="nav-card" onclick="window.location.href='teoria-xarxatrofica.html'" style="grid-column: span 2;">
+      <div class="icon-circle">🌿</div>
+      <h2>Xarxa tròfica</h2>
+    </div>
   </div>
 
 </div>
 
-<!-- Botón instituto -->
+<!-- BOTÓN INSTI -->
 <a href="https://agora.xtec.cat/ietemple/" target="_blank" class="insti-pill" id="confettiBtn">
   🏛️ IE Temple
 </a>
 
 <script>
-const panel = document.getElementById('main-panel');
-
 function navTo(type){
-  panel.style.transform = 'scale(.95)';
-  panel.style.opacity = '0';
+  confetti({
+    particleCount:60,
+    spread:70,
+    origin:{y:0.7}
+  });
 
-  setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-
-    if(type==='digestio'){
-      document.getElementById('selection-view').classList.add('active');
-      document.getElementById('selection-title').innerText="Digestió";
-      document.getElementById('link-teoria').href="teoria-digestio.html";
-      document.getElementById('link-joc').href="activitats-digestio.html";
-    } else if(type==='nutricio'){
-      document.getElementById('selection-view').classList.add('active');
-      document.getElementById('selection-title').innerText="Nutrició";
-      document.getElementById('link-teoria').href="teoria-nutricio.html";
-      document.getElementById('link-joc').href="activitats-nutricio.html";
-    } else if(type==='xarxa-trofica'){
-      document.getElementById('xarxa-trofica-view').classList.add('active');
-    }
-
-    panel.style.transform = 'scale(1)';
-    panel.style.opacity = '1';
-    confetti({ particleCount:40, spread:60, origin:{y:.8} });
-  },250);
+  if(type==='digestio'){
+    window.location.href="teoria-digestio.html";
+  } 
+  else if(type==='nutricio'){
+    window.location.href="teoria-nutricio.html";
+  }
 }
 
-function goBack(){
-  panel.style.opacity='0';
-  setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-    document.getElementById('home-view').classList.add('active');
-    panel.style.opacity='1';
-  },250);
-}
-
-function goBackFromXarxa(){
-  panel.style.opacity='0';
-  setTimeout(()=>{
-    document.getElementById('xarxa-trofica-view').classList.remove('active');
-    document.getElementById('home-view').classList.add('active');
-    panel.style.opacity='1';
-  },250);
-}
-
+/* Confetti hover insti */
 document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
-  confetti({ particleCount:20, spread:40, origin:{x:.9,y:.9}, colors:['#5865F2','#ffffff'] });
+  confetti({
+    particleCount:25,
+    spread:40,
+    origin:{x:.9,y:.9},
+    colors:['#5865F2','#ffffff']
+  });
 });
 </script>
 
