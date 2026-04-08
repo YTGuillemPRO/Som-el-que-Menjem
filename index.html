@@ -1,199 +1,58 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioPortal</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-<style>
-:root{
-  --accent:#22c55e;
-  --blue:#2563eb;
-  --orange:#f59e0b;
-  --discord:#5865F2;
-  --glass:rgba(255,255,255,0.72);
-  --bg-dark:#0b1120;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Plus Jakarta Sans',sans-serif;
-}
-
-body{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#111;
-  background: linear-gradient(-45deg, #0b1120, #0f172a, #1e293b, #0b1120);
-  background-size: 400% 400%;
-  animation: bgMove 25s ease infinite;
-  position: relative;
-}
-
-@keyframes bgMove{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-/* PANEL */
-.glass-panel{
-  background:var(--glass);
-  backdrop-filter:blur(40px);
-  border-radius:48px;
-  padding:60px;
-  width:90%;
-  max-width:900px;
-  text-align:center;
-  box-shadow:0 40px 120px rgba(0,0,0,0.6);
-  position:relative;
-  z-index:1;
-}
-
-h1{
-  font-size:52px;
-  font-weight:800;
-}
-
-.subtitle{
-  color:#e0e0e0;
-  margin-bottom:40px;
-}
-
-/* GRID */
-.main-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:25px;
-}
-
-/* TARJETAS */
-.nav-card{
-  background:white;
-  padding:45px;
-  border-radius:28px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.nav-card:hover{
-  transform:translateY(-10px) scale(1.04);
-}
-
-.icon-circle{
-  font-size:40px;
-  margin-bottom:15px;
-}
-
-/* BOTÓN INSTI MEJORADO */
-.insti-pill{
-  position:fixed;
-  bottom:30px;
-  right:30px;
-  background:linear-gradient(135deg,#5865F2,#7c83ff);
-  color:white;
-  padding:18px 32px;
-  border-radius:18px;
-  font-weight:700;
-  font-size:18px;
-  box-shadow:0 15px 50px rgba(88,101,242,.6);
-  transition:.3s;
-  z-index:999;
-  animation:pulse 2.5s infinite;
-}
-
-/* Glow detrás */
-.insti-pill::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:18px;
-  background:linear-gradient(135deg,#5865F2,#7c83ff);
-  filter:blur(20px);
-  opacity:.6;
-  z-index:-1;
-}
-
-.insti-pill:hover{
-  transform:scale(1.08) translateY(-5px);
-}
-
-/* Animación suave */
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-  100%{transform:scale(1);}
-}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-  .main-grid{grid-template-columns:1fr;}
-
-  .insti-pill{
-    left:50%;
-    right:auto;
-    transform:translateX(-50%);
-    bottom:20px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="glass-panel">
-
-  <h1>BioPortal</h1>
-  <p class="subtitle">Fet per: GUILLEM VARELA</p>
-
-  <div class="main-grid">
-    <div class="nav-card" onclick="navTo('digestio')">
-      <div class="icon-circle">🍔</div>
-      <h2>Digestió</h2>
-    </div>
-
-    <div class="nav-card" onclick="navTo('nutricio')">
-      <div class="icon-circle">🥗</div>
-      <h2>Nutrició</h2>
-    </div>
-
-    <div class="nav-card" onclick="window.location.href='teoria-xarxatrofica.html'" style="grid-column: span 2;">
-      <div class="icon-circle">🌿</div>
-      <h2>Xarxa tròfica</h2>
-    </div>
-  </div>
-
-</div>
-
-<!-- BOTÓN INSTI -->
-<a href="https://agora.xtec.cat/ietemple/" target="_blank" class="insti-pill" id="confettiBtn">
-  🏛️ IE Temple
-</a>
-
 <script>
-function navTo(type){
-  confetti({
-    particleCount:60,
-    spread:70,
-    origin:{y:0.7}
-  });
+const panel = document.getElementById('main-panel');
 
-  if(type==='digestio'){
-    window.location.href="teoria-digestio.html";
-  } 
-  else if(type==='nutricio'){
-    window.location.href="teoria-nutricio.html";
-  }
+function navTo(type){
+  panel.style.transform = 'scale(.95)';
+  panel.style.opacity = '0';
+
+  setTimeout(()=>{
+    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+
+    if(type==='digestio'){
+      document.getElementById('selection-view').classList.add('active');
+      document.getElementById('selection-title').innerText="Digestió";
+      document.getElementById('link-teoria').href="teoria-digestio.html";
+      document.getElementById('link-joc').href="activitats-digestio.html";
+    } 
+    
+    else if(type==='nutricio'){
+      document.getElementById('selection-view').classList.add('active');
+      document.getElementById('selection-title').innerText="Nutrició";
+      document.getElementById('link-teoria').href="teoria-nutricio.html";
+      document.getElementById('link-joc').href="activitats-nutricio.html";
+    } 
+    
+    else if(type==='xarxa-trofica'){
+      document.getElementById('selection-view').classList.add('active');
+      document.getElementById('selection-title').innerText="Xarxa tròfica";
+      document.getElementById('link-teoria').href="teoria-xarxatrofica.html";
+      document.getElementById('link-joc').href="activitats-xarxatrofica.html";
+    }
+
+    panel.style.transform = 'scale(1)';
+    panel.style.opacity = '1';
+
+    // 🎉 efecto confetti al entrar
+    confetti({
+      particleCount:50,
+      spread:70,
+      origin:{y:.8}
+    });
+
+  },250);
 }
 
-/* Confetti hover insti */
+function goBack(){
+  panel.style.opacity='0';
+
+  setTimeout(()=>{
+    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+    document.getElementById('home-view').classList.add('active');
+    panel.style.opacity='1';
+  },250);
+}
+
+/* 🎉 Confetti botón instituto */
 document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
   confetti({
     particleCount:25,
@@ -203,6 +62,3 @@ document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
   });
 });
 </script>
-
-</body>
-</html>
