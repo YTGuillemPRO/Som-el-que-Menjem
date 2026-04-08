@@ -1,44 +1,220 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioPortal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<style>
+:root{
+  --accent:#22c55e;
+  --blue:#2563eb;
+  --orange:#f59e0b;
+  --discord:#5865F2;
+  --glass:rgba(255,255,255,0.72);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(-45deg, #0b1120, #0f172a, #1e293b);
+  background-size:400% 400%;
+  animation:bgMove 20s infinite;
+}
+
+@keyframes bgMove{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
+}
+
+.glass-panel{
+  background:var(--glass);
+  backdrop-filter:blur(40px);
+  border-radius:40px;
+  padding:60px;
+  width:90%;
+  max-width:900px;
+  text-align:center;
+  transition:.4s;
+}
+
+h1{font-size:50px;}
+.subtitle{margin-bottom:40px;color:#ddd;}
+
+.main-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.nav-card{
+  background:white;
+  padding:40px;
+  border-radius:25px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.nav-card:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
+.icon-circle{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.view{display:none;}
+.active{display:block;}
+
+.btn-group{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.btn-action{
+  padding:20px;
+  border-radius:15px;
+  color:white;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.btn-teo{background:var(--blue);}
+.btn-joc{background:var(--orange);}
+
+.back-btn{
+  margin-top:30px;
+  cursor:pointer;
+}
+
+/* BOTÓN INSTI PRO */
+.insti-pill{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  background:#5865F2;
+  color:white;
+  padding:18px 30px;
+  border-radius:15px;
+  font-weight:700;
+  box-shadow:0 10px 40px rgba(88,101,242,.6);
+  z-index:999;
+  transition:.3s;
+}
+
+.insti-pill:hover{
+  transform:scale(1.1);
+}
+
+@media(max-width:700px){
+  .main-grid{grid-template-columns:1fr;}
+  .insti-pill{
+    left:50%;
+    transform:translateX(-50%);
+    right:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glass-panel" id="main-panel">
+
+<!-- HOME -->
+<div id="home-view" class="view active">
+  <h1>BioPortal</h1>
+  <p class="subtitle">Fet per: GUILLEM VARELA</p>
+
+  <div class="main-grid">
+    <div class="nav-card" onclick="navTo('digestio')">
+      <div class="icon-circle">🍔</div>
+      <h2>Digestió</h2>
+    </div>
+
+    <div class="nav-card" onclick="navTo('nutricio')">
+      <div class="icon-circle">🥗</div>
+      <h2>Nutrició</h2>
+    </div>
+
+    <!-- 🔥 YA ARREGLADO -->
+    <div class="nav-card" onclick="navTo('xarxa-trofica')" style="grid-column: span 2;">
+      <div class="icon-circle">🌿</div>
+      <h2>Xarxa tròfica</h2>
+    </div>
+  </div>
+</div>
+
+<!-- SELECCIÓN -->
+<div id="selection-view" class="view">
+  <h1 id="selection-title"></h1>
+  <p class="subtitle">Tria una activitat</p>
+
+  <div class="btn-group">
+    <a id="link-teoria" class="btn-action btn-teo">📖 Teoria</a>
+    <a id="link-joc" class="btn-action btn-joc">🎮 Joc</a>
+  </div>
+
+  <div class="back-btn" onclick="goBack()">← Tornar</div>
+</div>
+
+</div>
+
+<!-- BOTÓN INSTI -->
+<a href="https://agora.xtec.cat/ietemple/" target="_blank" class="insti-pill" id="confettiBtn">
+  🏛️ IE Temple
+</a>
+
 <script>
 const panel = document.getElementById('main-panel');
 
 function navTo(type){
-  panel.style.transform = 'scale(.95)';
-  panel.style.opacity = '0';
+  panel.style.transform='scale(.95)';
+  panel.style.opacity='0';
 
   setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
 
     if(type==='digestio'){
       document.getElementById('selection-view').classList.add('active');
       document.getElementById('selection-title').innerText="Digestió";
-      document.getElementById('link-teoria').href="teoria-digestio.html";
-      document.getElementById('link-joc').href="activitats-digestio.html";
-    } 
-    
+      link_teoria.href="teoria-digestio.html";
+      link_joc.href="activitats-digestio.html";
+    }
+
     else if(type==='nutricio'){
       document.getElementById('selection-view').classList.add('active');
       document.getElementById('selection-title').innerText="Nutrició";
-      document.getElementById('link-teoria').href="teoria-nutricio.html";
-      document.getElementById('link-joc').href="activitats-nutricio.html";
-    } 
-    
+      link_teoria.href="teoria-nutricio.html";
+      link_joc.href="activitats-nutricio.html";
+    }
+
     else if(type==='xarxa-trofica'){
       document.getElementById('selection-view').classList.add('active');
       document.getElementById('selection-title').innerText="Xarxa tròfica";
-      document.getElementById('link-teoria').href="teoria-xarxatrofica.html";
-      document.getElementById('link-joc').href="activitats-xarxatrofica.html";
+      link_teoria.href="teoria-xarxatrofica.html";
+      link_joc.href="activitats-xarxatrofica.html";
     }
 
-    panel.style.transform = 'scale(1)';
-    panel.style.opacity = '1';
+    panel.style.transform='scale(1)';
+    panel.style.opacity='1';
 
-    // 🎉 efecto confetti al entrar
-    confetti({
-      particleCount:50,
-      spread:70,
-      origin:{y:.8}
-    });
-
+    confetti({particleCount:50,spread:70,origin:{y:.8}});
   },250);
 }
 
@@ -46,19 +222,16 @@ function goBack(){
   panel.style.opacity='0';
 
   setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     document.getElementById('home-view').classList.add('active');
     panel.style.opacity='1';
   },250);
 }
 
-/* 🎉 Confetti botón instituto */
 document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
-  confetti({
-    particleCount:25,
-    spread:40,
-    origin:{x:.9,y:.9},
-    colors:['#5865F2','#ffffff']
-  });
+  confetti({particleCount:25,spread:40,origin:{x:.9,y:.9}});
 });
 </script>
+
+</body>
+</html>
