@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Faig</title>
+<title>Faig 2</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -231,6 +231,89 @@ function goBack(){
 document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
   confetti({particleCount:25,spread:40,origin:{x:.9,y:.9}});
 });
+  /* ANIMACIÓN ENTRADA */
+.view{
+  display:none;
+  opacity:0;
+  transform:translateY(40px) scale(.95);
+  transition:.5s cubic-bezier(.2,.8,.2,1);
+}
+
+.view.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+/* BOTONES PRO */
+.btn-action{
+  padding:22px;
+  border-radius:18px;
+  color:white;
+  font-weight:bold;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  transition:.3s;
+}
+
+/* EFECTO BRILLO */
+.btn-action::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
+  transition:.5s;
+}
+
+.btn-action:hover::before{
+  left:100%;
+}
+
+/* HOVER EPIC */
+.btn-action:hover{
+  transform:scale(1.08) rotate(-1deg);
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.btn-teo{
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+}
+
+.btn-joc{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
+
+/* CARDS MÁS VIVAS */
+.nav-card{
+  background:white;
+  padding:40px;
+  border-radius:25px;
+  cursor:pointer;
+  transition:.3s;
+  position:relative;
+  overflow:hidden;
+}
+
+.nav-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
+  opacity:0;
+  transition:.4s;
+}
+
+.nav-card:hover::after{
+  opacity:1;
+}
+
+.nav-card:hover{
+  transform:translateY(-12px) scale(1.06) rotate(.5deg);
+}
 </script>
 
 </body>
