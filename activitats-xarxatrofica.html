@@ -1,105 +1,159 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Activitats Xarxa Tròfica</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<title>Actividades Red Trófica</title>
 
 <style>
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:#0f172a;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  margin:0;
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-.panel{
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(40px);
-  padding:60px;
-  border-radius:32px;
-  text-align:center;
-  width:90%;
-  max-width:600px;
+section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
 }
 
-h1{
-  font-size:48px;
-  margin-bottom:15px;
+h2 {
+  color: darkgreen;
 }
 
-.subtitle{
-  font-size:18px;
-  margin-bottom:40px;
-  color:#cbd5e1;
+/* Drag & Drop */
+.container { display: flex; gap: 20px; }
+.box {
+  border: 2px dashed #999;
+  padding: 20px;
+  width: 150px;
+  min-height: 100px;
+}
+.item {
+  padding: 10px;
+  background: lightgreen;
+  margin: 5px;
+  cursor: grab;
 }
 
-.btn-group{
-  display:grid;
-  gap:20px;
-  grid-template-columns:1fr 1fr;
-}
-
-.btn{
-  padding:25px;
-  border-radius:20px;
-  font-weight:700;
-  font-size:18px;
-  text-decoration:none;
-  color:white;
-  transition:.25s;
-  text-align:center;
-  display:inline-block;
-}
-
-.btn-teo{
-  background:#2563eb;
-}
-
-.btn-joc{
-  background:#f59e0b;
-}
-
-.btn:hover{
-  transform:scale(1.05);
-  filter:brightness(1.1);
-}
-
-.back-btn{
-  display:inline-block;
-  margin-top:40px;
-  padding:10px 18px;
-  border-radius:30px;
-  cursor:pointer;
-  color:#cbd5e1;
-  transition:.25s;
-}
-
-.back-btn:hover{
-  background:rgba(255,255,255,0.1);
-  color:white;
+/* Botones */
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
 }
 </style>
 </head>
+
 <body>
 
-<div class="panel">
-  <h1>Xarxa Tròfica</h1>
-  <p class="subtitle">Tria una activitat per explorar la xarxa tròfica</p>
+<h1>🌍 Actividades sobre la Red Trófica</h1>
 
-  <div class="btn-group">
-    <a href="teoria-xarxatrofica.html" class="btn btn-teo">📖 Teoria Visual</a>
-    <a href="joc-xarxatrofica.html" class="btn btn-joc">🎮 Joc Interactiu</a>
+<!-- 1. Drag & Drop -->
+<section>
+<h2>1. Clasifica los organismos</h2>
+
+<div class="container">
+  <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <h3>Productores</h3>
   </div>
-
-  <div class="back-btn" onclick="history.back()">← Tornar al menú</div>
+  <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <h3>Consumidores</h3>
+  </div>
 </div>
+
+<div>
+  <div class="item" draggable="true" ondragstart="drag(event)" id="planta">🌱 Planta</div>
+  <div class="item" draggable="true" ondragstart="drag(event)" id="conejo">🐰 Conejo</div>
+</div>
+</section>
+
+<!-- 2. Quiz -->
+<section>
+<h2>2. Quiz</h2>
+
+<p>¿Quién es un consumidor primario?</p>
+
+<button onclick="respuesta('incorrecta')">León</button>
+<button onclick="respuesta('correcta')">Conejo</button>
+<button onclick="respuesta('incorrecta')">Águila</button>
+
+<p id="quizResultado"></p>
+</section>
+
+<!-- 3. Completar -->
+<section>
+<h2>3. Completa la cadena</h2>
+
+<p>Planta → ______ → Zorro</p>
+
+<input type="text" id="respuestaInput">
+<button onclick="verificar()">Verificar</button>
+
+<p id="resultadoCadena"></p>
+</section>
+
+<!-- 4. Info interactiva -->
+<section>
+<h2>4. Haz clic en un organismo</h2>
+
+<button onclick="info('productor')">🌱 Planta</button>
+<button onclick="info('herbivoro')">🐰 Conejo</button>
+<button onclick="info('carnivoro')">🦊 Zorro</button>
+
+<p id="infoTexto"></p>
+</section>
+
+<script>
+// Drag & Drop
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  const data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+
+// Quiz
+function respuesta(tipo) {
+  if (tipo === 'correcta') {
+    document.getElementById("quizResultado").innerText = "¡Correcto!";
+  } else {
+    document.getElementById("quizResultado").innerText = "Intenta otra vez.";
+  }
+}
+
+// Completar cadena
+function verificar() {
+  const resp = document.getElementById("respuestaInput").value.toLowerCase();
+  if (resp === "conejo") {
+    document.getElementById("resultadoCadena").innerText = "¡Correcto!";
+  } else {
+    document.getElementById("resultadoCadena").innerText = "Incorrecto";
+  }
+}
+
+// Info interactiva
+function info(tipo) {
+  let texto = "";
+  
+  if (tipo === "productor") {
+    texto = "Produce su propio alimento.";
+  } else if (tipo === "herbivoro") {
+    texto = "Se alimenta de plantas.";
+  } else {
+    texto = "Se alimenta de otros animales.";
+  }
+
+  document.getElementById("infoTexto").innerText = texto;
+}
+</script>
 
 </body>
 </html>
