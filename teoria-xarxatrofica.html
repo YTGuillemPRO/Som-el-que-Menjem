@@ -1,65 +1,87 @@
-<script>
-const panel = document.getElementById('main-panel');
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Teoria Xarxa Tròfica</title>
 
-// Función general para navegar a secciones
-function navTo(type){
-  // Aseguramos que siempre haya transición suave
-  panel.style.transition = 'transform .25s, opacity .25s';
-  panel.style.transform = 'scale(.95)';
-  panel.style.opacity = '0.5'; // no 0 para que no se vea totalmente blanco
-
-  setTimeout(()=>{
-    // Oculta todas las vistas
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-
-    // Mostrar la vista correspondiente
-    if(type==='digestio'){
-      document.getElementById('selection-view').classList.add('active');
-      document.getElementById('selection-title').innerText="Digestió";
-      document.getElementById('link-teoria').href="teoria-digestio.html";
-      document.getElementById('link-joc').href="activitats-digestio.html";
-    } 
-    else if(type==='nutricio'){
-      document.getElementById('selection-view').classList.add('active');
-      document.getElementById('selection-title').innerText="Nutrició";
-      document.getElementById('link-teoria').href="teoria-nutricio.html";
-      document.getElementById('link-joc').href="activitats-nutricio.html";
-    } 
-    else if(type==='xarxa-trofica'){
-      document.getElementById('xarxa-trofica-view').classList.add('active');
-    }
-
-    // Restaurar opacidad y escala
-    panel.style.transform = 'scale(1)';
-    panel.style.opacity = '1';
-
-    // Confetti al navegar
-    confetti({ particleCount:40, spread:60, origin:{y:.8} });
-  },200); // tiempo reducido para que no se vea completamente blanco
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  line-height: 1.6;
 }
 
-// Volver al menú desde la vista de selección
-function goBack(){
-  panel.style.opacity='0.5';
-  setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-    document.getElementById('home-view').classList.add('active');
-    panel.style.opacity='1';
-  },200);
+h1, h2 {
+  color: darkgreen;
 }
 
-// Volver al menú desde la vista Xarxa Tròfica
-function goBackFromXarxa(){
-  panel.style.opacity='0.5';
-  setTimeout(()=>{
-    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-    document.getElementById('home-view').classList.add('active');
-    panel.style.opacity='1';
-  },200);
+section {
+  margin-bottom: 25px;
+  padding: 15px;
+  border-left: 5px solid green;
+  background: #f5fff5;
+  border-radius: 8px;
 }
+</style>
+</head>
 
-// Confetti en botón del instituto
-document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
-  confetti({ particleCount:20, spread:40, origin:{x:.9,y:.9}, colors:['#5865F2','#ffffff'] });
-});
-</script>
+<body>
+
+<h1>🌍 Teoria de la Xarxa Tròfica</h1>
+
+<section>
+<h2>Què és una xarxa tròfica?</h2>
+<p>
+Una <strong>xarxa tròfica</strong> és el conjunt de relacions alimentàries entre els éssers vius d’un ecosistema.
+Mostra qui es menja a qui i com circula l’energia.
+</p>
+</section>
+
+<section>
+<h2>Diferència entre cadena i xarxa tròfica</h2>
+<p>
+<strong>Cadena alimentària:</strong> és una seqüència simple i lineal.<br>
+Exemple: planta → conill → guineu
+</p>
+<p>
+<strong>Xarxa tròfica:</strong> és més complexa, ja que uneix moltes cadenes alimentàries alhora.
+</p>
+</section>
+
+<section>
+<h2>Nivells tròfics</h2>
+<ul>
+<li><strong>Productors:</strong> fabriquen el seu propi aliment (plantes, algues).</li>
+<li><strong>Consumidors primaris:</strong> herbívors que mengen plantes (conill, vaca).</li>
+<li><strong>Consumidors secundaris:</strong> carnívors que mengen herbívors.</li>
+<li><strong>Consumidors terciaris:</strong> depredadors superiors.</li>
+<li><strong>Descomponedors:</strong> fongs i bacteris que descomponen matèria orgànica.</li>
+</ul>
+</section>
+
+<section>
+<h2>Flux d’energia</h2>
+<p>
+L’energia prové del Sol i passa als productors. Després es transfereix als consumidors.
+En cada nivell es perd energia, per això hi ha menys éssers vius als nivells superiors.
+</p>
+</section>
+
+<section>
+<h2>Importància de la xarxa tròfica</h2>
+<ul>
+<li>Manté l’equilibri de l’ecosistema</li>
+<li>Permet el pas d’energia i nutrients</li>
+<li>La desaparició d’una espècie pot afectar moltes altres</li>
+</ul>
+</section>
+
+<section>
+<h2>Exemple</h2>
+<p>
+🌱 Planta → 🐰 Conill → 🦊 Guineu → 🦅 Àguila
+</p>
+</section>
+
+</body>
+</html>
