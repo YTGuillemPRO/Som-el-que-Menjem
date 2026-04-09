@@ -3,18 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faig 2</title>
+<title>BioPortal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <style>
 :root{
-  --accent:#22c55e;
   --blue:#2563eb;
   --orange:#f59e0b;
-  --discord:#5865F2;
-  --glass:rgba(255,255,255,0.72);
+  --glass:rgba(255,255,255,0.75);
 }
 
 *{
@@ -24,6 +22,7 @@
   font-family:'Plus Jakarta Sans',sans-serif;
 }
 
+/* FONDO ANIMADO */
 body{
   min-height:100vh;
   display:flex;
@@ -34,13 +33,35 @@ body{
   animation:bgMove 20s infinite;
 }
 
+body::before{
+  content:"🍔 🍕 🍟 🌮 🍩 🥗 🍗 🧃 🍓 🍪";
+  position:fixed;
+  top:0;
+  left:0;
+  width:200%;
+  height:200%;
+  font-size:40px;
+  opacity:0.08;
+  animation:foodMove 40s linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+
+@keyframes foodMove{
+  0%{transform:translate(0,0);}
+  100%{transform:translate(-50%,-50%);}
+}
+
 @keyframes bgMove{
   0%{background-position:0%}
   50%{background-position:100%}
   100%{background-position:0%}
 }
 
+/* PANEL */
 .glass-panel{
+  position:relative;
+  z-index:2;
   background:var(--glass);
   backdrop-filter:blur(40px);
   border-radius:40px;
@@ -52,14 +73,16 @@ body{
 }
 
 h1{font-size:50px;}
-.subtitle{margin-bottom:40px;color:#ddd;}
+.subtitle{margin-bottom:40px;color:#555;}
 
+/* GRID */
 .main-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:25px;
 }
 
+/* CARDS */
 .nav-card{
   background:white;
   padding:40px;
@@ -69,7 +92,7 @@ h1{font-size:50px;}
 }
 
 .nav-card:hover{
-  transform:translateY(-10px) scale(1.05);
+  transform:translateY(-12px) scale(1.06);
 }
 
 .icon-circle{
@@ -77,9 +100,21 @@ h1{font-size:50px;}
   margin-bottom:10px;
 }
 
-.view{display:none;}
-.active{display:block;}
+/* VISTAS */
+.view{
+  display:none;
+  opacity:0;
+  transform:translateY(30px);
+  transition:.4s;
+}
 
+.view.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* BOTONES */
 .btn-group{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -92,17 +127,27 @@ h1{font-size:50px;}
   color:white;
   font-weight:bold;
   text-decoration:none;
+  transition:.3s;
 }
 
-.btn-teo{background:var(--blue);}
-.btn-joc{background:var(--orange);}
+.btn-action:hover{
+  transform:scale(1.1);
+}
+
+.btn-teo{
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+}
+
+.btn-joc{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
 
 .back-btn{
   margin-top:30px;
   cursor:pointer;
 }
 
-/* BOTÓN INSTI PRO */
+/* BOTÓN INSTI */
 .insti-pill{
   position:fixed;
   bottom:30px;
@@ -123,11 +168,6 @@ h1{font-size:50px;}
 
 @media(max-width:700px){
   .main-grid{grid-template-columns:1fr;}
-  .insti-pill{
-    left:50%;
-    transform:translateX(-50%);
-    right:auto;
-  }
 }
 </style>
 </head>
@@ -152,7 +192,6 @@ h1{font-size:50px;}
       <h2>Nutrició</h2>
     </div>
 
-    <!-- 🔥 YA ARREGLADO -->
     <div class="nav-card" onclick="navTo('xarxa-trofica')" style="grid-column: span 2;">
       <div class="icon-circle">🌿</div>
       <h2>Xarxa tròfica</h2>
@@ -182,6 +221,8 @@ h1{font-size:50px;}
 
 <script>
 const panel = document.getElementById('main-panel');
+const link_teoria = document.getElementById('link-teoria');
+const link_joc = document.getElementById('link-joc');
 
 function navTo(type){
   panel.style.transform='scale(.95)';
@@ -189,23 +230,21 @@ function navTo(type){
 
   setTimeout(()=>{
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('selection-view').classList.add('active');
 
     if(type==='digestio'){
-      document.getElementById('selection-view').classList.add('active');
       document.getElementById('selection-title').innerText="Digestió";
       link_teoria.href="teoria-digestio.html";
       link_joc.href="activitats-digestio.html";
     }
 
     else if(type==='nutricio'){
-      document.getElementById('selection-view').classList.add('active');
       document.getElementById('selection-title').innerText="Nutrició";
       link_teoria.href="teoria-nutricio.html";
       link_joc.href="activitats-nutricio.html";
     }
 
     else if(type==='xarxa-trofica'){
-      document.getElementById('selection-view').classList.add('active');
       document.getElementById('selection-title').innerText="Xarxa tròfica";
       link_teoria.href="teoria-xarxatrofica.html";
       link_joc.href="activitats-xarxatrofica.html";
@@ -231,89 +270,6 @@ function goBack(){
 document.getElementById("confettiBtn").addEventListener("mouseenter",()=>{
   confetti({particleCount:25,spread:40,origin:{x:.9,y:.9}});
 });
-  /* ANIMACIÓN ENTRADA */
-.view{
-  display:none;
-  opacity:0;
-  transform:translateY(40px) scale(.95);
-  transition:.5s cubic-bezier(.2,.8,.2,1);
-}
-
-.view.active{
-  display:block;
-  opacity:1;
-  transform:translateY(0) scale(1);
-}
-
-/* BOTONES PRO */
-.btn-action{
-  padding:22px;
-  border-radius:18px;
-  color:white;
-  font-weight:bold;
-  text-decoration:none;
-  position:relative;
-  overflow:hidden;
-  transition:.3s;
-}
-
-/* EFECTO BRILLO */
-.btn-action::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:-100%;
-  width:100%;
-  height:100%;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
-  transition:.5s;
-}
-
-.btn-action:hover::before{
-  left:100%;
-}
-
-/* HOVER EPIC */
-.btn-action:hover{
-  transform:scale(1.08) rotate(-1deg);
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-}
-
-.btn-teo{
-  background:linear-gradient(135deg,#2563eb,#60a5fa);
-}
-
-.btn-joc{
-  background:linear-gradient(135deg,#f59e0b,#fbbf24);
-}
-
-/* CARDS MÁS VIVAS */
-.nav-card{
-  background:white;
-  padding:40px;
-  border-radius:25px;
-  cursor:pointer;
-  transition:.3s;
-  position:relative;
-  overflow:hidden;
-}
-
-.nav-card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.4),transparent);
-  opacity:0;
-  transition:.4s;
-}
-
-.nav-card:hover::after{
-  opacity:1;
-}
-
-.nav-card:hover{
-  transform:translateY(-12px) scale(1.06) rotate(.5deg);
-}
 </script>
 
 </body>
