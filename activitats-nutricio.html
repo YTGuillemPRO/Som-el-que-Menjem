@@ -4,196 +4,1016 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutri-Dash | IE Temple</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #0f172a;
-            --card: rgba(255, 255, 255, 0.05);
-            --green: #2ecc71;
-            --red: #e74c3c;
+            --bg: #080c14;
+            --bg2: #0e1525;
+            --card: rgba(255,255,255,0.03);
+            --card-border: rgba(255,255,255,0.06);
+            --green: #00e676;
+            --green-glow: rgba(0,230,118,0.15);
+            --green-deep: #00c853;
+            --red: #ff5252;
+            --red-glow: rgba(255,82,82,0.15);
+            --red-deep: #d32f2f;
+            --gold: #ffd740;
+            --text: #e8edf5;
+            --muted: #5a6a85;
+            --accent: var(--green);
+            --radius: 28px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
-            color: white;
+            color: var(--text);
             height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+        }
+
+        /* === FONS ANIMAT === */
+        .bg-layer {
+            position: fixed; inset:0; z-index:0; pointer-events:none;
+            background:
+                radial-gradient(ellipse 600px 400px at 20% 20%, rgba(0,230,118,0.04), transparent),
+                radial-gradient(ellipse 500px 500px at 80% 80%, rgba(255,82,82,0.03), transparent),
+                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(255,215,64,0.02), transparent);
+        }
+
+        .orbs {
+            position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+        }
+        .orb {
+            position:absolute;
+            border-radius:50%;
+            filter: blur(80px);
+            opacity:0.3;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+        .orb:nth-child(1) { width:300px; height:300px; background:var(--green); top:-100px; left:-50px; animation-duration:14s; }
+        .orb:nth-child(2) { width:250px; height:250px; background:var(--red); bottom:-80px; right:-40px; animation-duration:18s; animation-delay:-4s; }
+        .orb:nth-child(3) { width:200px; height:200px; background:var(--gold); top:50%; left:60%; animation-duration:16s; animation-delay:-8s; opacity:0.15; }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0,0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.15); }
+        }
+
+        /* === PANTALLES === */
+        .screen {
+            position:fixed; inset:0; z-index:10;
+            display:flex; justify-content:center; align-items:center; flex-direction:column;
+            transition: opacity 0.5s, transform 0.5s;
+            padding: 20px;
+        }
+        .screen.hidden {
+            opacity:0; pointer-events:none; transform:scale(0.92);
+        }
+
+        /* === TARGETA === */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 460px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 4px 24px rgba(0,0,0,0.3),
+                0 1px 0 rgba(255,255,255,0.04) inset;
+        }
+        .card::before {
+            content:'';
+            position:absolute; top:0; left:0; right:0; height:1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        /* === INICI === */
+        .logo-icon {
+            font-size: 80px;
+            display: block;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 30px rgba(0,230,118,0.3));
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%,100% { transform: scale(1) rotate(-2deg); }
+            50% { transform: scale(1.06) rotate(2deg); }
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--green), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 15px;
+            font-weight: 400;
+            margin-bottom: 36px;
+            line-height: 1.6;
+        }
+
+        .rules-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        .rules-box .rule {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 13px; color: #8899b0; padding: 6px 0;
+        }
+        .rules-box .rule i {
+            width: 24px; text-align: center; font-size: 14px;
+        }
+        .rule .ri { color: var(--green); }
+        .rule .rr { color: var(--red); }
+        .rule .rg { color: var(--gold); }
+
+        /* === BOTONS === */
+        .btn-main {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 18px 40px;
+            border-radius: 18px;
+            border: none;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            color: var(--bg);
+            background: linear-gradient(135deg, var(--green), var(--green-deep));
+            box-shadow: 0 8px 30px var(--green-glow), 0 2px 8px rgba(0,0,0,0.3);
+            transition: all 0.25s cubic-bezier(0.175,0.885,0.32,1.275);
+            position: relative;
             overflow: hidden;
         }
+        .btn-main::after {
+            content:'';
+            position:absolute; inset:0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2));
+            opacity:0; transition:0.3s;
+        }
+        .btn-main:hover { transform:translateY(-3px) scale(1.03); box-shadow: 0 12px 40px rgba(0,230,118,0.25); }
+        .btn-main:hover::after { opacity:1; }
+        .btn-main:active { transform:scale(0.97); }
 
-        .game-container {
-            background: var(--card);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 40px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 20px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+            background: none; border: none; cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-ghost:hover { color: var(--text); }
+
+        /* === GAME UI === */
+        .hud {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px;
+        }
+        .hud-item {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+        }
+        .hud-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; }
+        .hud-value { font-size: 22px; font-weight: 900; }
+        .hud-value.score-val { color: var(--green); }
+        .hud-value.combo-val { color: var(--gold); }
+        .hud-value.round-val { color: var(--text); }
+
+        /* Barra de progrés */
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 4px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--gold));
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
         }
 
-        .score-board {
-            font-size: 18px;
+        /* Temporitzador */
+        .timer-ring {
+            width: 60px; height: 60px;
+            margin: 0 auto 8px;
+            position: relative;
+        }
+        .timer-ring svg { width:100%; height:100%; transform: rotate(-90deg); }
+        .timer-ring .ring-bg { fill:none; stroke:rgba(255,255,255,0.06); stroke-width:4; }
+        .timer-ring .ring-fg {
+            fill:none; stroke:var(--green); stroke-width:4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
+        }
+        .timer-ring .ring-fg.danger { stroke: var(--red); }
+        .timer-text {
+            position:absolute; inset:0;
+            display:flex; align-items:center; justify-content:center;
+            font-size: 18px; font-weight: 900;
+        }
+
+        .question-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 4px;
             font-weight: 600;
-            color: #94a3b8;
-            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         #food-display {
-            font-size: 120px;
-            margin: 30px 0;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 110px;
+            line-height: 1;
+            margin: 10px 0 6px;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+            transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
+            will-change: transform;
+        }
+        #food-display.pop-in {
+            animation: popIn 0.45s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-15deg); opacity:0; }
+            100% { transform: scale(1) rotate(0deg); opacity:1; }
+        }
+        #food-display.shake {
+            animation: shake 0.5s ease;
+        }
+        @keyframes shake {
+            0%,100% { transform:translateX(0); }
+            20% { transform:translateX(-12px) rotate(-3deg); }
+            40% { transform:translateX(10px) rotate(2deg); }
+            60% { transform:translateX(-8px) rotate(-2deg); }
+            80% { transform:translateX(6px) rotate(1deg); }
         }
 
+        .food-name {
+            font-size: 15px;
+            color: var(--muted);
+            font-weight: 400;
+            margin-bottom: 24px;
+            min-height: 22px;
+        }
+
+        /* Botons SÍ / NO */
         .controls {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 14px;
         }
-
-        .btn {
-            padding: 20px;
-            border-radius: 24px;
-            border: none;
-            font-size: 24px;
+        .btn-choice {
+            padding: 18px 12px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            font-family: inherit;
+            font-size: 20px;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.2s;
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            transition: all 0.2s cubic-bezier(0.175,0.885,0.32,1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-choice .btn-sub { font-size: 11px; opacity: 0.7; font-weight: 400; letter-spacing: 0.5px; }
+        .btn-choice .btn-icon { font-size: 26px; margin-bottom: 2px; }
+
+        .btn-yes {
+            background: rgba(0,230,118,0.1);
+            border-color: rgba(0,230,118,0.25);
+        }
+        .btn-yes:hover {
+            background: rgba(0,230,118,0.2);
+            border-color: var(--green);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px var(--green-glow);
+        }
+        .btn-yes:active { transform: scale(0.95); }
+        .btn-yes.correct-flash {
+            background: var(--green) !important;
+            border-color: var(--green) !important;
+            color: var(--bg) !important;
         }
 
-        .btn span { font-size: 14px; opacity: 0.8; font-weight: 400; }
+        .btn-no {
+            background: rgba(255,82,82,0.1);
+            border-color: rgba(255,82,82,0.25);
+        }
+        .btn-no:hover {
+            background: rgba(255,82,82,0.2);
+            border-color: var(--red);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px var(--red-glow);
+        }
+        .btn-no:active { transform: scale(0.95); }
+        .btn-no.correct-flash {
+            background: var(--red) !important;
+            border-color: var(--red) !important;
+            color: white !important;
+        }
 
-        .btn-yes { background: var(--green); box-shadow: 0 10px 20px rgba(46, 204, 113, 0.2); }
-        .btn-no { background: var(--red); box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2); }
+        .btn-choice:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            transform: none !important;
+        }
 
-        .btn:hover { transform: translateY(-5px); filter: brightness(1.1); }
-        .btn:active { transform: scale(0.95); }
+        /* === FEEDBACK === */
+        .feedback-layer {
+            position:fixed; inset:0; z-index:50; pointer-events:none;
+            display:flex; justify-content:center; align-items:center;
+        }
+        .fb-text {
+            font-size: 48px;
+            font-weight: 900;
+            opacity:0;
+            transform: scale(0.5) translateY(20px);
+            transition: all 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .fb-text.show {
+            opacity:1;
+            transform: scale(1) translateY(-10px);
+        }
+        .fb-text.fade {
+            opacity:0;
+            transform: scale(1.1) translateY(-40px);
+            transition: all 0.4s ease-in;
+        }
 
-        .feedback {
+        /* Partícules de puntuació */
+        .score-particle {
             position: fixed;
-            top: 20%;
-            font-size: 40px;
-            font-weight: 800;
-            opacity: 0;
+            font-size: 20px;
+            font-weight: 900;
             pointer-events: none;
-            transition: 0.3s;
+            z-index: 60;
+            animation: scoreFloat 1s ease-out forwards;
+        }
+        @keyframes scoreFloat {
+            0% { opacity:1; transform: translateY(0) scale(1); }
+            100% { opacity:0; transform: translateY(-80px) scale(0.6); }
         }
 
-        .show-feedback { opacity: 1; transform: translateY(-20px); }
-
-        .back-btn {
-            margin-top: 30px;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.2s;
+        /* === FLASH DE FONS === */
+        .screen-flash {
+            position:fixed; inset:0; z-index:5; pointer-events:none;
+            opacity:0; transition: opacity 0.1s;
         }
-        .back-btn:hover { color: white; }
+        .screen-flash.green { background: var(--green); opacity:0.08; }
+        .screen-flash.red { background: var(--red); opacity:0.08; }
+
+        /* === PANTALLA FINAL === */
+        .result-grade {
+            font-size: 90px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .result-score-big {
+            font-size: 56px;
+            font-weight: 900;
+            margin: 12px 0 4px;
+        }
+        .result-max { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
+        .result-message {
+            font-size: 16px;
+            color: #8899b0;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 14px 8px;
+        }
+        .stat-box .stat-num {
+            font-size: 24px; font-weight: 900;
+        }
+        .stat-box .stat-label {
+            font-size: 10px; color: var(--muted); text-transform: uppercase;
+            letter-spacing: 1px; margin-top: 2px;
+        }
+        .stat-correct .stat-num { color: var(--green); }
+        .stat-wrong .stat-num { color: var(--red); }
+        .stat-combo .stat-num { color: var(--gold); }
+
+        .result-foods {
+            display: flex; justify-content: center; gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .result-food {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            border: 2px solid;
+            transition: transform 0.2s;
+        }
+        .result-food:hover { transform: scale(1.3); }
+        .result-food.rf-ok { border-color: var(--green); background: rgba(0,230,118,0.08); }
+        .result-food.rf-fail { border-color: var(--red); background: rgba(255,82,82,0.08); }
+
+        /* === TECLAT === */
+        .key-hint {
+            display: flex; justify-content: center; gap: 24px;
+            margin-top: 16px;
+        }
+        .key-hint span {
+            font-size: 11px; color: var(--muted);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .key-hint kbd {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 2px 8px;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            color: #8899b0;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 500px) {
+            .card { padding: 28px 22px; border-radius: 22px; }
+            .title { font-size: 32px; }
+            #food-display { font-size: 84px; }
+            .btn-choice { padding: 14px 8px; border-radius: 16px; }
+            .btn-choice .btn-icon { font-size: 22px; }
+            .fb-text { font-size: 36px; }
+            .result-grade { font-size: 68px; }
+            .result-score-big { font-size: 44px; }
+            .key-hint { display: none; }
+        }
+
+        /* === REDUCIR MOVIMIENTO === */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div id="fb" class="feedback"></div>
+    <!-- Fons animat -->
+    <div class="bg-layer"></div>
+    <div class="orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    <div id="screenFlash" class="screen-flash"></div>
 
-    <div class="game-container">
-        <div class="score-board">Punts: <span id="points">0</span> | Ronda: <span id="round">1</span>/10</div>
-        
-        <div id="food-display">🥦</div>
+    <!-- Feedback -->
+    <div class="feedback-layer">
+        <div id="fbText" class="fb-text"></div>
+    </div>
 
-        <div class="controls">
-            <button class="btn btn-yes" onclick="answer(true)">
-                ✅ SÍ
-                <span>És saludable</span>
+    <!-- PANTALLA D'INICI -->
+    <div id="startScreen" class="screen">
+        <div class="card">
+            <span class="logo-icon">🥗</span>
+            <h1 class="title">Nutri-Dash</h1>
+            <p class="subtitle">Descobreix si tens bon ull per a la nutrició.<br>10 aliments, 5 segons cadascun. Ràpid i precís.</p>
+            <div class="rules-box">
+                <div class="rule"><i class="fa-solid fa-check ri"></i> Encerta per sumar 10 punts</div>
+                <div class="rule"><i class="fa-solid fa-fire rg"></i> Encadena encerts per obtenir combo x2, x3...</div>
+                <div class="rule"><i class="fa-solid fa-clock rr"></i> No respondis a temps i compte com a error</div>
+                <div class="rule"><i class="fa-solid fa-keyboard ri"></i> Usa les tecles <strong style="color:#c0cde0">F</strong> (Sí) i <strong style="color:#c0cde0">J</strong> (No)</div>
+            </div>
+            <button class="btn-main" onclick="startGame()">
+                <i class="fa-solid fa-play"></i> COMENÇAR
             </button>
-            <button class="btn btn-no" onclick="answer(false)">
-                ❌ NO
-                <span>No és sa</span>
-            </button>
+            <br>
+            <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menú</a>
         </div>
     </div>
 
-    <a href="index.html" class="back-btn">← Sortir del joc</a>
+    <!-- PANTALLA DE JOC -->
+    <div id="gameScreen" class="screen hidden">
+        <div class="card">
+            <!-- HUD -->
+            <div class="hud">
+                <div class="hud-item">
+                    <span class="hud-label">Punts</span>
+                    <span id="hudPoints" class="hud-value score-val">0</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Combo</span>
+                    <span id="hudCombo" class="hud-value combo-val">-</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Ronda</span>
+                    <span id="hudRound" class="hud-value round-val">1/10</span>
+                </div>
+            </div>
+
+            <!-- Progrés -->
+            <div class="progress-track">
+                <div id="progressFill" class="progress-fill" style="width:0%"></div>
+            </div>
+
+            <!-- Temporitzador -->
+            <div class="timer-ring">
+                <svg viewBox="0 0 60 60">
+                    <circle class="ring-bg" cx="30" cy="30" r="26"/>
+                    <circle id="timerRing" class="ring-fg" cx="30" cy="30" r="26"
+                        stroke-dasharray="163.36" stroke-dashoffset="0"/>
+                </svg>
+                <span id="timerText" class="timer-text">5</span>
+            </div>
+
+            <p class="question-label">Aquest aliment es saludable?</p>
+
+            <div id="foodDisplay" class="pop-in">🥦</div>
+            <p id="foodName" class="food-name"></p>
+
+            <div class="controls">
+                <button id="btnYes" class="btn-choice btn-yes" onclick="answer(true)">
+                    <span class="btn-icon"><i class="fa-solid fa-circle-check"></i></span>
+                    SI
+                    <span class="btn-sub">És sa</span>
+                </button>
+                <button id="btnNo" class="btn-choice btn-no" onclick="answer(false)">
+                    <span class="btn-icon"><i class="fa-solid fa-circle-xmark"></i></span>
+                    NO
+                    <span class="btn-sub">No és sa</span>
+                </button>
+            </div>
+
+            <div class="key-hint">
+                <span><kbd>F</kbd> Sí</span>
+                <span><kbd>J</kbd> No</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA FINAL -->
+    <div id="endScreen" class="screen hidden">
+        <div class="card">
+            <div id="resultGrade" class="result-grade"></div>
+            <p id="resultLabel" style="font-size:14px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; font-weight:600; margin-bottom:4px;"></p>
+            <div id="resultScoreBig" class="result-score-big"></div>
+            <p class="result-max">de 100 punts possibles</p>
+            <div class="stats-row">
+                <div class="stat-box stat-correct">
+                    <div id="statCorrect" class="stat-num">0</div>
+                    <div class="stat-label">Encerts</div>
+                </div>
+                <div class="stat-box stat-wrong">
+                    <div id="statWrong" class="stat-num">0</div>
+                    <div class="stat-label">Errors</div>
+                </div>
+                <div class="stat-box stat-combo">
+                    <div id="statCombo" class="stat-num">0</div>
+                    <div class="stat-label">Max Combo</div>
+                </div>
+            </div>
+            <div id="resultFoods" class="result-foods"></div>
+            <p id="resultMessage" class="result-message"></p>
+            <button class="btn-main" style="width:100%" onclick="restartGame()">
+                <i class="fa-solid fa-rotate-right"></i> TORNAR A JUGAR
+            </button>
+            <br>
+            <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menú</a>
+        </div>
+    </div>
 
     <script>
-        const foods = [
-            { e: '🥦', h: true }, { e: '🍩', h: false }, { e: '🍎', h: true },
-            { e: '🍟', h: false }, { e: '🥑', h: true }, { e: '🍕', h: false },
-            { e: '🥗', h: true }, { e: '🍭', h: false }, { e: '🥚', h: true },
-            { e: '🥓', h: false }, { e: '🍌', h: true }, { e: '🍔', h: false }
+        /* ============================================
+           BASE DE DADES D'ALIMENTS AMPLIADA
+           ============================================ */
+        const allFoods = [
+            // Saludables
+            { e:'🥦', n:'Bròquil', h:true },
+            { e:'🍎', n:'Poma', h:true },
+            { e:'🥑', n:'Alvocat', h:true },
+            { e:'🥗', n:'Amanida', h:true },
+            { e:'🥚', n:'Ou', h:true },
+            { e:'🍌', n:'Plàtan', h:true },
+            { e:'🍇', n:'Raïm', h:true },
+            { e:'🍓', n:'Maduixa', h:true },
+            { e:'🍊', n:'Taronja', h:true },
+            { e:'🥕', n:'Pastanaga', h:true },
+            { e:'🌽', n:'Blat de moro', h:true },
+            { e:'🥜', n:'Cacauet', h:true },
+            { e:'🍉', n:'Síndria', h:true },
+            { e:'🫐', n:'Arande', h:true },
+            { e:'🐟', n:'Peix', h:true },
+            { e:'🥬', n:'Enciam', h:true },
+            { e:'🫑', n:'Pim Verd', h:true },
+            // No saludables
+            { e:'🍩', n:'Dònut', h:false },
+            { e:'🍟', n:'Patates fregides', h:false },
+            { e:'🍕', n:'Pizza', h:false },
+            { e:'🍭', n:'Piruleta', h:false },
+            { e:'🥓', n:'Bacon', h:false },
+            { e:'🍔', n:'Hamburguesa', h:false },
+            { e:'🧁', n:'Pastís', h:false },
+            { e:'🍪', n:'Galeta', h:false },
+            { e:'🧃', n:'Beguda ensucrada', h:false },
+            { e:'🌭', n:'Gos salzat', h:false },
+            { e:'🧈', n:'Mantega', h:false },
+            { e:'🍦', n:'Gelat', h:false },
+            { e:'🍬', n:'Caramel', h:false },
+            { e:'🥤', n:'Refresc', h:false },
+            { e:'🍿', n:'Crëpets de cotó', h:false },
+            { e:'🍫', n:'Xocolata', h:false },
+            { e:'🧀', n:'Formatge procés', h:false },
         ];
 
-        // Barrejar aliments perquè no surtin sempre igual
-        foods.sort(() => Math.random() - 0.5);
+        /* ============================================
+           ESTAT DEL JOC
+           ============================================ */
+        const TOTAL_ROUNDS = 10;
+        const TIME_PER_ROUND = 5000; // 5 segons
+        const CIRCUMFERENCE = 2 * Math.PI * 26; // ~163.36
 
+        let gameFoods = [];
         let points = 0;
         let currentRound = 0;
-        const totalRounds = 10;
+        let combo = 0;
+        let maxCombo = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let results = []; // {food, correct}
+        let timerInterval = null;
+        let timerStart = 0;
+        let isAnswering = false;
 
-        function updateDisplay() {
-            if (currentRound < totalRounds) {
-                const display = document.getElementById('food-display');
-                display.style.transform = "scale(0)";
-                setTimeout(() => {
-                    display.innerText = foods[currentRound].e;
-                    display.style.transform = "scale(1)";
-                }, 150);
-                document.getElementById('round').innerText = currentRound + 1;
-            } else {
-                endGame();
+        /* ============================================
+           REFERÈNCIES DOM
+           ============================================ */
+        const $ = id => document.getElementById(id);
+
+        const startScreen = $('startScreen');
+        const gameScreen = $('gameScreen');
+        const endScreen = $('endScreen');
+        const hudPoints = $('hudPoints');
+        const hudCombo = $('hudCombo');
+        const hudRound = $('hudRound');
+        const progressFill = $('progressFill');
+        const timerRing = $('timerRing');
+        const timerText = $('timerText');
+        const foodDisplay = $('foodDisplay');
+        const foodName = $('foodName');
+        const btnYes = $('btnYes');
+        const btnNo = $('btnNo');
+        const fbText = $('fbText');
+        const screenFlash = $('screenFlash');
+
+        /* ============================================
+           UTILITATS
+           ============================================ */
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function showScreen(screen) {
+            [startScreen, gameScreen, endScreen].forEach(s => s.classList.add('hidden'));
+            setTimeout(() => screen.classList.remove('hidden'), 50);
+        }
+
+        function flashScreen(color) {
+            screenFlash.className = 'screen-flash ' + color;
+            setTimeout(() => screenFlash.className = 'screen-flash', 200);
+        }
+
+        function showFeedback(text, color) {
+            fbText.className = 'fb-text';
+            fbText.innerText = text;
+            fbText.style.color = color;
+            // Forçar reflow
+            void fbText.offsetWidth;
+            fbText.classList.add('show');
+            setTimeout(() => {
+                fbText.classList.remove('show');
+                fbText.classList.add('fade');
+            }, 500);
+            setTimeout(() => {
+                fbText.className = 'fb-text';
+            }, 900);
+        }
+
+        function spawnScoreParticle(text, color, x, y) {
+            const el = document.createElement('div');
+            el.className = 'score-particle';
+            el.innerText = text;
+            el.style.color = color;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        }
+
+        /* ============================================
+           TEMPORITZADOR
+           ============================================ */
+        function startTimer() {
+            timerStart = performance.now();
+            timerRing.style.strokeDashoffset = '0';
+            timerRing.classList.remove('danger');
+            timerText.innerText = '5';
+            timerText.style.color = '';
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 50);
+        }
+
+        function updateTimer() {
+            const elapsed = performance.now() - timerStart;
+            const remaining = Math.max(0, TIME_PER_ROUND - elapsed);
+            const fraction = remaining / TIME_PER_ROUND;
+            const offset = CIRCUMFERENCE * (1 - fraction);
+
+            timerRing.style.strokeDashoffset = offset;
+
+            const sec = Math.ceil(remaining / 1000);
+            timerText.innerText = sec;
+
+            // Canviar a vermell als últims 2 segons
+            if (remaining < 2000) {
+                timerRing.classList.add('danger');
+                timerText.style.color = 'var(--red)';
+            }
+
+            if (remaining <= 0) {
+                clearInterval(timerInterval);
+                timeOut();
             }
         }
 
-        function answer(userChoice) {
-            const correct = foods[currentRound].h === userChoice;
-            const fb = document.getElementById('fb');
-            
-            if (correct) {
-                points += 10;
-                fb.innerText = "MOLT BÉ! ✨";
-                fb.style.color = "var(--green)";
-                document.getElementById('points').innerText = points;
-            } else {
-                fb.innerText = "ERROR! ❌";
-                fb.style.color = "var(--red)";
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        /* ============================================
+           FLUX DEL JOC
+           ============================================ */
+        function startGame() {
+            // Seleccionar 10 aliments aleatoris (equilibrats)
+            const healthy = shuffle(allFoods.filter(f => f.h));
+            const unhealthy = shuffle(allFoods.filter(f => !f.h));
+            const pick = (arr, n) => arr.slice(0, n);
+            const h = pick(healthy, 5);
+            const u = pick(unhealthy, 5);
+            gameFoods = shuffle([...h, ...u]);
+
+            // Reset estat
+            points = 0;
+            currentRound = 0;
+            combo = 0;
+            maxCombo = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            results = [];
+            isAnswering = false;
+
+            hudPoints.innerText = '0';
+            hudCombo.innerText = '-';
+            showScreen(gameScreen);
+            setTimeout(() => loadRound(), 300);
+        }
+
+        function loadRound() {
+            if (currentRound >= TOTAL_ROUNDS) {
+                endGame();
+                return;
             }
 
-            fb.classList.add('show-feedback');
-            setTimeout(() => fb.classList.remove('show-feedback'), 500);
+            isAnswering = false;
+            btnYes.disabled = false;
+            btnNo.disabled = false;
+            btnYes.classList.remove('correct-flash');
+            btnNo.classList.remove('correct-flash');
+
+            const food = gameFoods[currentRound];
+            hudRound.innerText = `${currentRound + 1}/${TOTAL_ROUNDS}`;
+            progressFill.style.width = `${(currentRound / TOTAL_ROUNDS) * 100}%`;
+
+            // Animar entrada del menjar
+            foodDisplay.className = '';
+            void foodDisplay.offsetWidth;
+            foodDisplay.className = 'pop-in';
+            foodDisplay.innerText = food.e;
+            foodName.innerText = food.n;
+
+            startTimer();
+        }
+
+        function answer(userSaysHealthy) {
+            if (isAnswering) return;
+            isAnswering = true;
+            stopTimer();
+
+            const food = gameFoods[currentRound];
+            const correct = (food.h === userSaysHealthy);
+
+            // Calcular punts amb combo
+            let gained = 0;
+            if (correct) {
+                combo++;
+                if (combo > maxCombo) maxCombo = combo;
+                const multiplier = Math.min(combo, 5);
+                gained = 10 * multiplier;
+                points += gained;
+                correctCount++;
+
+                // Feedback visual
+                flashScreen('green');
+                showFeedback(
+                    combo > 1 ? `PERFECTE! x${multiplier}` : 'MOLT BE!',
+                    'var(--green)'
+                );
+
+                // Flash al botó correcte
+                (userSaysHealthy ? btnYes : btnNo).classList.add('correct-flash');
+
+                // Partícula de puntuació
+                const rect = foodDisplay.getBoundingClientRect();
+                spawnScoreParticle(
+                    `+${gained}`,
+                    'var(--green)',
+                    rect.left + rect.width / 2 - 15,
+                    rect.top
+                );
+            } else {
+                combo = 0;
+                wrongCount++;
+
+                flashScreen('red');
+                showFeedback('ERROR!', 'var(--red)');
+                foodDisplay.classList.remove('pop-in');
+                foodDisplay.classList.add('shake');
+
+                // Flash al botó CORRECTE (no al que ha premut)
+                (food.h ? btnYes : btnNo).classList.add('correct-flash');
+            }
+
+            results.push({ food, correct });
+
+            // Actualitzar HUD
+            hudPoints.innerText = points;
+            hudCombo.innerText = combo > 1 ? `x${Math.min(combo, 5)}` : '-';
+
+            // Desactivar botons
+            btnYes.disabled = true;
+            btnNo.disabled = true;
+
+            // Següent ronda
+            currentRound++;
+            setTimeout(loadRound, 900);
+        }
+
+        function timeOut() {
+            if (isAnswering) return;
+            isAnswering = true;
+
+            const food = gameFoods[currentRound];
+            combo = 0;
+            wrongCount++;
+            results.push({ food, correct: false });
+
+            flashScreen('red');
+            showFeedback('TEMPS!', 'var(--red)');
+            foodDisplay.classList.remove('pop-in');
+            foodDisplay.classList.add('shake');
+
+            // Flash al botó correcte
+            (food.h ? btnYes : btnNo).classList.add('correct-flash');
+
+            hudCombo.innerText = '-';
+
+            btnYes.disabled = true;
+            btnNo.disabled = true;
 
             currentRound++;
-            updateDisplay();
+            setTimeout(loadRound, 1000);
         }
 
         function endGame() {
-            const container = document.querySelector('.game-container');
-            let message = points >= 80 ? "Ets un expert en nutrició! 🏆" : "Has d'estudiar una mica més! 📚";
-            
-            container.innerHTML = `
-                <h1 style="font-size:40px; margin-bottom:20px;">Final!</h1>
-                <p style="font-size:24px; margin-bottom:10px;">Puntuació total:</p>
-                <div style="font-size:60px; font-weight:800; color:var(--green); margin-bottom:20px;">${points}</div>
-                <p style="margin-bottom:30px; color:#94a3b8;">${message}</p>
-                <button class="btn btn-yes" style="width:100%" onclick="window.location.href='index.html'">TORNAR AL MENÚ</button>
-            `;
-            
-            if(points >= 80) confetti({ particleCount: 150, spread: 70 });
+            stopTimer();
+            progressFill.style.width = '100%';
+
+            showScreen(endScreen);
+
+            // Calcular nota
+            const pct = points / 100;
+            let grade, gradeColor, label;
+            if (pct >= 0.9) { grade = 'S'; gradeColor = 'var(--gold)'; label = 'EXTRAORDINARI'; }
+            else if (pct >= 0.75) { grade = 'A'; gradeColor = 'var(--green)'; label = 'NOTABLE'; }
+            else if (pct >= 0.55) { grade = 'B'; gradeColor = '#42a5f5'; label = 'APROVAT'; }
+            else if (pct >= 0.35) { grade = 'C'; gradeColor = '#ff9800'; label = 'SUFICIENT'; }
+            else { grade = 'D'; gradeColor = 'var(--red)'; label = 'NO SUPERAT'; }
+
+            $('resultGrade').innerText = grade;
+            $('resultGrade').style.color = gradeColor;
+            $('resultLabel').innerText = label;
+            $('resultScoreBig').innerText = points;
+            $('resultScoreBig').style.color = gradeColor;
+
+            $('statCorrect').innerText = correctCount;
+            $('statWrong').innerText = wrongCount;
+            $('statCombo').innerText = maxCombo > 1 ? `x${maxCombo}` : '0';
+
+            // Missatge
+            const messages = {
+                S: 'Ets una veritable enciclopèdia de la nutrició. Nivell professional.',
+                A: 'Tens un molt bon criteri nutricional. Pocs aliments s\'escapen del teu radar.',
+                B: 'Bona base nutricional, però encara hi ha hagut alguns dubtes interessants.',
+                C: 'N\'hi ha de millorable. Revisa els teus coneixements sobre alimentació!',
+                D: 'Cal estudiar una mica més sobre nutrició. No et rendeixis!'
+            };
+            $('resultMessage').innerText = messages[grade];
+
+            // Mini resum dels aliments
+            const foodsHtml = results.map(r => {
+                const cls = r.correct ? 'rf-ok' : 'rf-fail';
+                return `<div class="result-food ${cls}" title="${r.food.n} — ${r.correct ? 'Correcte' : 'Incorrecte'}">${r.food.e}</div>`;
+            }).join('');
+            $('resultFoods').innerHTML = foodsHtml;
+
+            // Confetti per a S i A
+            if (pct >= 0.75) {
+                setTimeout(() => {
+                    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+                    if (pct >= 0.9) {
+                        setTimeout(() => confetti({ particleCount: 80, spread: 100, origin: { x: 0.2, y: 0.5 } }), 300);
+                        setTimeout(() => confetti({ particleCount: 80, spread: 100, origin: { x: 0.8, y: 0.5 } }), 500);
+                    }
+                }, 400);
+            }
         }
 
-        // Inicialitzar
-        updateDisplay();
+        function restartGame() {
+            showScreen(startScreen);
+            setTimeout(startGame, 400);
+        }
+
+        /* ============================================
+           CONTROLS DE TECLAT
+           ============================================ */
+        document.addEventListener('keydown', (e) => {
+            if (gameScreen.classList.contains('hidden')) return;
+            if (e.key === 'f' || e.key === 'F') answer(true);
+            if (e.key === 'j' || e.key === 'J') answer(false);
+        });
+
+        /* ============================================
+           INIT — començar a la pantalla d'inici
+           ============================================ */
+        timerRing.style.strokeDasharray = CIRCUMFERENCE;
     </script>
 </body>
 </html>
