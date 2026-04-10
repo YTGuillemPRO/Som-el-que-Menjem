@@ -2,226 +2,916 @@
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Xarxa Tròfica</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xarxa Tròfica — Ecosistema Interactiu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
+  :root {
+    --bg: #0a1a0f;
+    --bg2: #0f2518;
+    --fg: #e8f5e0;
+    --fg-muted: #8aab7e;
+    --accent: #f0a500;
+    --accent2: #e8533f;
+    --green-deep: #1b5e20;
+    --green-mid: #2e7d32;
+    --green-light: #66bb6a;
+    --card: rgba(15, 37, 24, 0.85);
+    --card-border: rgba(102, 187, 106, 0.2);
+    --glass: rgba(255,255,255,0.04);
+    --correct: #4caf50;
+    --incorrect: #e8533f;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
 
-h1, h2 {
-  color: darkgreen;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-section {
-  margin-bottom: 40px;
-  padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-}
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
 
-.correcte {
-  color: green;
-  font-weight: bold;
-}
+  #bgCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
 
-.incorrecte {
-  color: red;
-  font-weight: bold;
-}
+  .bg-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-glow-1 { width: 600px; height: 600px; background: var(--green-mid); top: -200px; left: -100px; }
+  .bg-glow-2 { width: 500px; height: 500px; background: var(--accent); bottom: -150px; right: -100px; opacity: 0.08; }
+  .bg-glow-3 { width: 400px; height: 400px; background: var(--green-light); top: 50%; left: 60%; opacity: 0.06; }
 
-/* Drag & Drop */
-.container { display: flex; gap: 20px; }
-.box {
-  border: 2px dashed #999;
-  padding: 20px;
-  width: 150px;
-  min-height: 100px;
-}
-.item {
-  padding: 10px;
-  background: lightgreen;
-  margin: 5px;
-  cursor: grab;
-}
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
 
-button {
-  margin: 5px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
+  /* === HEADER === */
+  .hero {
+    text-align: center;
+    padding: 50px 20px 30px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    color: var(--fg);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--green-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    color: var(--fg-muted);
+    font-size: 1.1rem;
+    max-width: 550px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* === PUNTUACIÓ === */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin: 32px 0 48px;
+    flex-wrap: wrap;
+  }
+  .score-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 22px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .score-item:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .score-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+  }
+  .score-icon.green { background: rgba(76,175,80,0.2); color: var(--correct); }
+  .score-icon.amber { background: rgba(240,165,0,0.2); color: var(--accent); }
+  .score-icon.red { background: rgba(232,83,63,0.2); color: var(--incorrect); }
+  .score-label { font-size: 0.8rem; color: var(--fg-muted); }
+  .score-value { font-size: 1.3rem; font-weight: 700; color: var(--fg); }
+
+  /* === SECCIONS === */
+  section {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 36px;
+    margin-bottom: 32px;
+    backdrop-filter: blur(12px);
+    transition: transform 0.4s, box-shadow 0.4s;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  section:hover { box-shadow: 0 12px 50px rgba(0,0,0,0.25); }
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  section h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--fg);
+    margin-bottom: 20px;
+  }
+
+  /* === DRAG & DROP === */
+  .drag-zones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  @media(max-width:600px) {
+    .drag-zones { grid-template-columns: 1fr; }
+  }
+  .drop-zone {
+    border: 2px dashed var(--card-border);
+    border-radius: var(--radius-sm);
+    min-height: 130px;
+    padding: 14px;
+    transition: border-color 0.3s, background 0.3s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .drop-zone.drag-over {
+    border-color: var(--green-light);
+    background: rgba(102,187,106,0.08);
+    transform: scale(1.02);
+  }
+  .drop-zone-title {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--fg-muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .drop-zone-title i { font-size: 0.85rem; }
+
+  .drag-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .drag-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(102,187,106,0.1);
+    border: 1px solid var(--card-border);
+    border-radius: 30px;
+    padding: 10px 18px;
+    cursor: grab;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--fg);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .drag-item:hover {
+    background: rgba(102,187,106,0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  .drag-item:active { cursor: grabbing; transform: scale(0.96); }
+  .drag-item.placed { opacity: 0.5; pointer-events: none; }
+  .drag-item .di-emoji { font-size: 1.1rem; }
+  .drop-zone .drag-item {
+    background: rgba(102,187,106,0.15);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+
+  /* === BOTONS === */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+    outline: none;
+  }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(46,125,50,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 30px rgba(46,125,50,0.5); transform: translateY(-2px); }
+  .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
+
+  .btn-quiz {
+    background: var(--glass);
+    border: 1px solid var(--card-border);
+    color: var(--fg);
+    padding: 14px 28px;
+    font-size: 1rem;
+    border-radius: var(--radius-sm);
+    min-width: 160px;
+    justify-content: center;
+  }
+  .btn-quiz:hover { border-color: var(--green-light); background: rgba(102,187,106,0.08); transform: translateY(-2px); }
+  .btn-quiz.correct-answer {
+    background: rgba(76,175,80,0.2) !important;
+    border-color: var(--correct) !important;
+    color: var(--correct) !important;
+    animation: pulseCorrect 0.5s ease;
+  }
+  .btn-quiz.wrong-answer {
+    background: rgba(232,83,63,0.15) !important;
+    border-color: var(--incorrect) !important;
+    color: var(--incorrect) !important;
+    animation: shake 0.4s ease;
+  }
+  .btn-quiz:disabled { pointer-events: none; opacity: 0.5; }
+
+  @keyframes pulseCorrect {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
+  /* === FEEDBACK === */
+  .feedback {
+    margin-top: 16px;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    animation: fadeSlideIn 0.4s ease;
+  }
+  .feedback.show { display: flex; }
+  .feedback.correct { background: rgba(76,175,80,0.12); color: var(--correct); border: 1px solid rgba(76,175,80,0.3); }
+  .feedback.incorrect { background: rgba(232,83,63,0.1); color: var(--incorrect); border: 1px solid rgba(232,83,63,0.25); }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === INPUT === */
+  .input-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .text-input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--glass);
+    border: 1px solid var(--card-border);
+    border-radius: 30px;
+    padding: 12px 22px;
+    color: var(--fg);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .text-input::placeholder { color: var(--fg-muted); opacity: 0.6; }
+  .text-input:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(102,187,106,0.15); }
+  .text-input:disabled { opacity: 0.5; }
+
+  /* === CADENA VISUAL === */
+  .chain-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .chain-node {
+    background: var(--glass);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 16px 22px;
+    text-align: center;
+    min-width: 110px;
+    transition: all 0.4s;
+  }
+  .chain-node .cn-emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+  .chain-node .cn-label { font-size: 0.85rem; font-weight: 700; color: var(--fg); }
+  .chain-node.filled { border-color: var(--green-light); background: rgba(102,187,106,0.08); }
+  .chain-node.empty-slot {
+    border: 2px dashed var(--accent);
+    background: rgba(240,165,0,0.05);
+    animation: pulseBorder 2s ease-in-out infinite;
+  }
+  .chain-node.empty-slot .cn-emoji { color: var(--accent); }
+  @keyframes pulseBorder {
+    0%,100% { border-color: rgba(240,165,0,0.4); }
+    50% { border-color: rgba(240,165,0,0.9); }
+  }
+  .chain-arrow {
+    color: var(--fg-muted);
+    font-size: 1.4rem;
+    animation: arrowPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes arrowPulse {
+    0%,100% { opacity: 0.4; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(4px); }
+  }
+
+  /* === CONFETTI === */
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    top: -20px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* === TOAST === */
+  .toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .toast {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    animation: toastIn 0.4s ease, toastOut 0.4s ease 2.5s forwards;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 250px;
+  }
+  .toast i { font-size: 1.1rem; }
+  .toast.success { border-left: 3px solid var(--correct); }
+  .toast.success i { color: var(--correct); }
+  .toast.error { border-left: 3px solid var(--incorrect); }
+  .toast.error i { color: var(--incorrect); }
+  @keyframes toastIn { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform: translateX(0); } }
+  @keyframes toastOut { from { opacity:1; } to { opacity:0; transform: translateY(-10px); } }
+
+  /* === PROGRESS BAR === */
+  .progress-wrap { margin-bottom: 48px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--fg-muted);
+    margin-bottom: 8px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--glass);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-mid), var(--accent));
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+
+  .footer-note {
+    text-align: center;
+    color: var(--fg-muted);
+    font-size: 0.8rem;
+    margin-top: 40px;
+    opacity: 0.6;
+  }
+
+  @media(max-width:600px) {
+    section { padding: 24px 18px; }
+    .hero h1 { font-size: 2rem; }
+    .chain-visual { gap: 4px; }
+    .chain-node { padding: 12px 14px; min-width: 80px; }
+    .chain-node .cn-emoji { font-size: 1.3rem; }
+    .chain-arrow { font-size: 1rem; }
+    .btn-quiz { min-width: 100%; }
+    .score-bar { gap: 12px; }
+    .score-item { padding: 10px 14px; }
+  }
+
+  @media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 </style>
 </head>
-
 <body>
 
-<h1>🌍 Xarxa Tròfica</h1>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+<div class="bg-glow bg-glow-3"></div>
 
-<!-- TEORIA -->
-<section>
-<h2>Teoria</h2>
+<div class="toast-container" id="toastContainer"></div>
 
-<p><strong>Xarxa tròfica:</strong> conjunt de relacions alimentàries entre els éssers vius.</p>
+<div class="wrapper">
 
-<p><strong>Cadena alimentària:</strong> seqüència simple (planta → conill → guineu).</p>
+  <header class="hero">
+    <h1>La <span>Xarxa Trofica</span></h1>
+    <p>Explora les relacions alimentaries dels ecosistemes amb activitats interactius.</p>
+  </header>
 
-<ul>
-<li><strong>Productors:</strong> plantes</li>
-<li><strong>Consumidors primaris:</strong> herbívors</li>
-<li><strong>Consumidors secundaris:</strong> carnívors</li>
-<li><strong>Descomponedors:</strong> fongs i bacteris</li>
-</ul>
-
-<p><strong>Important:</strong> si desapareix una espècie, afecta tot l'ecosistema.</p>
-</section>
-
-<!-- ACTIVITAT 1 -->
-<section>
-<h2>1. Classifica els organismes</h2>
-
-<div class="container">
-  <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)">
-    <h3>Productors</h3>
+  <div class="score-bar">
+    <div class="score-item">
+      <div class="score-icon green"><i class="fa-solid fa-check"></i></div>
+      <div><div class="score-label">Correctes</div><div class="score-value" id="scoreCorrect">0</div></div>
+    </div>
+    <div class="score-item">
+      <div class="score-icon amber"><i class="fa-solid fa-star"></i></div>
+      <div><div class="score-label">Puntuacio</div><div class="score-value" id="scoreTotal">0</div></div>
+    </div>
+    <div class="score-item">
+      <div class="score-icon red"><i class="fa-solid fa-xmark"></i></div>
+      <div><div class="score-label">Incorrectes</div><div class="score-value" id="scoreWrong">0</div></div>
+    </div>
   </div>
-  <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)">
-    <h3>Consumidors</h3>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progres de l'activitat</span>
+      <span id="progressText">0 / 3</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   </div>
+
+  <!-- ACTIVITAT 1: DRAG & DROP -->
+  <section id="secDrag">
+    <div class="section-tag"><i class="fa-solid fa-hand-pointer"></i> Activitat 1</div>
+    <h2>Classifica els organismes</h2>
+    <p style="color:var(--fg-muted); margin-bottom:16px;">Arrossega cada organisme al seu nivell trofic correcte.</p>
+    <div class="drag-zones">
+      <div class="drop-zone" data-zone="productor" id="zoneProductor">
+        <div class="drop-zone-title"><i class="fa-solid fa-seedling"></i> Productors</div>
+      </div>
+      <div class="drop-zone" data-zone="primari" id="zonePrimari">
+        <div class="drop-zone-title"><i class="fa-solid fa-paw"></i> Consumidors Primaris</div>
+      </div>
+      <div class="drop-zone" data-zone="secundari" id="zoneSecundari">
+        <div class="drop-zone-title"><i class="fa-solid fa-dragon"></i> Consumidors Secundaris</div>
+      </div>
+    </div>
+    <div class="drag-items" id="dragItems">
+      <div class="drag-item" draggable="true" data-answer="productor" id="itemPlanta"><span class="di-emoji"><i class="fa-solid fa-seedling"></i></span> Planta</div>
+      <div class="drag-item" draggable="true" data-answer="primari" id="itemConill"><span class="di-emoji"><i class="fa-solid fa-paw"></i></span> Conill</div>
+      <div class="drag-item" draggable="true" data-answer="primari" id="itemCabra"><span class="di-emoji"><i class="fa-solid fa-horse"></i></span> Cabra</div>
+      <div class="drag-item" draggable="true" data-answer="secundari" id="itemGuineu"><span class="di-emoji"><i class="fa-solid fa-dragon"></i></span> Guineu</div>
+      <div class="drag-item" draggable="true" data-answer="productor" id="itemAlga"><span class="di-emoji"><i class="fa-solid fa-water"></i></span> Alga</div>
+      <div class="drag-item" draggable="true" data-answer="secundari" id="itemLlop"><span class="di-emoji"><i class="fa-solid fa-dog"></i></span> Llop</div>
+    </div>
+    <button class="btn btn-primary" id="btnDrag" onclick="comprovarDrag()"><i class="fa-solid fa-check"></i> Comprovar</button>
+    <div class="feedback" id="fbDrag"></div>
+  </section>
+
+  <!-- ACTIVITAT 2: QUIZ -->
+  <section id="secQuiz">
+    <div class="section-tag"><i class="fa-solid fa-circle-question"></i> Activitat 2</div>
+    <h2>Quiz de coneixements</h2>
+    <p style="color:var(--fg-muted); margin-bottom:20px;" id="quizPregunta">Qui es un consumidor primari?</p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;" id="quizButtons"></div>
+    <div class="feedback" id="fbQuiz"></div>
+  </section>
+
+  <!-- ACTIVITAT 3: CADENA -->
+  <section id="secCadena">
+    <div class="section-tag"><i class="fa-solid fa-link"></i> Activitat 3</div>
+    <h2>Completa la cadena alimentaria</h2>
+    <p style="color:var(--fg-muted); margin-bottom:8px;">Escriu l'organisme que falta per completar la cadena.</p>
+    <div class="chain-visual">
+      <div class="chain-node filled">
+        <span class="cn-emoji"><i class="fa-solid fa-seedling"></i></span>
+        <span class="cn-label">Planta</span>
+      </div>
+      <div class="chain-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="chain-node empty-slot" id="chainSlot">
+        <span class="cn-emoji"><i class="fa-solid fa-question"></i></span>
+        <span class="cn-label">???</span>
+      </div>
+      <div class="chain-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="chain-node filled">
+        <span class="cn-emoji"><i class="fa-solid fa-dragon"></i></span>
+        <span class="cn-label">Guineu</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <input type="text" class="text-input" id="inputCadena" placeholder="Escriu l'organisme..." autocomplete="off">
+      <button class="btn btn-primary" id="btnCadena" onclick="verificarCadena()"><i class="fa-solid fa-paper-plane"></i> Comprovar</button>
+    </div>
+    <div class="feedback" id="fbCadena"></div>
+  </section>
+
+  <footer class="footer-note">
+    Xarxa Trofica — Activitat interactiva de Biologia
+  </footer>
+
 </div>
-
-<div>
-  <div class="item" draggable="true" ondragstart="drag(event)" id="planta">🌱 Planta</div>
-  <div class="item" draggable="true" ondragstart="drag(event)" id="conill">🐰 Conill</div>
-</div>
-
-<p id="resultatDrag"></p>
-<button onclick="comprovarDrag()">Comprovar</button>
-</section>
-
-<!-- ACTIVITAT 2 -->
-<section>
-<h2>2. Quiz</h2>
-
-<p>Qui és un consumidor primari?</p>
-
-<button onclick="respostaQuiz(this, false)">Lleó</button>
-<button onclick="respostaQuiz(this, true)">Conill</button>
-<button onclick="respostaQuiz(this, false)">Àguila</button>
-
-<p id="quizResultat"></p>
-</section>
-
-<!-- ACTIVITAT 3 -->
-<section>
-<h2>3. Completa la cadena</h2>
-
-<p>Planta → ______ → Guineu</p>
-
-<input type="text" id="inputCadena">
-<button onclick="verificarCadena()">Comprovar</button>
-
-<p id="resultatCadena"></p>
-</section>
-
-<!-- ACTIVITAT 4 -->
-<section>
-<h2>4. Informació</h2>
-
-<button onclick="mostrarInfo(this, 'productor')">🌱 Planta</button>
-<button onclick="mostrarInfo(this, 'herbivor')">🐰 Conill</button>
-<button onclick="mostrarInfo(this, 'carnivor')">🦊 Guineu</button>
-
-<p id="infoText"></p>
-</section>
 
 <script>
-// DRAG
-function allowDrop(ev) { ev.preventDefault(); }
-function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
-function drop(ev) {
-  ev.preventDefault();
-  const data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
+/* ========================================
+   ESTAT GLOBAL
+======================================== */
+let puntuacio = { correctes: 0, incorrectes: 0, total: 0 };
+let completades = new Set();
+
+/* ========================================
+   FONS ANIMAT — Partícules orgàniques
+======================================== */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 60;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 3 + 1,
+    speedX: (Math.random() - 0.5) * 0.3,
+    speedY: Math.random() * 0.2 + 0.05,
+    opacity: Math.random() * 0.3 + 0.05,
+    hue: Math.random() > 0.7 ? 45 : 130
+  });
 }
 
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    if (p.y > canvas.height + 10) { p.y = -10; p.x = Math.random() * canvas.width; }
+    if (p.x < -10) p.x = canvas.width + 10;
+    if (p.x > canvas.width + 10) p.x = -10;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, Math.max(0.5, p.size), 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${p.hue}, 60%, 50%, ${p.opacity})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ========================================
+   SCROLL REVEAL
+======================================== */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+/* ========================================
+   TOASTS
+======================================== */
+function showToast(msg, tipus) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${tipus}`;
+  const icon = tipus === 'success' ? 'fa-circle-check' : 'fa-circle-xmark';
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i> ${msg}`;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+/* ========================================
+   CONFETTI
+======================================== */
+function llancarConfetti() {
+  const container = document.createElement('div');
+  container.className = 'confetti-container';
+  document.body.appendChild(container);
+  const colors = ['#4caf50','#f0a500','#66bb6a','#e8533f','#ab7ee6','#fff'];
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (Math.random() * 8 + 5) + 'px';
+    piece.style.height = (Math.random() * 8 + 5) + 'px';
+    piece.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    container.appendChild(piece);
+  }
+  setTimeout(() => container.remove(), 4000);
+}
+
+/* ========================================
+   ACTUALITZAR UI
+======================================== */
+function actualizarUI() {
+  document.getElementById('scoreCorrect').textContent = puntuacio.correctes;
+  document.getElementById('scoreWrong').textContent = puntuacio.incorrectes;
+  document.getElementById('scoreTotal').textContent = puntuacio.total;
+  document.getElementById('progressText').textContent = `${completades.size} / 3`;
+  document.getElementById('progressFill').style.width = (completades.size / 3 * 100) + '%';
+}
+
+function marcarCorrecte(fbId, msg) {
+  puntuacio.correctes++;
+  puntuacio.total += 25;
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback show correct';
+  fb.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg || 'Correcte!'}`;
+  showToast('Molt be!', 'success');
+}
+
+function marcarIncorrecte(fbId, msg) {
+  puntuacio.incorrectes++;
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback show incorrect';
+  fb.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> ${msg || 'Incorrecte!'}`;
+  showToast('Torna-ho a provar', 'error');
+}
+
+/* ========================================
+   DRAG & DROP
+======================================== */
+let dragActiu = null;
 let dragFet = false;
+
+document.querySelectorAll('.drag-item').forEach(item => {
+  item.addEventListener('dragstart', (e) => {
+    dragActiu = item;
+    e.dataTransfer.setData('text/plain', item.id);
+    item.style.opacity = '0.5';
+  });
+  item.addEventListener('dragend', () => {
+    if (dragActiu) dragActiu.style.opacity = '1';
+    dragActiu = null;
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+  });
+});
+
+document.querySelectorAll('.drop-zone').forEach(zone => {
+  zone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (!dragActiu || dragFet) return;
+    zone.appendChild(dragActiu);
+    dragActiu.classList.add('placed');
+    dragActiu.setAttribute('draggable', 'false');
+  });
+});
+
 function comprovarDrag() {
   if (dragFet) return;
   dragFet = true;
+  document.getElementById('btnDrag').disabled = true;
 
-  const caixes = document.querySelectorAll(".box");
-  let correcte = false;
-
-  caixes.forEach(box => {
-    if (box.innerText.includes("Productors") && box.innerText.includes("Planta")) {
-      correcte = true;
-    }
+  let totesCorrectes = true;
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    const zonaTipus = zone.dataset.zone;
+    zone.querySelectorAll('.drag-item').forEach(item => {
+      if (item.dataset.answer !== zonaTipus) totesCorrectes = false;
+    });
   });
 
-  const res = document.getElementById("resultatDrag");
-  if (correcte) {
-    res.innerText = "Correcte!";
-    res.className = "correcte";
+  const noColocats = document.querySelectorAll('.drag-item:not(.placed)');
+  if (noColocats.length > 0) totesCorrectes = false;
+
+  if (totesCorrectes) {
+    marcarCorrecte('fbDrag', 'Tots els organismes estan ben classificats!');
+    completades.add('drag');
+    llancarConfetti();
   } else {
-    res.innerText = "Incorrecte!";
-    res.className = "incorrecte";
+    marcarIncorrecte('fbDrag', 'Revisa la classificacio. Alguns organismes no estan al lloc correcte.');
+    dragFet = false;
+    document.getElementById('btnDrag').disabled = false;
   }
+  actualizarUI();
 }
 
-// QUIZ
-let quizFet = false;
+/* ========================================
+   QUIZ (multi-pregunta)
+======================================== */
+const preguntes = [
+  {
+    text: 'Qui es un consumidor primari?',
+    opcions: [
+      { text: 'Lleo', icon: 'fa-dragon', correcte: false },
+      { text: 'Conill', icon: 'fa-paw', correcte: true },
+      { text: 'Aguila', icon: 'fa-feather', correcte: false }
+    ]
+  },
+  {
+    text: 'Quin organisme realitza la fotosintesi?',
+    opcions: [
+      { text: 'Fong', icon: 'fa-bacteria', correcte: false },
+      { text: 'Llop', icon: 'fa-dog', correcte: false },
+      { text: 'Planta', icon: 'fa-seedling', correcte: true }
+    ]
+  },
+  {
+    text: 'Que passa si desapareix un consumidor secundari?',
+    opcions: [
+      { text: 'Res canvia', icon: 'fa-face-smile', correcte: false },
+      { text: "L'ecosistema es desequilibra", icon: 'fa-triangle-exclamation', correcte: true },
+      { text: 'Molen productors', icon: 'fa-seedling', correcte: false }
+    ]
+  }
+];
+let quizIndex = 0;
+
+function renderQuiz() {
+  if (quizIndex >= preguntes.length) {
+    completades.add('quiz');
+    actualizarUI();
+    const fb = document.getElementById('fbQuiz');
+    fb.className = 'feedback show correct';
+    fb.innerHTML = `<i class="fa-solid fa-trophy"></i> Has completat totes les preguntes del quiz!`;
+    llancarConfetti();
+    return;
+  }
+  const q = preguntes[quizIndex];
+  document.getElementById('quizPregunta').textContent = q.text;
+  const container = document.getElementById('quizButtons');
+  container.innerHTML = '';
+  q.opcions.forEach((op) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-quiz';
+    btn.innerHTML = `<i class="fa-solid ${op.icon}"></i> ${op.text}`;
+    btn.onclick = () => respostaQuiz(btn, op.correcte);
+    container.appendChild(btn);
+  });
+}
+
 function respostaQuiz(btn, correcte) {
-  if (quizFet) return;
-  quizFet = true;
-
-  const res = document.getElementById("quizResultat");
+  const buttons = document.querySelectorAll('#quizButtons .btn-quiz');
+  buttons.forEach(b => b.disabled = true);
 
   if (correcte) {
-    res.innerText = "Correcte!";
-    res.className = "correcte";
+    btn.classList.add('correct-answer');
+    puntuacio.correctes++;
+    puntuacio.total += 10;
+    showToast('Correcte!', 'success');
+    setTimeout(() => { quizIndex++; renderQuiz(); }, 1000);
   } else {
-    res.innerText = "Incorrecte!";
-    res.className = "incorrecte";
+    btn.classList.add('wrong-answer');
+    puntuacio.incorrectes++;
+    const q = preguntes[quizIndex];
+    const correctOpt = q.opcions.find(o => o.correcte);
+    buttons.forEach(b => {
+      if (b !== btn && b.textContent.includes(correctOpt.text)) {
+        b.classList.add('correct-answer');
+      }
+    });
+    showToast('Incorrecte!', 'error');
+    setTimeout(() => { quizIndex++; renderQuiz(); }, 1800);
   }
+  actualizarUI();
 }
 
-// CADENA
+/* ========================================
+   CADENA ALIMENTÀRIA
+======================================== */
 let cadenaFeta = false;
+const respostesAcceptades = ['conill', 'conills', 'conill.', 'conills.'];
+
 function verificarCadena() {
   if (cadenaFeta) return;
-  cadenaFeta = true;
+  const input = document.getElementById('inputCadena');
+  const resp = input.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-  const resp = document.getElementById("inputCadena").value.toLowerCase();
-  const res = document.getElementById("resultatCadena");
-
-  if (resp === "conill") {
-    res.innerText = "Correcte!";
-    res.className = "correcte";
-  } else {
-    res.innerText = "Incorrecte!";
-    res.className = "incorrecte";
+  if (resp === '') {
+    showToast('Escriu una resposta', 'error');
+    return;
   }
+
+  const normalitzades = respostesAcceptades.map(r => r.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+
+  if (normalitzades.includes(resp)) {
+    cadenaFeta = true;
+    document.getElementById('btnCadena').disabled = true;
+    input.disabled = true;
+
+    const slot = document.getElementById('chainSlot');
+    slot.classList.remove('empty-slot');
+    slot.classList.add('filled');
+    slot.innerHTML = `<span class="cn-emoji"><i class="fa-solid fa-paw" style="color:var(--accent)"></i></span><span class="cn-label">Conill</span>`;
+
+    marcarCorrecte('fbCadena', 'La cadena esta completa: Planta → Conill → Guineu');
+    completades.add('cadena');
+    llancarConfetti();
+  } else {
+    marcarIncorrecte('fbCadena', 'No es correcte. Pista: es un herbivor petit...');
+    input.value = '';
+    input.focus();
+  }
+  actualizarUI();
 }
 
-// INFO
-let infoFet = false;
-function mostrarInfo(btn, tipus) {
-  if (infoFet) return;
-  infoFet = true;
+document.getElementById('inputCadena').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') verificarCadena();
+});
 
-  const res = document.getElementById("infoText");
-
-  let correcte = (tipus === "productor");
-
-  if (correcte) {
-    res.innerText = "Correcte! És un productor.";
-    res.className = "correcte";
-  } else {
-    res.innerText = "Incorrecte!";
-    res.className = "incorrecte";
-  }
-}
+/* ========================================
+   INICI
+======================================== */
+actualizarUI();
+renderQuiz();
 </script>
-
 </body>
 </html>
