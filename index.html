@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioPortal</title>
+<title>Faig 2</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -166,6 +166,32 @@ h1{font-size:50px;}
   transform:scale(1.1);
 }
 
+/* CONTRIBUYENTES */
+.contributors{
+  margin-top:60px;
+}
+
+.contributor-card{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+
+.contributor-card img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.contributor-card p{
+  font-weight:600;
+  color:#333;
+}
+
 @media(max-width:700px){
   .main-grid{grid-template-columns:1fr;}
 }
@@ -178,7 +204,7 @@ h1{font-size:50px;}
 
 <!-- HOME -->
 <div id="home-view" class="view active">
-  <h1>BioPortal</h1>
+  <h1>Quin es el beritable cos del que menjo?</h1>
   <p class="subtitle">Fet per: GUILLEM VARELA I YASSER CHIKHI</p>
 
   <div class="main-grid">
@@ -197,6 +223,19 @@ h1{font-size:50px;}
       <h2>Xarxa tròfica</h2>
     </div>
   </div>
+
+  <!-- CONTRIBUYENTES -->
+  <div class="contributors">
+    <h2>Contribuents externs</h2>
+
+    <div class="contributor-card">
+      <img src="https://via.placeholder.com/120" alt="Foto contributor">
+      <p>Xènia Alexpuig 1</p>
+      <p>Alexa Tarragona 2</p>
+      <p>Arnau Crujera 3</p>
+    </div>
+  </div>
+
 </div>
 
 <!-- SELECCIÓN -->
@@ -222,7 +261,7 @@ h1{font-size:50px;}
 <script>
 const panel = document.getElementById('main-panel');
 const link_teoria = document.getElementById('link-teoria');
-const link_joc = document.getElementById('link-joc');
+const link_joc = document.getElementById('link_joc');
 
 function navTo(type){
   panel.style.transform='scale(.95)';
