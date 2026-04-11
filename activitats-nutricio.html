@@ -9,1011 +9,521 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #080c14;
-            --bg2: #0e1525;
-            --card: rgba(255,255,255,0.03);
-            --card-border: rgba(255,255,255,0.06);
+            --bg: #060a10;
+            --card: rgba(12,18,32,0.85);
+            --card-border: rgba(255,255,255,0.05);
             --green: #00e676;
-            --green-glow: rgba(0,230,118,0.15);
+            --green-glow: rgba(0,230,118,0.12);
             --green-deep: #00c853;
             --red: #ff5252;
-            --red-glow: rgba(255,82,82,0.15);
-            --red-deep: #d32f2f;
+            --red-glow: rgba(255,82,82,0.12);
             --gold: #ffd740;
+            --gold-glow: rgba(255,215,64,0.12);
+            --cyan: #18ffff;
             --text: #e8edf5;
-            --muted: #5a6a85;
-            --accent: var(--green);
-            --radius: 28px;
+            --muted: #4e5f7a;
+            --radius: 30px;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Plus Jakarta Sans',sans-serif;
+            background:var(--bg);color:var(--text);
+            height:100vh;height:100dvh;
+            overflow:hidden;display:flex;justify-content:center;align-items:center;
+            -webkit-tap-highlight-color:transparent;
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* === FONS ANIMAT === */
-        .bg-layer {
-            position: fixed; inset:0; z-index:0; pointer-events:none;
+        canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+        .bg-layer{
+            position:fixed;inset:0;z-index:1;pointer-events:none;
             background:
-                radial-gradient(ellipse 600px 400px at 20% 20%, rgba(0,230,118,0.04), transparent),
-                radial-gradient(ellipse 500px 500px at 80% 80%, rgba(255,82,82,0.03), transparent),
-                radial-gradient(ellipse 300px 300px at 50% 50%, rgba(255,215,64,0.02), transparent);
+                radial-gradient(ellipse 700px 500px at 15% 15%,rgba(0,230,118,0.035),transparent),
+                radial-gradient(ellipse 600px 500px at 85% 85%,rgba(255,82,82,0.025),transparent),
+                radial-gradient(ellipse 400px 400px at 50% 40%,rgba(255,215,64,0.015),transparent);
         }
 
-        .orbs {
-            position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+        .screen{
+            position:fixed;inset:0;z-index:10;
+            display:flex;justify-content:center;align-items:center;flex-direction:column;
+            transition:opacity .45s ease,transform .45s ease;
+            padding:16px;
         }
-        .orb {
-            position:absolute;
-            border-radius:50%;
-            filter: blur(80px);
-            opacity:0.3;
-            animation: orbFloat 12s ease-in-out infinite alternate;
-        }
-        .orb:nth-child(1) { width:300px; height:300px; background:var(--green); top:-100px; left:-50px; animation-duration:14s; }
-        .orb:nth-child(2) { width:250px; height:250px; background:var(--red); bottom:-80px; right:-40px; animation-duration:18s; animation-delay:-4s; }
-        .orb:nth-child(3) { width:200px; height:200px; background:var(--gold); top:50%; left:60%; animation-duration:16s; animation-delay:-8s; opacity:0.15; }
+        .screen.hidden{opacity:0;pointer-events:none;transform:scale(0.9) translateY(20px)}
 
-        @keyframes orbFloat {
-            0% { transform: translate(0,0) scale(1); }
-            100% { transform: translate(40px, 30px) scale(1.15); }
+        .card{
+            background:var(--card);
+            border:1px solid var(--card-border);
+            backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);
+            border-radius:var(--radius);
+            padding:42px 38px;width:100%;max-width:480px;
+            text-align:center;position:relative;overflow:hidden;
+            box-shadow:0 8px 60px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.03) inset;
         }
-
-        /* === PANTALLES === */
-        .screen {
-            position:fixed; inset:0; z-index:10;
-            display:flex; justify-content:center; align-items:center; flex-direction:column;
-            transition: opacity 0.5s, transform 0.5s;
-            padding: 20px;
-        }
-        .screen.hidden {
-            opacity:0; pointer-events:none; transform:scale(0.92);
+        .card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:1px;
+            background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.08) 50%,transparent 95%);
         }
 
-        /* === TARGETA === */
-        .card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-radius: var(--radius);
-            padding: 40px 36px;
-            width: 100%;
-            max-width: 460px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                0 4px 24px rgba(0,0,0,0.3),
-                0 1px 0 rgba(255,255,255,0.04) inset;
+        .logo-wrap{position:relative;margin-bottom:32px}
+        .logo-icon{
+            font-size:76px;display:block;
+            filter:drop-shadow(0 0 40px rgba(0,230,118,0.25));
+            animation:logoFloat 4s ease-in-out infinite;
         }
-        .card::before {
-            content:'';
-            position:absolute; top:0; left:0; right:0; height:1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        @keyframes logoFloat{
+            0%,100%{transform:translateY(0) rotate(-2deg) scale(1)}
+            33%{transform:translateY(-6px) rotate(1deg) scale(1.04)}
+            66%{transform:translateY(3px) rotate(-1deg) scale(0.98)}
+        }
+        .logo-ring{
+            position:absolute;inset:-18px;
+            border:2px solid rgba(0,230,118,0.1);
+            border-radius:50%;animation:ringPulse 3s ease-in-out infinite;
+        }
+        .logo-ring:nth-child(2){inset:-30px;border-color:rgba(0,230,118,0.05);animation-delay:-1s}
+        @keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.5}}
+
+        .title-wrap{position:relative;margin-bottom:8px}
+        .title{font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1.1;color:#fff;position:relative}
+        .title-glow{
+            position:absolute;inset:0;font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1.1;
+            background:linear-gradient(135deg,#00ff88 0%,#66ffbb 30%,#ffd740 70%,#ffab00 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            filter:blur(18px) brightness(1.5);pointer-events:none;
+        }
+        .title-shine{
+            position:absolute;inset:0;font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1.1;
+            background:linear-gradient(135deg,#00ff88 0%,#aaffcc 35%,#ffe082 65%,#ffc107 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            pointer-events:none;
         }
 
-        /* === INICI === */
-        .logo-icon {
-            font-size: 80px;
-            display: block;
-            margin-bottom: 16px;
-            filter: drop-shadow(0 0 30px rgba(0,230,118,0.3));
-            animation: logoPulse 3s ease-in-out infinite;
-        }
-        @keyframes logoPulse {
-            0%,100% { transform: scale(1) rotate(-2deg); }
-            50% { transform: scale(1.06) rotate(2deg); }
-        }
+        .subtitle{color:var(--muted);font-size:14px;font-weight:400;margin-bottom:28px;line-height:1.7}
+        .subtitle strong{color:#7a8ba8;font-weight:600}
 
-        .title {
-            font-size: 42px;
-            font-weight: 900;
-            letter-spacing: -1.5px;
-            line-height: 1.1;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--green), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .rules-box{
+            background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);
+            border-radius:16px;padding:16px 18px;margin-bottom:28px;text-align:left;
         }
+        .rule{display:flex;align-items:center;gap:11px;font-size:12.5px;color:#7a8da5;padding:5px 0}
+        .rule i{width:22px;text-align:center;font-size:13px;flex-shrink:0}
+        .ri{color:var(--green)}.rr{color:var(--red)}.rg{color:var(--gold)}.rc{color:var(--cyan)}
 
-        .subtitle {
-            color: var(--muted);
-            font-size: 15px;
-            font-weight: 400;
-            margin-bottom: 36px;
-            line-height: 1.6;
-        }
+        .best-score{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:6px}
+        .best-score i{color:var(--gold);font-size:12px}
+        .best-score span{color:#8a9bb8;font-weight:700}
 
-        .rules-box {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 18px 20px;
-            margin-bottom: 32px;
-            text-align: left;
+        .btn-main{
+            display:inline-flex;align-items:center;justify-content:center;gap:10px;
+            padding:18px 44px;border-radius:18px;border:none;
+            font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;
+            color:var(--bg);position:relative;overflow:hidden;
+            background:linear-gradient(135deg,var(--green),var(--green-deep));
+            box-shadow:0 6px 30px var(--green-glow),0 2px 8px rgba(0,0,0,0.4);
+            transition:all .25s cubic-bezier(.175,.885,.32,1.275);
         }
-        .rules-box .rule {
-            display: flex; align-items: center; gap: 12px;
-            font-size: 13px; color: #8899b0; padding: 6px 0;
-        }
-        .rules-box .rule i {
-            width: 24px; text-align: center; font-size: 14px;
-        }
-        .rule .ri { color: var(--green); }
-        .rule .rr { color: var(--red); }
-        .rule .rg { color: var(--gold); }
+        .btn-main::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,0.2) 100%);opacity:0;transition:.3s}
+        .btn-main:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 44px rgba(0,230,118,0.22)}
+        .btn-main:hover::before{opacity:1}
+        .btn-main:active{transform:scale(0.97)}
 
-        /* === BOTONS === */
-        .btn-main {
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 18px 40px;
-            border-radius: 18px;
-            border: none;
-            font-family: inherit;
-            font-size: 18px;
-            font-weight: 800;
-            cursor: pointer;
-            color: var(--bg);
-            background: linear-gradient(135deg, var(--green), var(--green-deep));
-            box-shadow: 0 8px 30px var(--green-glow), 0 2px 8px rgba(0,0,0,0.3);
-            transition: all 0.25s cubic-bezier(0.175,0.885,0.32,1.275);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-main::after {
-            content:'';
-            position:absolute; inset:0;
-            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2));
-            opacity:0; transition:0.3s;
-        }
-        .btn-main:hover { transform:translateY(-3px) scale(1.03); box-shadow: 0 12px 40px rgba(0,230,118,0.25); }
-        .btn-main:hover::after { opacity:1; }
-        .btn-main:active { transform:scale(0.97); }
-
-        .btn-ghost {
-            display: inline-flex; align-items: center; gap: 6px;
-            margin-top: 20px;
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: 0.2s;
-            background: none; border: none; cursor: pointer;
-            font-family: inherit;
-        }
-        .btn-ghost:hover { color: var(--text); }
+        .btn-ghost{display:inline-flex;align-items:center;gap:6px;margin-top:18px;color:var(--muted);text-decoration:none;font-size:12.5px;font-weight:600;transition:.2s;background:none;border:none;cursor:pointer;font-family:inherit}
+        .btn-ghost:hover{color:var(--text)}
 
         /* === GAME UI === */
-        .hud {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px;
-        }
-        .hud-item {
-            display: flex; flex-direction: column; align-items: center; gap: 2px;
-        }
-        .hud-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; }
-        .hud-value { font-size: 22px; font-weight: 900; }
-        .hud-value.score-val { color: var(--green); }
-        .hud-value.combo-val { color: var(--gold); }
-        .hud-value.round-val { color: var(--text); }
+        .hud{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
+        .hud-item{display:flex;flex-direction:column;align-items:center;gap:1px}
+        .hud-label{font-size:9px;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);font-weight:700}
+        .hud-value{font-size:24px;font-weight:900;line-height:1.1;transition:transform .2s}
+        .hud-value.bump{animation:hudBump .35s cubic-bezier(.175,.885,.32,1.275)}
+        @keyframes hudBump{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+        .score-val{color:var(--green)}.combo-val{color:var(--gold)}.round-val{color:var(--text)}
 
-        /* Barra de progrés */
-        .progress-track {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 4px;
-            margin-bottom: 8px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--green), var(--gold));
-            border-radius: 4px;
-            transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
-        }
+        .combo-bar-wrap{height:3px;background:rgba(255,255,255,0.04);border-radius:3px;margin-bottom:6px;overflow:hidden;opacity:0;transition:opacity .3s}
+        .combo-bar-wrap.active{opacity:1}
+        .combo-bar-fill{height:100%;border-radius:3px;width:0%;background:linear-gradient(90deg,var(--gold),#ff9100);transition:width .4s cubic-bezier(.22,1,.36,1)}
 
-        /* Temporitzador */
-        .timer-ring {
-            width: 60px; height: 60px;
-            margin: 0 auto 8px;
-            position: relative;
-        }
-        .timer-ring svg { width:100%; height:100%; transform: rotate(-90deg); }
-        .timer-ring .ring-bg { fill:none; stroke:rgba(255,255,255,0.06); stroke-width:4; }
-        .timer-ring .ring-fg {
-            fill:none; stroke:var(--green); stroke-width:4;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
-        }
-        .timer-ring .ring-fg.danger { stroke: var(--red); }
-        .timer-text {
-            position:absolute; inset:0;
-            display:flex; align-items:center; justify-content:center;
-            font-size: 18px; font-weight: 900;
+        .progress-track{width:100%;height:3px;background:rgba(255,255,255,0.04);border-radius:3px;margin-bottom:16px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:3px;transition:width .5s cubic-bezier(.22,1,.36,1);width:0%}
+
+        .question-label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+
+        #foodDisplay{font-size:110px;line-height:1;margin:4px 0;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.5));will-change:transform}
+        #foodDisplay.pop-in{animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) forwards}
+        @keyframes popIn{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.08) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+        #foodDisplay.shake{animation:shake .55s ease}
+        @keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-14px) rotate(-4deg)}30%{transform:translateX(12px) rotate(3deg)}45%{transform:translateX(-10px) rotate(-2deg)}60%{transform:translateX(8px) rotate(2deg)}75%{transform:translateX(-4px) rotate(-1deg)}}
+
+        /* === NOM DEL ALIMENT ARRREGLAT === */
+        .food-name{
+            font-size:20px;
+            font-weight:800;
+            color:#d0daea;
+            margin-bottom:28px;
+            min-height:28px;
+            letter-spacing:.3px;
+            text-shadow:0 0 20px rgba(208,218,234,0.15);
         }
 
-        .question-label {
-            font-size: 13px;
-            color: var(--muted);
-            margin-bottom: 4px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .btn-choice{
+            padding:20px 12px;border-radius:22px;border:2px solid transparent;
+            font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;
+            color:rgba(255,255,255,0.8);display:flex;flex-direction:column;align-items:center;gap:3px;
+            transition:all .2s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;
+            -webkit-user-select:none;user-select:none;
         }
+        .btn-choice .btn-sub{font-size:10px;opacity:.5;font-weight:400;letter-spacing:.5px}
+        .btn-choice .btn-icon{font-size:28px;margin-bottom:2px;transition:transform .2s}
 
-        #food-display {
-            font-size: 110px;
-            line-height: 1;
-            margin: 10px 0 6px;
-            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
-            transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
-            will-change: transform;
-        }
-        #food-display.pop-in {
-            animation: popIn 0.45s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
-        }
-        @keyframes popIn {
-            0% { transform: scale(0) rotate(-15deg); opacity:0; }
-            100% { transform: scale(1) rotate(0deg); opacity:1; }
-        }
-        #food-display.shake {
-            animation: shake 0.5s ease;
-        }
-        @keyframes shake {
-            0%,100% { transform:translateX(0); }
-            20% { transform:translateX(-12px) rotate(-3deg); }
-            40% { transform:translateX(10px) rotate(2deg); }
-            60% { transform:translateX(-8px) rotate(-2deg); }
-            80% { transform:translateX(6px) rotate(1deg); }
-        }
+        .btn-yes{background:rgba(0,230,118,0.07);border-color:rgba(0,230,118,0.18)}
+        .btn-yes:hover{background:rgba(0,230,118,0.15);border-color:rgba(0,230,118,0.4);transform:translateY(-4px);box-shadow:0 14px 36px var(--green-glow)}
+        .btn-yes:hover .btn-icon{transform:scale(1.15)}
+        .btn-yes:active{transform:scale(0.95)!important}
+        .btn-yes.flash-correct{background:var(--green)!important;border-color:var(--green)!important;color:var(--bg)!important}
+        .btn-yes.flash-wrong{border-color:var(--red)!important;box-shadow:0 0 30px var(--red-glow)!important}
 
-        .food-name {
-            font-size: 15px;
-            color: var(--muted);
-            font-weight: 400;
-            margin-bottom: 24px;
-            min-height: 22px;
-        }
+        .btn-no{background:rgba(255,82,82,0.07);border-color:rgba(255,82,82,0.18)}
+        .btn-no:hover{background:rgba(255,82,82,0.15);border-color:rgba(255,82,82,0.4);transform:translateY(-4px);box-shadow:0 14px 36px var(--red-glow)}
+        .btn-no:hover .btn-icon{transform:scale(1.15)}
+        .btn-no:active{transform:scale(0.95)!important}
+        .btn-no.flash-correct{background:var(--red)!important;border-color:var(--red)!important;color:white!important}
+        .btn-no.flash-wrong{border-color:var(--red)!important;box-shadow:0 0 30px var(--red-glow)!important}
 
-        /* Botons SÍ / NO */
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-        .btn-choice {
-            padding: 18px 12px;
-            border-radius: 20px;
-            border: 2px solid transparent;
-            font-family: inherit;
-            font-size: 20px;
-            font-weight: 800;
-            cursor: pointer;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s cubic-bezier(0.175,0.885,0.32,1.275);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-choice .btn-sub { font-size: 11px; opacity: 0.7; font-weight: 400; letter-spacing: 0.5px; }
-        .btn-choice .btn-icon { font-size: 26px; margin-bottom: 2px; }
+        .btn-choice:disabled{cursor:not-allowed;opacity:.4;transform:none!important}
+        .btn-choice:disabled .btn-icon{transform:none!important}
 
-        .btn-yes {
-            background: rgba(0,230,118,0.1);
-            border-color: rgba(0,230,118,0.25);
-        }
-        .btn-yes:hover {
-            background: rgba(0,230,118,0.2);
-            border-color: var(--green);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px var(--green-glow);
-        }
-        .btn-yes:active { transform: scale(0.95); }
-        .btn-yes.correct-flash {
-            background: var(--green) !important;
-            border-color: var(--green) !important;
-            color: var(--bg) !important;
-        }
+        .key-hint{display:flex;justify-content:center;gap:28px;margin-top:14px}
+        .key-hint span{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px}
+        .key-hint kbd{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:2px 7px;font-family:inherit;font-size:10px;font-weight:700;color:#6a7b96}
 
-        .btn-no {
-            background: rgba(255,82,82,0.1);
-            border-color: rgba(255,82,82,0.25);
-        }
-        .btn-no:hover {
-            background: rgba(255,82,82,0.2);
-            border-color: var(--red);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px var(--red-glow);
-        }
-        .btn-no:active { transform: scale(0.95); }
-        .btn-no.correct-flash {
-            background: var(--red) !important;
-            border-color: var(--red) !important;
-            color: white !important;
-        }
+        .feedback-layer{position:fixed;inset:0;z-index:50;pointer-events:none;display:flex;justify-content:center;align-items:center}
+        .fb-text{font-size:52px;font-weight:900;opacity:0;transform:scale(0.4) translateY(20px);transition:all .3s cubic-bezier(.175,.885,.32,1.275);text-shadow:0 6px 30px rgba(0,0,0,0.6);letter-spacing:-1px}
+        .fb-text.show{opacity:1;transform:scale(1) translateY(-15px)}
+        .fb-text.fade{opacity:0;transform:scale(1.15) translateY(-50px);transition:all .4s ease-in}
 
-        .btn-choice:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-            transform: none !important;
-        }
+        .score-particle{position:fixed;font-size:22px;font-weight:900;pointer-events:none;z-index:60;animation:sFloat 1.1s ease-out forwards;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+        @keyframes sFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-90px) scale(.5)}}
 
-        /* === FEEDBACK === */
-        .feedback-layer {
-            position:fixed; inset:0; z-index:50; pointer-events:none;
-            display:flex; justify-content:center; align-items:center;
-        }
-        .fb-text {
-            font-size: 48px;
-            font-weight: 900;
-            opacity:0;
-            transform: scale(0.5) translateY(20px);
-            transition: all 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-        .fb-text.show {
-            opacity:1;
-            transform: scale(1) translateY(-10px);
-        }
-        .fb-text.fade {
-            opacity:0;
-            transform: scale(1.1) translateY(-40px);
-            transition: all 0.4s ease-in;
-        }
+        .fire-particle{position:fixed;pointer-events:none;z-index:55;width:6px;height:6px;border-radius:50%;animation:fireUp .8s ease-out forwards}
+        @keyframes fireUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(0)}}
 
-        /* Partícules de puntuació */
-        .score-particle {
-            position: fixed;
-            font-size: 20px;
-            font-weight: 900;
-            pointer-events: none;
-            z-index: 60;
-            animation: scoreFloat 1s ease-out forwards;
-        }
-        @keyframes scoreFloat {
-            0% { opacity:1; transform: translateY(0) scale(1); }
-            100% { opacity:0; transform: translateY(-80px) scale(0.6); }
-        }
+        .screen-flash{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .08s}
+        .screen-flash.green{background:radial-gradient(circle at center,var(--green),transparent 70%);opacity:.1}
+        .screen-flash.red{background:radial-gradient(circle at center,var(--red),transparent 70%);opacity:.12}
 
-        /* === FLASH DE FONS === */
-        .screen-flash {
-            position:fixed; inset:0; z-index:5; pointer-events:none;
-            opacity:0; transition: opacity 0.1s;
-        }
-        .screen-flash.green { background: var(--green); opacity:0.08; }
-        .screen-flash.red { background: var(--red); opacity:0.08; }
+        .card.shake-card{animation:cardShake .5s ease}
+        @keyframes cardShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 
-        /* === PANTALLA FINAL === */
-        .result-grade {
-            font-size: 90px;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-        .result-score-big {
-            font-size: 56px;
-            font-weight: 900;
-            margin: 12px 0 4px;
-        }
-        .result-max { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
-        .result-message {
-            font-size: 16px;
-            color: #8899b0;
-            line-height: 1.6;
-            margin-bottom: 28px;
-        }
+        .result-grade{font-size:100px;font-weight:900;line-height:1;margin-bottom:2px;filter:drop-shadow(0 4px 20px rgba(0,0,0,0.4))}
+        .result-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:6px}
+        .result-score-big{font-size:60px;font-weight:900;margin:10px 0 2px;letter-spacing:-2px}
+        .result-max{font-size:14px;color:var(--muted);margin-bottom:24px}
+        .result-perfect{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,215,64,0.15),rgba(255,145,0,0.1));border:1px solid rgba(255,215,64,0.25);border-radius:30px;padding:6px 16px;font-size:12px;font-weight:800;color:var(--gold);margin-bottom:20px;letter-spacing:1px}
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 28px;
-        }
-        .stat-box {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 14px 8px;
-        }
-        .stat-box .stat-num {
-            font-size: 24px; font-weight: 900;
-        }
-        .stat-box .stat-label {
-            font-size: 10px; color: var(--muted); text-transform: uppercase;
-            letter-spacing: 1px; margin-top: 2px;
-        }
-        .stat-correct .stat-num { color: var(--green); }
-        .stat-wrong .stat-num { color: var(--red); }
-        .stat-combo .stat-num { color: var(--gold); }
+        .stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px}
+        .stat-box{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:14px 6px}
+        .stat-num{font-size:24px;font-weight:900;line-height:1.2}
+        .stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+        .s-correct .stat-num{color:var(--green)}
+        .s-wrong .stat-num{color:var(--red)}
+        .s-combo .stat-num{color:var(--gold)}
 
-        .result-foods {
-            display: flex; justify-content: center; gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-        .result-food {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px;
-            border: 2px solid;
-            transition: transform 0.2s;
-        }
-        .result-food:hover { transform: scale(1.3); }
-        .result-food.rf-ok { border-color: var(--green); background: rgba(0,230,118,0.08); }
-        .result-food.rf-fail { border-color: var(--red); background: rgba(255,82,82,0.08); }
+        .result-foods{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:20px}
+        .result-food{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:21px;border:2px solid;transition:transform .25s cubic-bezier(.175,.885,.32,1.275);cursor:default}
+        .result-food:hover{transform:scale(1.35)}
+        .rf-ok{border-color:var(--green);background:rgba(0,230,118,0.06)}
+        .rf-fail{border-color:var(--red);background:rgba(255,82,82,0.06)}
 
-        /* === TECLAT === */
-        .key-hint {
-            display: flex; justify-content: center; gap: 24px;
-            margin-top: 16px;
-        }
-        .key-hint span {
-            font-size: 11px; color: var(--muted);
-            display: flex; align-items: center; gap: 5px;
-        }
-        .key-hint kbd {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px;
-            padding: 2px 8px;
-            font-family: inherit;
-            font-size: 11px;
-            font-weight: 600;
-            color: #8899b0;
-        }
+        .result-message{font-size:14px;color:#7a8da5;line-height:1.7;margin-bottom:24px}
+        .new-record{font-size:12px;color:var(--gold);font-weight:800;margin-bottom:16px;letter-spacing:1px;animation:pulse 1s ease-in-out infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-        /* === RESPONSIVE === */
-        @media (max-width: 500px) {
-            .card { padding: 28px 22px; border-radius: 22px; }
-            .title { font-size: 32px; }
-            #food-display { font-size: 84px; }
-            .btn-choice { padding: 14px 8px; border-radius: 16px; }
-            .btn-choice .btn-icon { font-size: 22px; }
-            .fb-text { font-size: 36px; }
-            .result-grade { font-size: 68px; }
-            .result-score-big { font-size: 44px; }
-            .key-hint { display: none; }
+        @media(max-width:500px){
+            .card{padding:30px 20px;border-radius:24px}
+            .title,.title-glow,.title-shine{font-size:38px}
+            #foodDisplay{font-size:84px}
+            .food-name{font-size:18px}
+            .btn-choice{padding:16px 8px;border-radius:18px}
+            .btn-choice .btn-icon{font-size:24px}
+            .fb-text{font-size:40px}
+            .result-grade{font-size:76px}
+            .result-score-big{font-size:48px}
+            .key-hint{display:none}
         }
-
-        /* === REDUCIR MOVIMIENTO === */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
 </head>
 <body>
 
-    <!-- Fons animat -->
-    <div class="bg-layer"></div>
-    <div class="orbs">
-        <div class="orb"></div>
-        <div class="orb"></div>
-        <div class="orb"></div>
-    </div>
-    <div id="screenFlash" class="screen-flash"></div>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-layer"></div>
+<div id="screenFlash" class="screen-flash"></div>
+<div class="feedback-layer"><div id="fbText" class="fb-text"></div></div>
 
-    <!-- Feedback -->
-    <div class="feedback-layer">
-        <div id="fbText" class="fb-text"></div>
-    </div>
-
-    <!-- PANTALLA D'INICI -->
-    <div id="startScreen" class="screen">
-        <div class="card">
+<!-- INICI -->
+<div id="startScreen" class="screen">
+    <div class="card">
+        <div class="logo-wrap">
+            <div class="logo-ring"></div>
+            <div class="logo-ring"></div>
             <span class="logo-icon">🥗</span>
+        </div>
+        <div class="title-wrap">
+            <div class="title-glow" aria-hidden="true">Nutri-Dash</div>
             <h1 class="title">Nutri-Dash</h1>
-            <p class="subtitle">Descobreix si tens bon ull per a la nutrició.<br>10 aliments, 5 segons cadascun. Ràpid i precís.</p>
-            <div class="rules-box">
-                <div class="rule"><i class="fa-solid fa-check ri"></i> Encerta per sumar 10 punts</div>
-                <div class="rule"><i class="fa-solid fa-fire rg"></i> Encadena encerts per obtenir combo x2, x3...</div>
-                <div class="rule"><i class="fa-solid fa-clock rr"></i> No respondis a temps i compte com a error</div>
-                <div class="rule"><i class="fa-solid fa-keyboard ri"></i> Usa les tecles <strong style="color:#c0cde0">F</strong> (Sí) i <strong style="color:#c0cde0">J</strong> (No)</div>
+            <div class="title-shine" aria-hidden="true">Nutri-Dash</div>
+        </div>
+        <p class="subtitle">Separa els aliments saludables dels que no ho son.<br><strong>10 rondes, sense pressa, combos explosius.</strong></p>
+        <div class="rules-box">
+            <div class="rule"><i class="fa-solid fa-check ri"></i>Encerta per sumar <strong style="color:#c0cde0">10 punts base</strong></div>
+            <div class="rule"><i class="fa-solid fa-fire rg"></i>Encadena encerts: combo <strong style="color:#c0cde0">x2, x3... x5</strong></div>
+            <div class="rule"><i class="fa-solid fa-xmark rr"></i>Un error trencara el combo</div>
+            <div class="rule"><i class="fa-solid fa-keyboard ri"></i>Tecles <strong style="color:#c0cde0">F</strong> (Si) i <strong style="color:#c0cde0">J</strong> (No)</div>
+        </div>
+        <div id="bestScoreStart" class="best-score" style="display:none">
+            <i class="fa-solid fa-trophy"></i> Millor marca: <span id="bestVal">0</span>
+        </div>
+        <button class="btn-main" onclick="startGame()">
+            <i class="fa-solid fa-play"></i> COMENCAR
+        </button>
+        <br>
+        <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menu</a>
+    </div>
+</div>
+
+<!-- JOC -->
+<div id="gameScreen" class="screen hidden">
+    <div class="card" id="gameCard">
+        <div class="hud">
+            <div class="hud-item">
+                <span class="hud-label">Punts</span>
+                <span id="hudPoints" class="hud-value score-val">0</span>
             </div>
-            <button class="btn-main" onclick="startGame()">
-                <i class="fa-solid fa-play"></i> COMENÇAR
+            <div class="hud-item">
+                <span class="hud-label">Combo</span>
+                <span id="hudCombo" class="hud-value combo-val">-</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">Ronda</span>
+                <span id="hudRound" class="hud-value round-val">1/10</span>
+            </div>
+        </div>
+
+        <div id="comboBarWrap" class="combo-bar-wrap"><div id="comboBarFill" class="combo-bar-fill"></div></div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+
+        <p class="question-label">Aquest aliment es saludable?</p>
+        <div id="foodDisplay" class="pop-in">🥦</div>
+        <p id="foodName" class="food-name"></p>
+
+        <div class="controls">
+            <button id="btnYes" class="btn-choice btn-yes" onclick="answer(true)">
+                <span class="btn-icon"><i class="fa-solid fa-circle-check"></i></span>
+                SI
+                <span class="btn-sub">Es sa</span>
             </button>
-            <br>
-            <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menú</a>
-        </div>
-    </div>
-
-    <!-- PANTALLA DE JOC -->
-    <div id="gameScreen" class="screen hidden">
-        <div class="card">
-            <!-- HUD -->
-            <div class="hud">
-                <div class="hud-item">
-                    <span class="hud-label">Punts</span>
-                    <span id="hudPoints" class="hud-value score-val">0</span>
-                </div>
-                <div class="hud-item">
-                    <span class="hud-label">Combo</span>
-                    <span id="hudCombo" class="hud-value combo-val">-</span>
-                </div>
-                <div class="hud-item">
-                    <span class="hud-label">Ronda</span>
-                    <span id="hudRound" class="hud-value round-val">1/10</span>
-                </div>
-            </div>
-
-            <!-- Progrés -->
-            <div class="progress-track">
-                <div id="progressFill" class="progress-fill" style="width:0%"></div>
-            </div>
-
-            <!-- Temporitzador -->
-            <div class="timer-ring">
-                <svg viewBox="0 0 60 60">
-                    <circle class="ring-bg" cx="30" cy="30" r="26"/>
-                    <circle id="timerRing" class="ring-fg" cx="30" cy="30" r="26"
-                        stroke-dasharray="163.36" stroke-dashoffset="0"/>
-                </svg>
-                <span id="timerText" class="timer-text">5</span>
-            </div>
-
-            <p class="question-label">Aquest aliment es saludable?</p>
-
-            <div id="foodDisplay" class="pop-in">🥦</div>
-            <p id="foodName" class="food-name"></p>
-
-            <div class="controls">
-                <button id="btnYes" class="btn-choice btn-yes" onclick="answer(true)">
-                    <span class="btn-icon"><i class="fa-solid fa-circle-check"></i></span>
-                    SI
-                    <span class="btn-sub">És sa</span>
-                </button>
-                <button id="btnNo" class="btn-choice btn-no" onclick="answer(false)">
-                    <span class="btn-icon"><i class="fa-solid fa-circle-xmark"></i></span>
-                    NO
-                    <span class="btn-sub">No és sa</span>
-                </button>
-            </div>
-
-            <div class="key-hint">
-                <span><kbd>F</kbd> Sí</span>
-                <span><kbd>J</kbd> No</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- PANTALLA FINAL -->
-    <div id="endScreen" class="screen hidden">
-        <div class="card">
-            <div id="resultGrade" class="result-grade"></div>
-            <p id="resultLabel" style="font-size:14px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; font-weight:600; margin-bottom:4px;"></p>
-            <div id="resultScoreBig" class="result-score-big"></div>
-            <p class="result-max">de 100 punts possibles</p>
-            <div class="stats-row">
-                <div class="stat-box stat-correct">
-                    <div id="statCorrect" class="stat-num">0</div>
-                    <div class="stat-label">Encerts</div>
-                </div>
-                <div class="stat-box stat-wrong">
-                    <div id="statWrong" class="stat-num">0</div>
-                    <div class="stat-label">Errors</div>
-                </div>
-                <div class="stat-box stat-combo">
-                    <div id="statCombo" class="stat-num">0</div>
-                    <div class="stat-label">Max Combo</div>
-                </div>
-            </div>
-            <div id="resultFoods" class="result-foods"></div>
-            <p id="resultMessage" class="result-message"></p>
-            <button class="btn-main" style="width:100%" onclick="restartGame()">
-                <i class="fa-solid fa-rotate-right"></i> TORNAR A JUGAR
+            <button id="btnNo" class="btn-choice btn-no" onclick="answer(false)">
+                <span class="btn-icon"><i class="fa-solid fa-circle-xmark"></i></span>
+                NO
+                <span class="btn-sub">No es sa</span>
             </button>
-            <br>
-            <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menú</a>
+        </div>
+        <div class="key-hint">
+            <span><kbd>F</kbd> Si</span>
+            <span><kbd>J</kbd> No</span>
         </div>
     </div>
+</div>
 
-    <script>
-        /* ============================================
-           BASE DE DADES D'ALIMENTS AMPLIADA
-           ============================================ */
-        const allFoods = [
-            // Saludables
-            { e:'🥦', n:'Bròquil', h:true },
-            { e:'🍎', n:'Poma', h:true },
-            { e:'🥑', n:'Alvocat', h:true },
-            { e:'🥗', n:'Amanida', h:true },
-            { e:'🥚', n:'Ou', h:true },
-            { e:'🍌', n:'Plàtan', h:true },
-            { e:'🍇', n:'Raïm', h:true },
-            { e:'🍓', n:'Maduixa', h:true },
-            { e:'🍊', n:'Taronja', h:true },
-            { e:'🥕', n:'Pastanaga', h:true },
-            { e:'🌽', n:'Blat de moro', h:true },
-            { e:'🥜', n:'Cacauet', h:true },
-            { e:'🍉', n:'Síndria', h:true },
-            { e:'🫐', n:'Arande', h:true },
-            { e:'🐟', n:'Peix', h:true },
-            { e:'🥬', n:'Enciam', h:true },
-            { e:'🫑', n:'Pim Verd', h:true },
-            // No saludables
-            { e:'🍩', n:'Dònut', h:false },
-            { e:'🍟', n:'Patates fregides', h:false },
-            { e:'🍕', n:'Pizza', h:false },
-            { e:'🍭', n:'Piruleta', h:false },
-            { e:'🥓', n:'Bacon', h:false },
-            { e:'🍔', n:'Hamburguesa', h:false },
-            { e:'🧁', n:'Pastís', h:false },
-            { e:'🍪', n:'Galeta', h:false },
-            { e:'🧃', n:'Beguda ensucrada', h:false },
-            { e:'🌭', n:'Gos salzat', h:false },
-            { e:'🧈', n:'Mantega', h:false },
-            { e:'🍦', n:'Gelat', h:false },
-            { e:'🍬', n:'Caramel', h:false },
-            { e:'🥤', n:'Refresc', h:false },
-            { e:'🍿', n:'Crëpets de cotó', h:false },
-            { e:'🍫', n:'Xocolata', h:false },
-            { e:'🧀', n:'Formatge procés', h:false },
-        ];
+<!-- FINAL -->
+<div id="endScreen" class="screen hidden">
+    <div class="card">
+        <div id="resultGrade" class="result-grade"></div>
+        <p id="resultLabel" class="result-label"></p>
+        <div id="resultPerfect" class="result-perfect" style="display:none"><i class="fa-solid fa-crown"></i> PARTIDA PERFECTA</div>
+        <div id="resultScoreBig" class="result-score-big"></div>
+        <p class="result-max">de 400 punts possibles</p>
+        <div id="newRecord" class="new-record" style="display:none"><i class="fa-solid fa-star"></i> NOVA MARCA PERSONAL</div>
+        <div class="stats-row">
+            <div class="stat-box s-correct"><div id="statCorrect" class="stat-num">0</div><div class="stat-lbl">Encerts</div></div>
+            <div class="stat-box s-wrong"><div id="statWrong" class="stat-num">0</div><div class="stat-lbl">Errors</div></div>
+            <div class="stat-box s-combo"><div id="statCombo" class="stat-num">0</div><div class="stat-lbl">Max Combo</div></div>
+        </div>
+        <div id="resultFoods" class="result-foods"></div>
+        <p id="resultMessage" class="result-message"></p>
+        <button class="btn-main" style="width:100%" onclick="restartGame()">
+            <i class="fa-solid fa-rotate-right"></i> TORNA A JUGAR
+        </button>
+        <br>
+        <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menu</a>
+    </div>
+</div>
 
-        /* ============================================
-           ESTAT DEL JOC
-           ============================================ */
-        const TOTAL_ROUNDS = 10;
-        const TIME_PER_ROUND = 5000; // 5 segons
-        const CIRCUMFERENCE = 2 * Math.PI * 26; // ~163.36
+<script>
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let audioCtx=null;
+function ensureAudio(){if(!audioCtx)audioCtx=new AudioCtx();if(audioCtx.state==='suspended')audioCtx.resume()}
+function playTone(f,t,d,v){ensureAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d)}
+function sfxCorrect(){playTone(523,'sine',.12,.15);setTimeout(()=>playTone(659,'sine',.12,.12),70);setTimeout(()=>playTone(784,'sine',.18,.1),140)}
+function sfxWrong(){playTone(200,'sawtooth',.25,.08);setTimeout(()=>playTone(160,'sawtooth',.3,.06),100)}
+function sfxCombo(n){const b=600+n*80;playTone(b,'sine',.08,.1);setTimeout(()=>playTone(b*1.25,'sine',.08,.08),50);setTimeout(()=>playTone(b*1.5,'triangle',.15,.06),100)}
+function sfxEnd(good){if(good){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.2,.1),i*120))}else{[400,350,300,250].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.3,.06),i*150))}}
 
-        let gameFoods = [];
-        let points = 0;
-        let currentRound = 0;
-        let combo = 0;
-        let maxCombo = 0;
-        let correctCount = 0;
-        let wrongCount = 0;
-        let results = []; // {food, correct}
-        let timerInterval = null;
-        let timerStart = 0;
-        let isAnswering = false;
+const bgCanvas=document.getElementById('bgCanvas');
+const ctx=bgCanvas.getContext('2d');
+let particles=[],mouseX=0,mouseY=0;
+function resizeCanvas(){bgCanvas.width=innerWidth;bgCanvas.height=innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
+for(let i=0;i<55;i++){particles.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5,alpha:Math.random()*.25+.05,color:['0,230,118','255,82,82','255,215,64','24,255,255'][Math.floor(Math.random()*4)]})}
+function animBg(){ctx.clearRect(0,0,bgCanvas.width,bgCanvas.height);const w=bgCanvas.width,h=bgCanvas.height;particles.forEach(p=>{const dx=mouseX-p.x,dy=mouseY-p.y,dist=Math.sqrt(dx*dx+dy*dy)||1;if(dist<280){p.vx+=dx/dist*.003;p.vy+=dy/dist*.003}p.vx*=.99;p.vy*=.99;p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.color},${p.alpha})`;ctx.fill()});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=dx*dx+dy*dy;if(d<11000){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(255,255,255,${.014*(1-d/11000)})`;ctx.lineWidth=.5;ctx.stroke()}}}requestAnimationFrame(animBg)}
+animBg();
 
-        /* ============================================
-           REFERÈNCIES DOM
-           ============================================ */
-        const $ = id => document.getElementById(id);
+const allFoods=[
+    {e:'🥦',n:'Broquil',h:true},{e:'🍎',n:'Poma',h:true},{e:'🥑',n:'Alvocat',h:true},
+    {e:'🥗',n:'Amanida verda',h:true},{e:'🥚',n:'Ou ferrat',h:true},{e:'🍌',n:'Platan',h:true},
+    {e:'🍇',n:'Raim',h:true},{e:'🍓',n:'Maduixa',h:true},{e:'🍊',n:'Taronja',h:true},
+    {e:'🥕',n:'Pastanaga',h:true},{e:'🌽',n:'Blat de moro',h:true},{e:'🥜',n:'Cacauet',h:true},
+    {e:'🍉',n:'Sindria',h:true},{e:'🫐',n:'Arande',h:true},{e:'🐟',n:'Salmo',h:true},
+    {e:'🥬',n:'Enciam',h:true},{e:'🫑',n:'Pim verd',h:true},{e:'🍠',n:'Moniato',h:true},
+    {e:'🥒',n:'Cogombre',h:true},{e:'🍆',n:'Alberginia',h:true},{e:'🍄',n:'Bolet',h:true},
+    {e:'🫘',n:'Mongetes',h:true},{e:'🍚',n:'Arrros integral',h:true},{e:'🫒',n:'Oliva',h:true},
+    {e:'🍯',n:'Mel natural',h:true},{e:'🥜',n:'Ametlla',h:true},
+    {e:'🍩',n:'Donut',h:false},{e:'🍟',n:'Patates fregides',h:false},{e:'🍕',n:'Pizza',h:false},
+    {e:'🍭',n:'Piruleta',h:false},{e:'🥓',n:'Bacon',h:false},{e:'🍔',n:'Hamburguesa',h:false},
+    {e:'🧁',n:'Pastis',h:false},{e:'🍪',n:'Galeta',h:false},{e:'🧃',n:'Beguda ensucrada',h:false},
+    {e:'🌭',n:'Gos salzat',h:false},{e:'🧈',n:'Mantega',h:false},{e:'🍦',n:'Gelat',h:false},
+    {e:'🍬',n:'Caramel',h:false},{e:'🥤',n:'Refresc',h:false},{e:'🍫',n:'Xocolata amb llet',h:false},
+    {e:'🧀',n:'Formatge proces',h:false},{e:'🥨',n:'Pretzel',h:false},
+    {e:'🍿',n:'Palomites amb mantega',h:false},{e:'🧃',n:'Zumet de fruita',h:false},
+    {e:'🥣',n:'Cereals ensucrats',h:false},{e:'🥪',n:'Pa blanc amb formatge',h:false},
+];
 
-        const startScreen = $('startScreen');
-        const gameScreen = $('gameScreen');
-        const endScreen = $('endScreen');
-        const hudPoints = $('hudPoints');
-        const hudCombo = $('hudCombo');
-        const hudRound = $('hudRound');
-        const progressFill = $('progressFill');
-        const timerRing = $('timerRing');
-        const timerText = $('timerText');
-        const foodDisplay = $('foodDisplay');
-        const foodName = $('foodName');
-        const btnYes = $('btnYes');
-        const btnNo = $('btnNo');
-        const fbText = $('fbText');
-        const screenFlash = $('screenFlash');
+const TOTAL=10;
+let gameFoods=[],points=0,round=0,combo=0,maxCombo=0;
+let correctCount=0,wrongCount=0,results=[],isAnswering=false;
+const $=id=>document.getElementById(id);
 
-        /* ============================================
-           UTILITATS
-           ============================================ */
-        function shuffle(arr) {
-            const a = [...arr];
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function showScreen(s){[$('startScreen'),$('gameScreen'),$('endScreen')].forEach(x=>x.classList.add('hidden'));setTimeout(()=>s.classList.remove('hidden'),60)}
+function flashScreen(c){const el=$('screenFlash');el.className='screen-flash '+c;setTimeout(()=>el.className='screen-flash',250)}
+function showFeedback(t,c){const fb=$('fbText');fb.className='fb-text';fb.innerText=t;fb.style.color=c;void fb.offsetWidth;fb.classList.add('show');setTimeout(()=>{fb.classList.remove('show');fb.classList.add('fade')},500);setTimeout(()=>{fb.className='fb-text'},950)}
+function spawnParticle(t,c,x,y){const el=document.createElement('div');el.className='score-particle';el.innerText=t;el.style.color=c;el.style.left=x+'px';el.style.top=y+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),1100)}
+function spawnFire(x,y,n){const cols=['#ff6d00','#ff9100','#ffd740','#ff3d00'];for(let i=0;i<n;i++){const el=document.createElement('div');el.className='fire-particle';el.style.background=cols[Math.floor(Math.random()*cols.length)];el.style.left=(x+(Math.random()-.5)*40)+'px';el.style.top=y+'px';const s=3+Math.random()*5;el.style.width=s+'px';el.style.height=s+'px';el.style.animationDuration=(.5+Math.random()*.5)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}}
+function bumpHud(el){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}
+
+function getBest(){return parseInt(localStorage.getItem('nutri-dash-best')||'0',10)}
+function setBest(v){localStorage.setItem('nutri-dash-best',v)}
+function updateBestUI(){const b=getBest();const el=$('bestScoreStart');if(b>0){el.style.display='flex';$('bestVal').innerText=b}else{el.style.display='none'}}
+updateBestUI();
+
+function startGame(){
+    ensureAudio();
+    const healthy=shuffle(allFoods.filter(f=>f.h));
+    const unhealthy=shuffle(allFoods.filter(f=>!f.h));
+    gameFoods=shuffle([...healthy.slice(0,5),...unhealthy.slice(0,5)]);
+    points=0;round=0;combo=0;maxCombo=0;correctCount=0;wrongCount=0;results=[];isAnswering=false;
+    $('hudPoints').innerText='0';$('hudCombo').innerText='-';
+    $('comboBarWrap').classList.remove('active');$('comboBarFill').style.width='0%';
+    showScreen($('gameScreen'));
+    setTimeout(loadRound,350);
+}
+
+function loadRound(){
+    if(round>=TOTAL){endGame();return}
+    isAnswering=false;
+    $('btnYes').disabled=false;$('btnNo').disabled=false;
+    $('btnYes').className='btn-choice btn-yes';$('btnNo').className='btn-choice btn-no';
+    const food=gameFoods[round];
+    $('hudRound').innerText=`${round+1}/${TOTAL}`;
+    $('progressFill').style.width=`${(round/TOTAL)*100}%`;
+    const fd=$('foodDisplay');fd.className='';void fd.offsetWidth;fd.className='pop-in';
+    fd.innerText=food.e;$('foodName').innerText=food.n;
+}
+
+function answer(userSaysHealthy){
+    if(isAnswering)return;
+    isAnswering=true;
+    const food=gameFoods[round];
+    const correct=food.h===userSaysHealthy;
+    let gained=0;
+    if(correct){
+        combo++;if(combo>maxCombo)maxCombo=combo;
+        const mult=Math.min(combo,5);
+        gained=10*mult;points+=gained;correctCount++;
+        flashScreen('green');sfxCorrect();if(combo>1)sfxCombo(combo);
+        showFeedback(combo>1?`x${mult} COMBO!`:'MOLT BE!','var(--green)');
+        (userSaysHealthy?$('btnYes'):$('btnNo')).classList.add('flash-correct');
+        const rect=$('foodDisplay').getBoundingClientRect();
+        spawnParticle(`+${gained}`,'var(--green)',rect.left+rect.width/2-15,rect.top+10);
+        if(combo>=3)spawnFire(rect.left+rect.width/2,rect.bottom,combo*3);
+        bumpHud($('hudPoints'));if(combo>1)bumpHud($('hudCombo'));
+        $('comboBarWrap').classList.add('active');$('comboBarFill').style.width=`${Math.min(combo/5*100,100)}%`;
+    }else{
+        combo=0;wrongCount++;
+        flashScreen('red');sfxWrong();showFeedback('ERROR','var(--red)');
+        const fd=$('foodDisplay');fd.classList.remove('pop-in');fd.classList.add('shake');
+        $('gameCard').classList.add('shake-card');setTimeout(()=>$('gameCard').classList.remove('shake-card'),500);
+        (food.h?$('btnYes'):$('btnNo')).classList.add('flash-correct');
+        (userSaysHealthy?$('btnYes'):$('btnNo')).classList.add('flash-wrong');
+        $('comboBarWrap').classList.remove('active');$('comboBarFill').style.width='0%';
+    }
+    results.push({food,correct,gained});
+    $('hudPoints').innerText=points;
+    $('hudCombo').innerText=combo>1?`x${Math.min(combo,5)}`:'-';
+    $('btnYes').disabled=true;$('btnNo').disabled=true;
+    round++;setTimeout(loadRound,950);
+}
+
+function endGame(){
+    $('progressFill').style.width='100%';
+    const simplePct=correctCount/TOTAL;
+    let grade,gradeColor,label;
+    if(simplePct>=1){grade='S+';gradeColor='var(--gold)';label='PERFECCIO ABSOLUTA'}
+    else if(simplePct>=.9){grade='S';gradeColor='var(--gold)';label='EXTRAORDINARI'}
+    else if(simplePct>=.75){grade='A';gradeColor='var(--green)';label='NOTABLE'}
+    else if(simplePct>=.55){grade='B';gradeColor='#42a5f5';label='APROVAT'}
+    else if(simplePct>=.35){grade='C';gradeColor='#ff9800';label='SUFICIENT'}
+    else{grade='D';gradeColor='var(--red)';label='NO SUPERAT'}
+    showScreen($('endScreen'));
+    $('resultGrade').innerText=grade;$('resultGrade').style.color=gradeColor;
+    $('resultLabel').innerText=label;$('resultScoreBig').innerText=points;$('resultScoreBig').style.color=gradeColor;
+    $('resultPerfect').style.display=simplePct>=1?'inline-flex':'none';
+    const best=getBest();const isNew=points>best;
+    if(isNew&&points>0){setBest(points);$('newRecord').style.display='block'}else{$('newRecord').style.display='none'}
+    $('statCorrect').innerText=correctCount;$('statWrong').innerText=wrongCount;
+    $('statCombo').innerText=maxCombo>1?`x${maxCombo}`:'-';
+    const msgs={
+        'S+':'Impressionant. Has encertat totes les rondes sense cap error. Nivell mestre de la nutricio.',
+        'S':'El teu criteri nutricional es excepcional. Quasi cap aliment se\'t escapa.',
+        'A':'Molt bon treball. Tens una base solida de nutricio amb poques escletxes.',
+        'B':'Bona base, pero hi ha hagut alguns aliments trampa que t\'han enganyat.',
+        'C':'Acceptable, pero necessites revisar quins aliments son realment saludables.',
+        'D':'Cal estudiar mes sobre nutricio. No et rendeixis, la proxima sera millor!'
+    };
+    $('resultMessage').innerText=msgs[grade];
+    $('resultFoods').innerHTML=results.map(r=>`<div class="result-food ${r.correct?'rf-ok':'rf-fail'}" title="${r.food.n} — ${r.correct?'Correcte (+'+r.gained+')':'Incorrecte'}">${r.food.e}</div>`).join('');
+    sfxEnd(simplePct>=.75);
+    if(simplePct>=.9){
+        setTimeout(()=>confetti({particleCount:150,spread:80,origin:{y:.6},colors:['#00e676','#ffd740','#18ffff']}),400);
+        if(simplePct>=1){
+            setTimeout(()=>confetti({particleCount:100,spread:120,origin:{x:.15,y:.45},colors:['#ffd740','#ff9100']}),600);
+            setTimeout(()=>confetti({particleCount:100,spread:120,origin:{x:.85,y:.45},colors:['#ffd740','#ff9100']}),800);
+            setTimeout(()=>confetti({particleCount:80,spread:100,origin:{y:.3},colors:['#00e676','#18ffff']}),1000);
         }
+    }else if(simplePct>=.75){
+        setTimeout(()=>confetti({particleCount:60,spread:60,origin:{y:.65},colors:['#00e676','#18ffff']}),400);
+    }
+}
 
-        function showScreen(screen) {
-            [startScreen, gameScreen, endScreen].forEach(s => s.classList.add('hidden'));
-            setTimeout(() => screen.classList.remove('hidden'), 50);
-        }
+function restartGame(){updateBestUI();showScreen($('startScreen'));setTimeout(startGame,400)}
 
-        function flashScreen(color) {
-            screenFlash.className = 'screen-flash ' + color;
-            setTimeout(() => screenFlash.className = 'screen-flash', 200);
-        }
-
-        function showFeedback(text, color) {
-            fbText.className = 'fb-text';
-            fbText.innerText = text;
-            fbText.style.color = color;
-            // Forçar reflow
-            void fbText.offsetWidth;
-            fbText.classList.add('show');
-            setTimeout(() => {
-                fbText.classList.remove('show');
-                fbText.classList.add('fade');
-            }, 500);
-            setTimeout(() => {
-                fbText.className = 'fb-text';
-            }, 900);
-        }
-
-        function spawnScoreParticle(text, color, x, y) {
-            const el = document.createElement('div');
-            el.className = 'score-particle';
-            el.innerText = text;
-            el.style.color = color;
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
-        }
-
-        /* ============================================
-           TEMPORITZADOR
-           ============================================ */
-        function startTimer() {
-            timerStart = performance.now();
-            timerRing.style.strokeDashoffset = '0';
-            timerRing.classList.remove('danger');
-            timerText.innerText = '5';
-            timerText.style.color = '';
-
-            clearInterval(timerInterval);
-            timerInterval = setInterval(updateTimer, 50);
-        }
-
-        function updateTimer() {
-            const elapsed = performance.now() - timerStart;
-            const remaining = Math.max(0, TIME_PER_ROUND - elapsed);
-            const fraction = remaining / TIME_PER_ROUND;
-            const offset = CIRCUMFERENCE * (1 - fraction);
-
-            timerRing.style.strokeDashoffset = offset;
-
-            const sec = Math.ceil(remaining / 1000);
-            timerText.innerText = sec;
-
-            // Canviar a vermell als últims 2 segons
-            if (remaining < 2000) {
-                timerRing.classList.add('danger');
-                timerText.style.color = 'var(--red)';
-            }
-
-            if (remaining <= 0) {
-                clearInterval(timerInterval);
-                timeOut();
-            }
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-        }
-
-        /* ============================================
-           FLUX DEL JOC
-           ============================================ */
-        function startGame() {
-            // Seleccionar 10 aliments aleatoris (equilibrats)
-            const healthy = shuffle(allFoods.filter(f => f.h));
-            const unhealthy = shuffle(allFoods.filter(f => !f.h));
-            const pick = (arr, n) => arr.slice(0, n);
-            const h = pick(healthy, 5);
-            const u = pick(unhealthy, 5);
-            gameFoods = shuffle([...h, ...u]);
-
-            // Reset estat
-            points = 0;
-            currentRound = 0;
-            combo = 0;
-            maxCombo = 0;
-            correctCount = 0;
-            wrongCount = 0;
-            results = [];
-            isAnswering = false;
-
-            hudPoints.innerText = '0';
-            hudCombo.innerText = '-';
-            showScreen(gameScreen);
-            setTimeout(() => loadRound(), 300);
-        }
-
-        function loadRound() {
-            if (currentRound >= TOTAL_ROUNDS) {
-                endGame();
-                return;
-            }
-
-            isAnswering = false;
-            btnYes.disabled = false;
-            btnNo.disabled = false;
-            btnYes.classList.remove('correct-flash');
-            btnNo.classList.remove('correct-flash');
-
-            const food = gameFoods[currentRound];
-            hudRound.innerText = `${currentRound + 1}/${TOTAL_ROUNDS}`;
-            progressFill.style.width = `${(currentRound / TOTAL_ROUNDS) * 100}%`;
-
-            // Animar entrada del menjar
-            foodDisplay.className = '';
-            void foodDisplay.offsetWidth;
-            foodDisplay.className = 'pop-in';
-            foodDisplay.innerText = food.e;
-            foodName.innerText = food.n;
-
-            startTimer();
-        }
-
-        function answer(userSaysHealthy) {
-            if (isAnswering) return;
-            isAnswering = true;
-            stopTimer();
-
-            const food = gameFoods[currentRound];
-            const correct = (food.h === userSaysHealthy);
-
-            // Calcular punts amb combo
-            let gained = 0;
-            if (correct) {
-                combo++;
-                if (combo > maxCombo) maxCombo = combo;
-                const multiplier = Math.min(combo, 5);
-                gained = 10 * multiplier;
-                points += gained;
-                correctCount++;
-
-                // Feedback visual
-                flashScreen('green');
-                showFeedback(
-                    combo > 1 ? `PERFECTE! x${multiplier}` : 'MOLT BE!',
-                    'var(--green)'
-                );
-
-                // Flash al botó correcte
-                (userSaysHealthy ? btnYes : btnNo).classList.add('correct-flash');
-
-                // Partícula de puntuació
-                const rect = foodDisplay.getBoundingClientRect();
-                spawnScoreParticle(
-                    `+${gained}`,
-                    'var(--green)',
-                    rect.left + rect.width / 2 - 15,
-                    rect.top
-                );
-            } else {
-                combo = 0;
-                wrongCount++;
-
-                flashScreen('red');
-                showFeedback('ERROR!', 'var(--red)');
-                foodDisplay.classList.remove('pop-in');
-                foodDisplay.classList.add('shake');
-
-                // Flash al botó CORRECTE (no al que ha premut)
-                (food.h ? btnYes : btnNo).classList.add('correct-flash');
-            }
-
-            results.push({ food, correct });
-
-            // Actualitzar HUD
-            hudPoints.innerText = points;
-            hudCombo.innerText = combo > 1 ? `x${Math.min(combo, 5)}` : '-';
-
-            // Desactivar botons
-            btnYes.disabled = true;
-            btnNo.disabled = true;
-
-            // Següent ronda
-            currentRound++;
-            setTimeout(loadRound, 900);
-        }
-
-        function timeOut() {
-            if (isAnswering) return;
-            isAnswering = true;
-
-            const food = gameFoods[currentRound];
-            combo = 0;
-            wrongCount++;
-            results.push({ food, correct: false });
-
-            flashScreen('red');
-            showFeedback('TEMPS!', 'var(--red)');
-            foodDisplay.classList.remove('pop-in');
-            foodDisplay.classList.add('shake');
-
-            // Flash al botó correcte
-            (food.h ? btnYes : btnNo).classList.add('correct-flash');
-
-            hudCombo.innerText = '-';
-
-            btnYes.disabled = true;
-            btnNo.disabled = true;
-
-            currentRound++;
-            setTimeout(loadRound, 1000);
-        }
-
-        function endGame() {
-            stopTimer();
-            progressFill.style.width = '100%';
-
-            showScreen(endScreen);
-
-            // Calcular nota
-            const pct = points / 100;
-            let grade, gradeColor, label;
-            if (pct >= 0.9) { grade = 'S'; gradeColor = 'var(--gold)'; label = 'EXTRAORDINARI'; }
-            else if (pct >= 0.75) { grade = 'A'; gradeColor = 'var(--green)'; label = 'NOTABLE'; }
-            else if (pct >= 0.55) { grade = 'B'; gradeColor = '#42a5f5'; label = 'APROVAT'; }
-            else if (pct >= 0.35) { grade = 'C'; gradeColor = '#ff9800'; label = 'SUFICIENT'; }
-            else { grade = 'D'; gradeColor = 'var(--red)'; label = 'NO SUPERAT'; }
-
-            $('resultGrade').innerText = grade;
-            $('resultGrade').style.color = gradeColor;
-            $('resultLabel').innerText = label;
-            $('resultScoreBig').innerText = points;
-            $('resultScoreBig').style.color = gradeColor;
-
-            $('statCorrect').innerText = correctCount;
-            $('statWrong').innerText = wrongCount;
-            $('statCombo').innerText = maxCombo > 1 ? `x${maxCombo}` : '0';
-
-            // Missatge
-            const messages = {
-                S: 'Ets una veritable enciclopèdia de la nutrició. Nivell professional.',
-                A: 'Tens un molt bon criteri nutricional. Pocs aliments s\'escapen del teu radar.',
-                B: 'Bona base nutricional, però encara hi ha hagut alguns dubtes interessants.',
-                C: 'N\'hi ha de millorable. Revisa els teus coneixements sobre alimentació!',
-                D: 'Cal estudiar una mica més sobre nutrició. No et rendeixis!'
-            };
-            $('resultMessage').innerText = messages[grade];
-
-            // Mini resum dels aliments
-            const foodsHtml = results.map(r => {
-                const cls = r.correct ? 'rf-ok' : 'rf-fail';
-                return `<div class="result-food ${cls}" title="${r.food.n} — ${r.correct ? 'Correcte' : 'Incorrecte'}">${r.food.e}</div>`;
-            }).join('');
-            $('resultFoods').innerHTML = foodsHtml;
-
-            // Confetti per a S i A
-            if (pct >= 0.75) {
-                setTimeout(() => {
-                    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
-                    if (pct >= 0.9) {
-                        setTimeout(() => confetti({ particleCount: 80, spread: 100, origin: { x: 0.2, y: 0.5 } }), 300);
-                        setTimeout(() => confetti({ particleCount: 80, spread: 100, origin: { x: 0.8, y: 0.5 } }), 500);
-                    }
-                }, 400);
-            }
-        }
-
-        function restartGame() {
-            showScreen(startScreen);
-            setTimeout(startGame, 400);
-        }
-
-        /* ============================================
-           CONTROLS DE TECLAT
-           ============================================ */
-        document.addEventListener('keydown', (e) => {
-            if (gameScreen.classList.contains('hidden')) return;
-            if (e.key === 'f' || e.key === 'F') answer(true);
-            if (e.key === 'j' || e.key === 'J') answer(false);
-        });
-
-        /* ============================================
-           INIT — començar a la pantalla d'inici
-           ============================================ */
-        timerRing.style.strokeDasharray = CIRCUMFERENCE;
-    </script>
+document.addEventListener('keydown',e=>{
+    if($('gameScreen').classList.contains('hidden'))return;
+    if(e.key==='f'||e.key==='F')answer(true);
+    if(e.key==='j'||e.key==='J')answer(false);
+});
+</script>
 </body>
 </html>
