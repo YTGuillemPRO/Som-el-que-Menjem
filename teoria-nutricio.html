@@ -4,152 +4,528 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrició | Portal de Salut</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --primary: #558b2f;
-            --secondary: #8bc34a;
-            --bg-gradient: linear-gradient(135deg, #f1f8e9 0%, #c8e6c9 100%);
-            --glass: rgba(255, 255, 255, 0.95);
+            --bg: #071a0e;
+            --bg2: #0c2416;
+            --card: rgba(14,42,26,0.7);
+            --card-solid: #0e2a1a;
+            --card-border: rgba(76,175,80,0.12);
+            --green: #4caf50;
+            --green-light: #81c784;
+            --green-glow: rgba(76,175,80,0.15);
+            --lime: #cddc39;
+            --orange: #ff9800;
+            --red: #ef5350;
+            --blue: #29b6f6;
+            --purple: #ab47bc;
+            --brown: #8d6e63;
+            --yellow: #fdd835;
+            --text: #e0f2e9;
+            --text-dim: #8aad98;
+            --text-muted: #5a7d68;
+            --radius: 24px;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Plus Jakarta Sans',sans-serif;
+            background:var(--bg);color:var(--text);
+            min-height:100vh;overflow-x:hidden;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        /* === FONS === */
+        .bg-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .bg-scene .orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.25}
+        .bg-scene .orb:nth-child(1){width:500px;height:500px;background:var(--green);top:-150px;left:-100px;animation:orbDrift 18s ease-in-out infinite alternate}
+        .bg-scene .orb:nth-child(2){width:400px;height:400px;background:var(--lime);bottom:-120px;right:-80px;animation:orbDrift 22s ease-in-out infinite alternate-reverse}
+        .bg-scene .orb:nth-child(3){width:300px;height:300px;background:var(--blue);top:40%;left:50%;opacity:.1;animation:orbDrift 15s ease-in-out infinite alternate}
+        @keyframes orbDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(50px,30px) scale(1.15)}}
 
-        body {
-            min-height: 100vh;
-            background: var(--bg-gradient);
-            padding: 40px 20px;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .noise{
+            position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
-            width: 100%;
+        /* === LAYOUT === */
+        .page{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:40px 20px 60px}
+
+        /* === HEADER === */
+        .header{text-align:center;margin-bottom:56px;position:relative}
+        .header-icon{
+            font-size:56px;display:inline-block;margin-bottom:16px;
+            animation:headerFloat 5s ease-in-out infinite;
+            filter:drop-shadow(0 0 30px rgba(76,175,80,0.3));
+        }
+        @keyframes headerFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+        .header h1{
+            font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-1.5px;
+            line-height:1.1;margin-bottom:12px;
+            background:linear-gradient(135deg,var(--green-light),var(--lime),var(--green));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        }
+        .header p{font-size:16px;color:var(--text-dim);max-width:520px;margin:0 auto;line-height:1.6}
+        .header-divider{
+            width:60px;height:3px;border-radius:3px;margin:20px auto 0;
+            background:linear-gradient(90deg,var(--green),var(--lime));
         }
 
-        h1 { color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 32px; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 40px; }
-
-        /* Sección de Nutrientes */
-        .nutrients-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+        /* === SECCIONS === */
+        .section-title{
+            font-size:13px;text-transform:uppercase;letter-spacing:2.5px;
+            color:var(--text-muted);font-weight:700;margin-bottom:20px;
+            display:flex;align-items:center;gap:10px;
+        }
+        .section-title::after{
+            content:'';flex:1;height:1px;
+            background:linear-gradient(90deg,var(--card-border),transparent);
         }
 
-        .n-card {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid #eee;
-            transition: transform 0.3s;
+        /* === MACRONUTRIENTS === */
+        .macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:48px}
+        .macro-card{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:28px 24px;
+            transition:all .35s cubic-bezier(.175,.885,.32,1.275);
+            position:relative;overflow:hidden;cursor:default;
+        }
+        .macro-card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:3px;
+            border-radius:3px 3px 0 0;transition:height .3s;
+        }
+        .macro-card:hover{transform:translateY(-6px);border-color:rgba(76,175,80,0.25)}
+        .macro-card:hover::before{height:4px}
+        .mc-carbs::before{background:linear-gradient(90deg,#fdd835,#ff9800)}
+        .mc-carbs:hover{box-shadow:0 12px 40px rgba(253,216,53,0.08)}
+        .mc-protein::before{background:linear-gradient(90deg,#ef5350,#ff7043)}
+        .mc-protein:hover{box-shadow:0 12px 40px rgba(239,83,80,0.08)}
+        .mc-fats::before{background:linear-gradient(90deg,#66bb6a,#26a69a)}
+        .mc-fats:hover{box-shadow:0 12px 40px rgba(102,187,106,0.08)}
+        .mc-fiber::before{background:linear-gradient(90deg,#8d6e63,#a1887f)}
+        .mc-fiber:hover{box-shadow:0 12px 40px rgba(141,110,99,0.08)}
+        .mc-water::before{background:linear-gradient(90deg,#29b6f6,#0288d1)}
+        .mc-water:hover{box-shadow:0 12px 40px rgba(41,182,246,0.08)}
+        .mc-vitamins::before{background:linear-gradient(90deg,#ab47bc,#7e57c2)}
+        .mc-vitamins:hover{box-shadow:0 12px 40px rgba(171,71,188,0.08)}
+
+        .macro-icon{
+            width:48px;height:48px;border-radius:14px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:22px;margin-bottom:14px;
+        }
+        .mc-carbs .macro-icon{background:rgba(253,216,53,0.12);color:#fdd835}
+        .mc-protein .macro-icon{background:rgba(239,83,80,0.12);color:#ef5350}
+        .mc-fats .macro-icon{background:rgba(102,187,106,0.12);color:#66bb6a}
+        .mc-fiber .macro-icon{background:rgba(141,110,99,0.12);color:#a1887f}
+        .mc-water .macro-icon{background:rgba(41,182,246,0.12);color:#29b6f6}
+        .mc-vitamins .macro-icon{background:rgba(171,71,188,0.12);color:#ab47bc}
+
+        .macro-card h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
+        .macro-card p{font-size:13.5px;color:var(--text-dim);line-height:1.65;margin-bottom:14px}
+        .macro-sources{
+            display:flex;flex-wrap:wrap;gap:6px;
+        }
+        .macro-tag{
+            font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;
+            background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+            color:var(--text-muted);
         }
 
-        .n-card:hover { transform: translateY(-5px); border-color: var(--secondary); }
-        .n-card h3 { color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .n-card p { font-size: 14px; color: #555; line-height: 1.5; }
-
-        /* Plato Saludable (Interactividad) */
-        .plate-section {
-            background: #f9fdf9;
-            padding: 30px;
-            border-radius: 25px;
-            text-align: center;
-            border: 2px dashed #c8e6c9;
+        /* === PLAT SALUDABLE === */
+        .plate-section{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:36px;margin-bottom:48px;
+            position:relative;overflow:hidden;
         }
-
-        .plate-viz {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            gap: 10px;
+        .plate-section::after{
+            content:'';position:absolute;top:-60px;right:-60px;
+            width:200px;height:200px;border-radius:50%;
+            background:radial-gradient(circle,rgba(76,175,80,0.06),transparent);
+            pointer-events:none;
         }
+        .plate-section h3{font-size:20px;font-weight:700;margin-bottom:4px}
+        .plate-section .plate-sub{font-size:13px;color:var(--text-muted);margin-bottom:28px}
 
-        .part {
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            border-radius: 15px;
-            transition: width 0.5s ease;
+        .plate-viz{
+            display:flex;gap:8px;margin-bottom:28px;
+            height:80px;border-radius:20px;overflow:hidden;
         }
-
-        .v-green { background: #4caf50; width: 50%; } /* Verduras */
-        .v-brown { background: #795548; width: 25%; } /* Proteína */
-        .v-yellow { background: #fbc02d; width: 25%; } /* Hidratos */
-
-        .btn-tornar {
-            display: inline-block;
-            margin-top: 30px;
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 600;
-            border: 2px solid var(--primary);
-            padding: 10px 25px;
-            border-radius: 50px;
-            transition: all 0.3s;
+        .plate-part{
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            color:white;font-weight:700;font-size:14px;
+            transition:all .4s cubic-bezier(.22,1,.36,1);
+            position:relative;cursor:default;
         }
+        .plate-part:hover{filter:brightness(1.15)}
+        .plate-part .pp-emoji{font-size:20px;margin-bottom:2px}
+        .plate-part .pp-pct{font-size:11px;opacity:.8;font-weight:500}
+        .pp-veg{background:linear-gradient(135deg,#388e3c,#4caf50);flex:5}
+        .pp-pro{background:linear-gradient(135deg,#d84315,#ff5722);flex:2.5}
+        .pp-hid{background:linear-gradient(135deg,#f9a825,#fdd835);flex:2.5;color:#5d4037}
 
-        .btn-tornar:hover { background: var(--primary); color: white; }
+        .plate-tip{
+            background:rgba(76,175,80,0.06);border:1px solid rgba(76,175,80,0.12);
+            border-radius:14px;padding:16px 20px;
+            display:flex;align-items:flex-start;gap:12px;
+        }
+        .plate-tip i{color:var(--green);font-size:16px;margin-top:2px;flex-shrink:0}
+        .plate-tip p{font-size:13px;color:var(--text-dim);line-height:1.6}
+        .plate-tip strong{color:var(--green-light)}
 
+        /* === CONSELLS === */
+        .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:48px}
+        .tip-card{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:18px;padding:22px 20px;
+            display:flex;align-items:flex-start;gap:14px;
+            transition:all .3s;cursor:default;
+        }
+        .tip-card:hover{border-color:rgba(76,175,80,0.2);transform:translateX(4px)}
+        .tip-num{
+            width:36px;height:36px;border-radius:10px;flex-shrink:0;
+            display:flex;align-items:center;justify-content:center;
+            font-size:14px;font-weight:800;
+            background:rgba(76,175,80,0.1);color:var(--green);border:1px solid rgba(76,175,80,0.15);
+        }
+        .tip-card h4{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text)}
+        .tip-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55}
+
+        /* === HIDRATACIÓ === */
+        .hydration{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:32px;margin-bottom:48px;
+            display:flex;gap:28px;align-items:center;
+        }
+        .water-viz{
+            width:100px;height:160px;border-radius:20px;flex-shrink:0;
+            border:2px solid rgba(41,182,246,0.2);
+            position:relative;overflow:hidden;
+            background:rgba(41,182,246,0.03);
+        }
+        .water-fill{
+            position:absolute;bottom:0;left:0;right:0;
+            background:linear-gradient(0deg,#0288d1,#29b6f6,#4fc3f7);
+            border-radius:0 0 18px 18px;
+            animation:waterWave 3s ease-in-out infinite;
+            height:75%;
+        }
+        .water-fill::before{
+            content:'';position:absolute;top:-6px;left:-10%;width:120%;height:14px;
+            background:radial-gradient(ellipse at center,rgba(79,195,247,0.6),transparent 70%);
+            animation:waveMove 2s ease-in-out infinite;
+        }
+        @keyframes waveMove{0%,100%{transform:translateX(-5px) scaleY(1)}50%{transform:translateX(5px) scaleY(1.3)}}
+        @keyframes waterWave{0%,100%{height:73%}50%{height:77%}}
+        .water-label{
+            position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            font-size:22px;font-weight:800;color:white;
+            text-shadow:0 2px 8px rgba(0,0,0,0.4);z-index:2;
+        }
+        .hydration-info h3{font-size:18px;font-weight:700;margin-bottom:8px}
+        .hydration-info p{font-size:13.5px;color:var(--text-dim);line-height:1.6;margin-bottom:12px}
+        .hydration-stats{display:flex;gap:20px}
+        .h-stat{text-align:center}
+        .h-stat .h-val{font-size:20px;font-weight:800;color:var(--blue)}
+        .h-stat .h-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+        /* === DADES CURIOSES === */
+        .facts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:48px}
+        .fact{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:16px;padding:20px 16px;text-align:center;
+            transition:all .3s;cursor:default;
+        }
+        .fact:hover{border-color:rgba(76,175,80,0.2);transform:scale(1.03)}
+        .fact-emoji{font-size:32px;margin-bottom:8px;display:block}
+        .fact-val{font-size:22px;font-weight:800;margin-bottom:2px}
+        .fact-label{font-size:11px;color:var(--text-muted);line-height:1.4}
+        .fv-green{color:var(--green-light)}
+        .fv-orange{color:var(--orange)}
+        .fv-blue{color:var(--blue)}
+        .fv-purple{color:var(--purple)}
+
+        /* === FOOTER === */
+        .footer{text-align:center;padding:20px 0;border-top:1px solid var(--card-border)}
+        .btn-back{
+            display:inline-flex;align-items:center;gap:8px;
+            text-decoration:none;color:var(--green);font-weight:700;font-size:14px;
+            border:2px solid rgba(76,175,80,0.25);border-radius:50px;
+            padding:12px 28px;transition:all .3s;
+            background:rgba(76,175,80,0.05);
+        }
+        .btn-back:hover{background:var(--green);color:var(--bg);border-color:var(--green);transform:translateY(-2px);box-shadow:0 8px 24px var(--green-glow)}
+        .footer-copy{margin-top:20px;font-size:11px;color:var(--text-muted)}
+
+        /* === RESPONSIVE === */
+        @media(max-width:640px){
+            .page{padding:28px 14px 40px}
+            .macro-grid{grid-template-columns:1fr}
+            .tips-grid{grid-template-columns:1fr}
+            .hydration{flex-direction:column;text-align:center}
+            .hydration-stats{justify-content:center}
+            .facts-row{grid-template-columns:1fr 1fr}
+            .plate-viz{height:70px}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🍎 Món de la Nutrició</h1>
-    <p class="subtitle">Aprèn a alimentar el teu cos de forma intel·ligent</p>
+<div class="bg-scene">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+</div>
+<div class="noise"></div>
 
-    <div class="nutrients-grid">
-        <div class="n-card">
-            <h3>🍞 Hidrats de carboni</h3>
-            <p>Són la font d'energia principal per al cervell i els músculs. Es troben al pa, la pasta i les fruites.</p>
+<div class="page">
+
+    <!-- HEADER -->
+    <header class="header">
+        <span class="header-icon">🥦</span>
+        <h1>Mon de la Nutricio</h1>
+        <p>Entendre què menjes és la primera passa per menjar millor. Aquí trobaràs les claus per alimentar el teu cos de forma intel·ligent.</p>
+        <div class="header-divider"></div>
+    </header>
+
+    <!-- MACRONUTRIENTS -->
+    <div class="section-title"><i class="fa-solid fa-cubes" style="color:var(--green)"></i> Macronutrients</div>
+    <div class="macro-grid">
+        <div class="macro-card mc-carbs">
+            <div class="macro-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+            <h3>Hidrats de carboni</h3>
+            <p>La principal font d'energia del cervell i els músculs. El cos els transforma en glucosa per mantenir-te actiu tot el dia.</p>
+            <div class="macro-sources">
+                <span class="macro-tag">Pa integral</span>
+                <span class="macro-tag">Arròs</span>
+                <span class="macro-tag">Fruites</span>
+                <span class="macro-tag">Patata</span>
+                <span class="macro-tag">Cereal</span>
+            </div>
         </div>
-        <div class="n-card">
-            <h3>🍗 Proteïnes</h3>
-            <p>Necessàries per créixer i reparar els teixits del cos (músculs, pell). Es troben a la carn, peix, ous i llegums.</p>
+        <div class="macro-card mc-protein">
+            <div class="macro-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
+            <h3>Proteïnes</h3>
+            <p>Essencials per créixer, reparar teixits i construir músculs. Cada cel·la del teu cos en necessita per funcionar correctament.</p>
+            <div class="macro-sources">
+                <span class="macro-tag">Carn</span>
+                <span class="macro-tag">Peix</span>
+                <span class="macro-tag">Ous</span>
+                <span class="macro-tag">Llegums</span>
+                <span class="macro-tag">Tofu</span>
+            </div>
         </div>
-        <div class="n-card">
-            <h3>🥑 Greixos saludables</h3>
-            <p>Ajuden a absorbir vitamines i protegeixen els òrgans. Es troben a l'oli d'oliva, la fruita seca i l'alvocat.</p>
+        <div class="macro-card mc-fats">
+            <div class="macro-icon"><i class="fa-solid fa-droplet"></i></div>
+            <h3>Greixos saludables</h3>
+            <p>Protegeixen els òrgans, ajuden a absorbir vitamines (A, D, E, K) i són fonamentals per al cervell. No tots els greixos són dolents.</p>
+            <div class="macro-sources">
+                <span class="macro-tag">Oli d'oliva</span>
+                <span class="macro-tag">Alvocat</span>
+                <span class="macro-tag">Fruita seca</span>
+                <span class="macro-tag">Peix blau</span>
+            </div>
+        </div>
+        <div class="macro-card mc-fiber">
+            <div class="macro-icon"><i class="fa-solid fa-seedling"></i></div>
+            <h3>Fibra alimentària</h3>
+            <p>Regula el trànsit intestinal, ajuda a controlar el sucre en sang i et fa sentir satiat. La majoria de persones en mengen menys del recomanat.</p>
+            <div class="macro-sources">
+                <span class="macro-tag">Verdures</span>
+                <span class="macro-tag">Llegums</span>
+                <span class="macro-tag">Fruita completa</span>
+                <span class="macro-tag">Cereals integrals</span>
+            </div>
+        </div>
+        <div class="macro-card mc-water">
+            <div class="macro-icon"><i class="fa-solid fa-glass-water"></i></div>
+            <h3>Hidratació</h3>
+            <p>El 60% del teu cos és aigua. Intervé en la digestió, la circulació, la temperatura corporal i l'eliminació de toxines.</p>
+            <div class="macro-sources">
+                <span class="macro-tag">Aigua</span>
+                <span class="macro-tag">Infusions</span>
+                <span class="macro-tag">Sopes</span>
+                <span class="macro-tag">Fruita i verdura</span>
+            </div>
+        </div>
+        <div class="macro-card mc-vitamins">
+            <div class="macro-icon"><i class="fa-solid fa-pills"></i></div>
+            <h3>Vitamines i minerals</h3>
+            <p>Micronutrients que el cos necessita en petites quantitats però són imprescindibles: defenses, ossos, visió, coagulació...</p>
+            <div class="macro-sources">
+                <span class="macro-tag">Vit. C (cítrics)</span>
+                <span class="macro-tag">Calci (làctics)</span>
+                <span class="macro-tag">Ferro (espinacs)</span>
+                <span class="macro-tag">Zinc (carn)</span>
+            </div>
         </div>
     </div>
 
+    <!-- PLAT SALUDABLE -->
+    <div class="section-title"><i class="fa-solid fa-plate-wheat" style="color:var(--lime)"></i> El plat saludable</div>
     <div class="plate-section">
-        <h3>El Plat Saludable (Mètode Harvard)</h3>
-        <p style="font-size: 14px; margin-top: 5px;">Així haurien de ser els teus dinars i sopars:</p>
-        
+        <h3>Mètode del Plat de Harvard</h3>
+        <p class="plate-sub">Així haurien de ser les teves regles d'or per a dinars i sopars</p>
         <div class="plate-viz">
-            <div class="part v-green">50% Verdures</div>
-            <div class="part v-brown">25% Prot.</div>
-            <div class="part v-yellow">25% Hidr.</div>
+            <div class="plate-part pp-veg">
+                <span class="pp-emoji">🥬</span>
+                <span>Verdures</span>
+                <span class="pp-pct">50%</span>
+            </div>
+            <div class="plate-part pp-pro">
+                <span class="pp-emoji">🍗</span>
+                <span>Proteïna</span>
+                <span class="pp-pct">25%</span>
+            </div>
+            <div class="plate-part pp-hid">
+                <span class="pp-emoji">🍚</span>
+                <span>Hidrats</span>
+                <span class="pp-pct">25%</span>
+            </div>
         </div>
-        
-        <p style="font-style: italic; color: #666; font-size: 13px;">
-            "La clau és la varietat i el color en el teu plat."
-        </p>
+        <div class="plate-tip">
+            <i class="fa-solid fa-lightbulb"></i>
+            <p><strong>La clau és la varietat i el color.</strong> Cada color en verdura i fruita aporta compostos protectors diferents. Intenta que el teu plat tingui almenys 3 colors distints. Afegeix una porció de fruita com a postre i aigua com a beguda principal.</p>
+        </div>
     </div>
 
-    <div style="text-align: center;">
-        <a href="index.html" class="btn-tornar">← Tornar al Portal</a>
+    <!-- CONSELLS -->
+    <div class="section-title"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--orange)"></i> Consells pràctics</div>
+    <div class="tips-grid">
+        <div class="tip-card">
+            <div class="tip-num">1</div>
+            <div>
+                <h4>Desjunja sempre</h4>
+                <p>El desjunjudor trenca el dejuni nocturn i reactiva el metabolisme. Un bon desjuny inclou proteïna, fruita i cereals.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">2</div>
+            <div>
+                <h4>Pensa als colors del plat</h4>
+                <p>Més colors vol dir més nutrients diferents. Verd, taronja, vermell, porpra... cada un té vitamines i antioxidants únics.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">3</div>
+            <div>
+                <h4>Llegeix les etiquetes</h4>
+                <p>Fixa't en la llista d'ingredients: si el primer element és sucre o farina refinada, no és la millor opció.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">4</div>
+            <div>
+                <h4>Menja consciemment</h4>
+                <p>Triga almenys 20 minuts per menjar. Mastega bé i apaga la pantalla. El cervell necessita temps per registrar la sacietat.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">5</div>
+            <div>
+                <h4>Planifica els àpats</h4>
+                <p>Quan planifiques, evites decisions impulsives. Fer la compra amb llista redueix les compres ultraprocessades.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">6</div>
+            <div>
+                <h4>No hi ha aliments prohibits</h4>
+                <p>La freqüència i la quantitat importen més que l'aliment en si. Un dolç ocasional encaixa en una dieta equilibrada.</p>
+            </div>
+        </div>
     </div>
+
+    <!-- HIDRATACIÓ -->
+    <div class="section-title"><i class="fa-solid fa-droplet" style="color:var(--blue)"></i> Hidratació</div>
+    <div class="hydration">
+        <div class="water-viz">
+            <div class="water-fill"></div>
+            <div class="water-label">2L</div>
+        </div>
+        <div class="hydration-info">
+            <h3>Quanta aigua necessites?</h3>
+            <p>La recomanació general és d'uns 2 litres diaris, però depèn de l'edat, l'activitat física, la temperatura i l'estat de salut. El millor indicador és la sed: si tens set, ja comences a estar deshidratat.</p>
+            <div class="hydration-stats">
+                <div class="h-stat">
+                    <div class="h-val">60%</div>
+                    <div class="h-lbl">Del cos es aigua</div>
+                </div>
+                <div class="h-stat">
+                    <div class="h-val">2-2.5L</div>
+                    <div class="h-lbl">Diaris recomanats</div>
+                </div>
+                <div class="h-stat">
+                    <div class="h-val">20%</div>
+                    <div class="h-lbl">Ve de l'alimentacio</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DADES CURIOSES -->
+    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color:var(--purple)"></i> Dades que et sorprendran</div>
+    <div class="facts-row">
+        <div class="fact">
+            <span class="fact-emoji">🧠</span>
+            <div class="fact-val fv-blue">20%</div>
+            <div class="fact-label">De l'energia del cos la consumeix el cervell, tot i que només pesa l'1.5%</div>
+        </div>
+        <div class="fact">
+            <span class="fact-emoji">🦴</span>
+            <div class="fact-val fv-orange">206</div>
+            <div class="fact-label">Ossos té un adult, que necessiten calci i vitamina D per mantenir-se forts</div>
+        </div>
+        <div class="fact">
+            <span class="fact-emoji">🫁</span>
+            <div class="fact-val fv-green">10.000L</div>
+            <div class="fact-label">D'aire respirem cada dia, per això els antioxidants són tan importants</div>
+        </div>
+        <div class="fact">
+            <span class="fact-emoji">🔄</span>
+            <div class="fact-val fv-purple">3-5h</div>
+            <div class="fact-label">Triga la digestió completa. Menjar lent ajuda a que sigui més eficient</div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <a href="index.html" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Tornar al Portal
+        </a>
+        <p class="footer-copy">© 2026 Portal de Salut — Nutrició Conscient</p>
+    </footer>
+
 </div>
 
-<footer>
-    <p style="margin-top: 20px; color: #888; font-size: 12px;">© 2026 Portal de Salut - Nutrició Conscient</p>
-</footer>
+<script>
+    /* Animació d'entrada escalonada per a les targetes */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                entry.target.style.transitionDelay = `${entry.target.dataset.delay || 0}ms`;
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
+    /* Aplicar a totes les targetes i seccions animables */
+    document.querySelectorAll('.macro-card, .tip-card, .fact, .plate-section, .hydration').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        el.dataset.delay = Math.min(i * 60, 300);
+        observer.observe(el);
+    });
+
+    /* CSS per a l'estat visible */
+    const style = document.createElement('style');
+    style.textContent = `.visible{opacity:1!important;transform:translateY(0)!important}`;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>
