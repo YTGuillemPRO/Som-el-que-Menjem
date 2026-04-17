@@ -4,136 +4,712 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teoria: La Digestió | IE Temple</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8fafc;
-            --primary: #2e7d32;
+            --bg: #f0fdf4;
+            --primary: #15803d;
+            --primary-dark: #166534;
+            --secondary: #22c55e;
+            --accent: #86efac;
             --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --shadow: 0 10px 40px rgba(0,0,0,0.08);
+            --radius: 30px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); line-height: 1.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
 
+        /* Header Millorat */
         header {
-            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            background: linear-gradient(135deg, #14532d 0%, #166534 50%, #15803d 100%);
             color: white;
-            padding: 60px 20px;
+            padding: 80px 20px 100px;
             text-align: center;
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 50px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .container { max-width: 900px; margin: -40px auto 40px; padding: 20px; }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
 
-        /* Estil de Targeta Horitzontal */
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(134,239,172,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        header .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            padding: 15px 28px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.18);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .container { 
+            max-width: 1100px; 
+            margin: -60px auto 60px; 
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Introducció */
+        .intro-section {
+            background: var(--white);
+            padding: 45px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 35px;
+            border-left: 6px solid var(--primary);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .intro-section p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        /* Fases de la Digestió */
+        .phases-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin: 50px 0 35px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .phases-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Targeta de Pas Millorada */
         .step {
             display: flex;
-            background: white;
-            margin-bottom: 30px;
-            border-radius: 35px;
+            background: var(--white);
+            margin-bottom: 32px;
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: 0.3s;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(22,163,74,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
-        .step:hover { transform: scale(1.01); }
+        .step:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 60px rgba(22,163,74,0.15);
+        }
 
         .step-img {
-            width: 40%;
-            min-height: 250px;
+            width: 42%;
+            min-height: 280px;
             background-size: cover;
             background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-img::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(21,128,61,0.05) 0%, transparent 100%);
         }
 
         .step-content {
-            width: 60%;
-            padding: 40px;
+            width: 58%;
+            padding: 38px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
         }
 
-        .step-num {
-            background: var(--primary);
+        .step-number {
+            position: absolute;
+            top: 20px;
+            left: 35px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             font-weight: 800;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(21,128,61,0.3);
         }
 
-        h2 { font-size: 24px; margin-bottom: 10px; color: var(--primary); }
-        p { color: #64748b; font-size: 17px; }
+        .step-title {
+            font-size: 1.75rem;
+            margin-bottom: 14px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-top: 10px;
+        }
 
-        .back-nav { text-align: center; margin-top: 50px; }
-        .btn-tornar {
-            background: var(--text);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
+        .step-description {
+            color: var(--text-light);
+            font-size: 1.02rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .step-details {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-top: 10px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .step-details h4 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-details li {
+            color: var(--text);
+            font-size: 0.92rem;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .step-details li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .keyword {
+            background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+            color: var(--primary-dark);
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.92em;
+        }
+
+        /* Secció Òrgans Accessoris */
+        .accessory-organs {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            padding: 45px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin: 45px 0;
+            border: 2px solid rgba(34,197,94,0.15);
+        }
+
+        .accessory-organs h2 {
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-align: center;
             font-weight: 700;
         }
 
+        .organs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .organ-card {
+            background: var(--white);
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(34,197,94,0.1);
+        }
+
+        .organ-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(22,163,74,0.12);
+        }
+
+        .organ-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+        }
+
+        .organ-card h3 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .organ-card p {
+            color: var(--text-light);
+            font-size: 0.96rem;
+            line-height: 1.7;
+        }
+
+        /* Glossari */
+        .glossary {
+            background: var(--white);
+            padding: 40px 45px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin: 45px 0;
+        }
+
+        .glossary h2 {
+            color: var(--primary-dark);
+            font-size: 1.9rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .glossary-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 18px 22px;
+            border-radius: 16px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .glossary-term {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .glossary-definition {
+            color: var(--text-light);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* Navegació */
+        .back-nav { 
+            text-align: center; 
+            margin: 55px 0 40px; 
+        }
+
+        .btn-tornar {
+            background: linear-gradient(135deg, var(--text) 0%, #334155 100%);
+            color: white;
+            padding: 17px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn-tornar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.22);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            
             .step { flex-direction: column; }
             .step-img, .step-content { width: 100%; }
+            .step-img { min-height: 220px; }
+            .step-content { padding: 30px 25px; }
+            
+            .stats-bar { gap: 15px; }
+            .stat-item { padding: 12px 20px; }
+            
+            .intro-section, .accessory-organs, .glossary { padding: 30px 25px; }
         }
+
+        /* Animacions */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.3s; }
+        .step:nth-child(4) { animation-delay: 0.4s; }
+        .step:nth-child(5) { animation-delay: 0.5s; }
+        .step:nth-child(6) { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>El Viatge de l'Aliment</h1>
-        <p>Procés complet de la digestió humana</p>
+        <div class="header-content">
+            <h1>🌱 El Viatge de l'Aliment</h1>
+            <p class="subtitle">Procés complet de la digestió humana: des de la boca fins a l'expulsió</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">7-9</span>
+                    <span class="stat-label">Òrgans principals</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">6-8h</span>
+                    <span class="stat-label">Temps total</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">~9m</span>
+                    <span class="stat-label">Longitud tub</span>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
-        
+
+        <!-- Introducció -->
+        <div class="intro-section">
+            <h2>📚 Què és la Digestió?</h2>
+            <p>
+                La <strong>digestió</strong> és el procés pel qual el nostre cos transforma els aliments en substàncies simples (nutrients) que poden ser absorbides i utilitzades per obtenir energia i matèria per al funcionament de totes les cèl·lules. Aquest viatge incredible recorre un tub de gairebé <strong>9 metres</strong> de longitud i implica múltiples òrgans treballant en coordinació perfecta.
+            </p>
+        </div>
+
+        <h2 class="phases-title">🔄 Les 6 Etapes del Procés Digestiu</h2>
+
+        <!-- ETAPA 1: LA BOCA -->
         <div class="step">
-            <div class="step-img" style="background-image: url('https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?q=80&w=800')"></div>
+            <div class="step-img" style="background-image: url('https://qc4n.bigmodel.cn/imageYcL8_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970348&Signature=yzwawqHKXGYbrlhZ8rMwD4%2BdpVo%3D')"></div>
             <div class="step-content">
-                <div class="step-num">1</div>
-                <h2>La Boca</h2>
-                <p>Les dents trituren i la saliva estova. Es forma el <b>bol alimentari</b> que baixa cap a l'esòfag.</p>
+                <div class="step-number">1</div>
+                <h3 class="step-title">La Boca 🦷</h3>
+                <p class="step-description">
+                    Tot comença aquí! Les <strong>dents</strong> (32 peces) trituren i masteguen l'aliment, mentre la <strong>llengua</strong> el barreja amb la <strong>saliva</strong> produïda per les glàndules salivals. La saliva conté enzims (com la ptialina) que inicien la descomposició química dels hidrats de carboni.
+                </p>
+                <div class="step-details">
+                    <h4>✨ Detalls Importants</h4>
+                    <ul>
+                        <li>Es forma el <span class="keyword">bol alimentari</span>: una pasta suau i fàcil d'empassar</li>
+                        <li><strong>Degustació:</strong> Les papiles gustatives identifiquen sabors</li>
+                        <li><strong>Masticació:</strong> Redueix la mida de les partícules d'aliment</li>
+                        <li><strong>Salivació:</strong> 1-1.5 litres de saliva/dia</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
+        <!-- ETAPA 2: L'ESÒFAG -->
         <div class="step">
-            <div class="step-img" style="background-image: url('https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800')"></div>
+            <div class="step-img" style="background-image: url('https://qc4n.bigmodel.cn/imageZYn4_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970345&Signature=gRU6lBfpyeHUZHVig1TpHOnTIKc%3D')"></div>
             <div class="step-content">
-                <div class="step-num">2</div>
-                <h2>L'Estómac</h2>
-                <p>Els sucs gàstrics barregen el menjar fins a crear una pasta anomenada <b>quim</b>.</p>
+                <div class="step-number">2</div>
+                <h3 class="step-title">L'Esòfag 📍</h3>
+                <p class="step-description">
+                    Un tub muscular d'uns <strong>25 cm</strong> de longitud que connecta la faringe amb l'estómac. El bol alimentari travessa aquest conducte gràcies als <strong>moviments peristàltics</strong>: contraccions rítmiques i automàtiques que empenyen l'aliment cap avall, fins i tot si estem caps avall!
+                </p>
+                <div class="step-details">
+                    <h4>✨ Detalls Importants</h4>
+                    <ul>
+                        <li><strong>Deglució:</strong> Procés d'empassar (triga ~8 segons)</li>
+                        <li>L'<span class="keyword">epiglotis</span> tanca la tràquea per evitar que l'aliment vagi als pulmons</li>
+                        <li><strong>Esfínter esofàgic inferior:</strong> Vàlvula que controla l'entrada a l'estómac</li>
+                        <li>No hi ha digestió ni absorció, només transport</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
+        <!-- ETAPA 3: L'ESTÓMAC -->
+        <div class="step">
+            <div class="step-img" style="background-image: url('https://qc4n.bigmodel.cn/imagelbRA_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970395&Signature=HwPs6uvqcJkKaQo%2F0BBquJjoBOg%3D')"></div>
+            <div class="step-content">
+                <div class="step-number">3</div>
+                <h3 class="step-title">L'Estómac 🔴</h3>
+                <p class="step-description">
+                    Una bossa muscular en forma de J amb capacitat d'1-1.5 litres. Aquí els àcids forts (<strong>àcid clorhídric</strong>, pH 1.5-3.5) i enzims (pepsina) trenquen les proteïnes i maten bacteris perillosos. Les parets musculars barregen intensament el contingut durant <strong>2-4 hores</strong>.
+                </p>
+                <div class="step-details">
+                    <h4>✨ Detalls Importants</h4>
+                    <ul>
+                        <li>Es crea el <span class="keyword">quim</span>: una pasta semi-líquida àcida</li>
+                        <li><strong>Sucs gàstrics:</strong> 2-3 litres/dia (contenen HCl i enzims)</li>
+                        <li><strong>Mucosa protectora:</strong> Evita que l'àcid digereixi el propi estómac</li>
+                        <li><strong>Pílor:</strong> Esfínter que controla la sortida cap a l'intestí</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 4: L'INTESTÍ PRIM -->
+        <div class="step">
+            <div class="step-img" style="background-image: url('https://qc4n.bigmodel.cn/imageAc2Z_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970395&Signature=91EwSOem6HVZqA3hAE7F%2B7hTWZI%3D')"></div>
+            <div class="step-content">
+                <div class="step-number">4</div>
+                <h3 class="step-title">L'Intestí Prim 🟢</h3>
+                <p class="step-description">
+                    Un tub extremadament llarg (<strong>6-7 metres</strong>) i prim on té lloc la major part de la <strong>digestió química</strong> i, sobretot, l'<strong>absorció de nutrients</strong>. La seva superfície interna està plena de <strong>vellositats intestinals</strong> (plecs microscòpics) que augmenten l'àrea d'absorció fins a uns <strong>250-350 m²</strong> (equivalent a una pista de tennis!).
+                </p>
+                <div class="step-details">
+                    <h4>✨ Parts i Funcions</h4>
+                    <ul>
+                        <li><strong>Duode (30cm):</strong> Rep bilis del fetge i sucs del pàncrees</li>
+                        <li><strong>Jeú (2.5m):</strong> Absorció principal de nutrients</li>
+                        <li><strong>Ile (3.5m):</strong> Absorció de vitamina B12 i àcids biliars</li>
+                        <li>Nutrients → Sang (glucosa, aminoàcits) i Limfa (grassos)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 5: L'INTESTÍ GROS -->
+        <div class="step">
+            <div class="step-img" style="background-image: url('https://qc4n.bigmodel.cn/imageNk58_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970472&Signature=F3Z5tXMaQw5mkjq5%2Fye6%2FIEM9Z8%3D')"></div>
+            <div class="step-content">
+                <div class="step-number">5</div>
+                <h3 class="step-title">L'Intestí Gros 🟤</h3>
+                <p class="step-description">
+                    Tub ample d'uns <strong>1.5 metres</strong> disposat en marc al voltant de l'intestí prim. La seva funció principal és <strong>absorbir aigua</strong> (fins a 1.5 litres/dia) i minerals, compactant els residus per formar la <strong>femta</strong>. També allotja milers de milions de bacteris beneficiosos (<strong>microbiota intestinal</strong>) essencials per la salut.
+                </p>
+                <div class="step-details">
+                    <h4>✨ Parts de l'Intestí Gros</h4>
+                    <ul>
+                        <li><strong>Cec i apèndix:</strong> Inici del colon (apèndix: sistema immunitari)</li>
+                        <li><strong>Colon ascendent/transvers/descendent/sigmoide:</strong> Absorció d'aigua</li>
+                        <li><strong>Recte:</strong> Emmagatzematge temporal de femta</li>
+                        <li><strong>Microbiota:</strong> +1000 espècies bacterianes simbiòtiques</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 6: EXPULSIÓ -->
         <div class="step">
             <div class="step-img" style="background-image: url('https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=800')"></div>
             <div class="step-content">
-                <div class="step-num">3</div>
-                <h2>Intestí Prim</h2>
-                <p>Aquí s'absorbeixen els <b>nutrients</b> que passen a la sang per alimentar les cèl·lules.</p>
+                <div class="step-number">6</div>
+                <h3 class="step-title">Expulsió (Defecació) 💩</h3>
+                <p class="step-description">
+                    L'etapa final! Quan el recte s'omple, es produeix el reflex de defecació. Els esfínters anal (intern involuntari i extern voluntari) controlen l'expulsió de la femta a través de l'anus. Tot el procés digestiu complet triga entre <strong>24-72 hores</strong> des de la ingestió fins a l'eliminació.
+                </p>
+                <div class="step-details">
+                    <h4>✨ Dades Curioses</h4>
+                    <ul>
+                        <li>Femta = ¾ aigua + residus no digeribles + bacteris morts</li>
+                        <li><strong>Freqüència normal:</strong> 3 vegades/dia a 3 vegades/setmana</li>
+                        <li>Color/molor/consistència indiquen estat de salut digestiva</li>
+                        <li>El reflex és controlat pel sistema nerviós autònom</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <div class="step">
-            <div class="step-img" style="background-image: url('https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?q=80&w=800')"></div>
-            <div class="step-content">
-                <div class="step-num">4</div>
-                <h2>Intestí Gros</h2>
-                <p>S'absorbeix l'aigua i s'expulsa el que el cos no vol. La digestió ha acabat!</p>
+        <!-- ÒRGANS ACCESSORIS -->
+        <div class="accessory-organs">
+            <h2>⭐ Òrgans Accessoris de la Digestió</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 10px;">
+                Encara que l'aliment no passa directament per ells, són essencials per produir substàncies digestives
+            </p>
+            
+            <div class="organs-grid">
+                <div class="organ-card">
+                    <div class="organ-icon">🫀</div>
+                    <h3>Fetge</h3>
+                    <p>
+                        L'òrgan visceral més gran (~1.5 kg). Produeix la <strong>bilis</strong> (500ml/dia), emmagatzema glucogen, vitamins (A, D, E, K, B12), i desintoxica substàncies nocives. És vital per al metabolisme.
+                    </p>
+                </div>
+
+                <div class="organ-card">
+                    <div class="organ-icon">💚</div>
+                    <h3>Vesícula Biliar</h3>
+                    <p>
+                        Petit sac en forma de pera sota el fetge. <strong>Emmagatzema i concentra la bilis</strong> produïda pel fetge. Quan arriben greixos a l'intestí, es contrau i allibera bilis per ajudar a digerir-los.
+                    </p>
+                </div>
+
+                <div class="organ-card">
+                    <div class="organ-icon">🔶</div>
+                    <h3>Pàncrees</h3>
+                    <p>
+                        Glàndula mixta (exocrina i endocrina). Allibera <strong>suc pancreàtic</strong> amb enzims (lipasa, amilasa, tripsina) a l'intestí prim. També produeix insulina i glucagó per regular la glucosa sanguínia.
+                    </p>
+                </div>
             </div>
+        </div>
+
+        <!-- GLOSSARI -->
+        <div class="glossary">
+            <h2>📖 Glossari de Termes Clau</h2>
+            
+            <div class="glossary-grid">
+                <div class="glossary-item">
+                    <div class="glossary-term">Bol Alimentari</div>
+                    <div class="glossary-definition">Massa de menjar mastegat i barrejat amb saliva a la boca</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Quim</div>
+                    <div class="glossary-definition">Pasta semi-líquida àcida resultant de la digestió gàstrica a l'estómac</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Peristaltisme</div>
+                    <div class="glossary-definition">Contraccions musculars rítmiques que mouen l'aliment pel tub digestiu</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Enzims</div>
+                    <div class="glossary-definition">Proteïnes que acceleren la descomposició química dels aliments</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Vellositats Intestinals</div>
+                    <div class="glossari-definition">Plegaments microscòpics de l'intestí prim que augmenten l'absorció</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Absorció</div>
+                    <div class="glossary-definition">Pas de nutrients des de l'intestí cap a la sang o limfa</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Bilis</div>
+                    <div class="glossary-definition">Líquit verd groguenc produït pel fetge que emulsiona greixos</div>
+                </div>
+
+                <div class="glossary-item">
+                    <div class="glossary-term">Microbiota</div>
+                    <div class="glossary-definition">Conjunt de microorganismes beneficiosos que viuen a l'intestí</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resum Final -->
+        <div class="intro-section" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+            <h2>🎯 Resum del Procés Complet</h2>
+            <p>
+                <strong>Ingestió</strong> (boca) → <strong>Propulsió</strong> (esòfag) → <strong>Digestió mecànica i química</strong> (estómac) → <strong>Digestió i absorció</strong> (intestí prim) → <strong>Absorció d'aigua</strong> (intestí gros) → <strong>Eliminació</strong> (anus).<br><br>
+                Cada etapa és crucial i està perfectament coordinada pel <strong>sistema nerviós</strong>, <strong>hormones</strong> i <strong>enzims</strong>. Una alteració en qualsevol punt pot afectar tot el procés nutricional i la salut general.
+            </p>
         </div>
 
         <div class="back-nav">
-            <a href="index.html" class="btn-tornar">← Tornar al Portal</a>
+            <a href="index.html" class="btn-tornar">← Tornar al Portal Educatiu</a>
         </div>
     </div>
 
