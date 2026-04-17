@@ -49,7 +49,7 @@
         }
 
         /* === LAYOUT === */
-        .page{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:40px 20px 60px}
+        .page{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:40px 20px 60px}
 
         /* === HEADER === */
         .header{text-align:center;margin-bottom:56px;position:relative}
@@ -71,6 +71,18 @@
             background:linear-gradient(90deg,var(--green),var(--lime));
         }
 
+        /* Estadístiques ràpides */
+        .quick-stats{
+            display:flex;justify-content:center;gap:20px;margin-top:28px;flex-wrap:wrap;
+        }
+        .qs-item{
+            background:rgba(76,175,80,0.08);
+            border:1px solid rgba(76,175,80,0.15);
+            border-radius:16px;padding:14px 24px;text-align:center;
+        }
+        .qs-val{font-size:1.5rem;font-weight:800;color:var(--green-light)}
+        .qs-lbl{font-size:0.75rem;color:var(--text-muted);margin-top:2px}
+
         /* === SECCIONS === */
         .section-title{
             font-size:13px;text-transform:uppercase;letter-spacing:2.5px;
@@ -82,8 +94,8 @@
             background:linear-gradient(90deg,var(--card-border),transparent);
         }
 
-        /* === MACRONUTRIENTS === */
-        .macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:48px}
+        /* === MACRONUTRIENTS MEJORATS === */
+        .macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:48px}
         .macro-card{
             background:var(--card);border:1px solid var(--card-border);
             border-radius:var(--radius);padding:28px 24px;
@@ -123,6 +135,19 @@
 
         .macro-card h3{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
         .macro-card p{font-size:13.5px;color:var(--text-dim);line-height:1.65;margin-bottom:14px}
+        
+        /* Nova secció: Dades nutricionals */
+        .macro-data{
+            background:rgba(255,255,255,0.03);
+            border-radius:12px;padding:12px 16px;
+            margin-bottom:14px;border-left:3px solid var(--green);
+        }
+        .macro-data-row{
+            display:flex;justify-content:space-between;font-size:12px;
+            padding:4px 0;color:var(--text-dim);
+        }
+        .macro-data-row strong{color:var(--text)}
+
         .macro-sources{
             display:flex;flex-wrap:wrap;gap:6px;
         }
@@ -132,7 +157,7 @@
             color:var(--text-muted);
         }
 
-        /* === PLAT SALUDABLE === */
+        /* === PLAT SALUDABLE MEJORAT === */
         .plate-section{
             background:var(--card);border:1px solid var(--card-border);
             border-radius:var(--radius);padding:36px;margin-bottom:48px;
@@ -144,36 +169,160 @@
             background:radial-gradient(circle,rgba(76,175,80,0.06),transparent);
             pointer-events:none;
         }
-        .plate-section h3{font-size:20px;font-weight:700;margin-bottom:4px}
-        .plate-section .plate-sub{font-size:13px;color:var(--text-muted);margin-bottom:28px}
+        .plate-section h3{font-size:22px;font-weight:700;margin-bottom:4px}
+        .plate-section .plate-sub{font-size:13px;color:var(--text-muted);margin-bottom:24px}
 
-        .plate-viz{
-            display:flex;gap:8px;margin-bottom:28px;
-            height:80px;border-radius:20px;overflow:hidden;
+        /* Imatge Harvard Plate */
+        .harvard-plate-img{
+            max-width:450px;width:100%;
+            margin:0 auto 24px;display:block;
+            border-radius:20px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.3);
         }
-        .plate-part{
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            color:white;font-weight:700;font-size:14px;
-            transition:all .4s cubic-bezier(.22,1,.36,1);
-            position:relative;cursor:default;
+
+        .plate-rules{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px;
         }
-        .plate-part:hover{filter:brightness(1.15)}
-        .plate-part .pp-emoji{font-size:20px;margin-bottom:2px}
-        .plate-part .pp-pct{font-size:11px;opacity:.8;font-weight:500}
-        .pp-veg{background:linear-gradient(135deg,#388e3c,#4caf50);flex:5}
-        .pp-pro{background:linear-gradient(135deg,#d84315,#ff5722);flex:2.5}
-        .pp-hid{background:linear-gradient(135deg,#f9a825,#fdd835);flex:2.5;color:#5d4037}
+        .rule-card{
+            background:rgba(76,175,80,0.05);
+            border:1px solid rgba(76,175,80,0.1);
+            border-radius:14px;padding:16px 18px;
+        }
+        .rule-card h4{
+            color:var(--green-light);font-size:14px;font-weight:700;
+            margin-bottom:8px;display:flex;align-items:center;gap:8px;
+        }
+        .rule-card p{font-size:12.5px;color:var(--text-dim);line-height:1.6}
 
         .plate-tip{
             background:rgba(76,175,80,0.06);border:1px solid rgba(76,175,80,0.12);
             border-radius:14px;padding:16px 20px;
-            display:flex;align-items:flex-start;gap:12px;
+            display:flex;align-items:flex-start;gap:12px;margin-top:20px;
         }
         .plate-tip i{color:var(--green);font-size:16px;margin-top:2px;flex-shrink:0}
         .plate-tip p{font-size:13px;color:var(--text-dim);line-height:1.6}
         .plate-tip strong{color:var(--green-light)}
 
-        /* === CONSELLS === */
+        /* === ÍNDEX GLUCÈMIC (NOVA SECCIÓ) === */
+        .gi-section{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:36px;margin-bottom:48px;
+        }
+        .gi-section h3{font-size:22px;font-weight:700;margin-bottom:8px;color:var(--text)}
+        .gi-section > p{font-size:13.5px;color:var(--text-dim);margin-bottom:24px;line-height:1.7}
+
+        .gi-explanation{
+            background:linear-gradient(135deg,rgba(41,182,246,0.08),rgba(76,175,80,0.05));
+            border:1px solid rgba(41,182,246,0.15);
+            border-radius:16px;padding:20px 24px;margin-bottom:24px;
+        }
+        .gi-explanation h4{color:var(--blue);font-size:15px;margin-bottom:10px;font-weight:700}
+        .gi-explanation p{font-size:13px;color:var(--text-dim);line-height:1.7}
+
+        .gi-table-img{
+            max-width:100%;
+            width:100%;
+            border-radius:16px;
+            margin-bottom:20px;
+            box-shadow:0 8px 32px rgba(0,0,0,0.25);
+        }
+
+        .gi-categories{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;
+        }
+        .gi-cat{
+            border-radius:14px;padding:18px;text-align:center;
+            transition:all .3s;
+        }
+        .gi-cat:hover{transform:scale(1.03)}
+        .gi-low{background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(129,199,132,0.08));border:1px solid rgba(76,175,80,0.2)}
+        .gi-med{background:linear-gradient(135deg,rgba(253,216,53,0.15),rgba(255,152,0,0.08));border:1px solid rgba(253,216,53,0.2)}
+        .gi-high{background:linear-gradient(135deg,rgba(239,83,80,0.15),rgba(255,112,67,0.08));border:1px solid rgba(239,83,80,0.2)}
+
+        .gi-cat-icon{font-size:28px;margin-bottom:8px}
+        .gi-cat-range{font-size:18px;font-weight:800;margin-bottom:4px}
+        .gi-low .gi-cat-range{color:var(--green-light)}
+        .gi-med .gi-cat-range{color:var(--yellow)}
+        .gi-high .gi-cat-range{color:var(--red)}
+        .gi-cat-label{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+        .gi-cat-desc{font-size:12px;color:var(--text-dim);margin-top:8px;line-height:1.5}
+
+        /* === ETIQUETATGE NUTRICIONAL (NOVA SECCIÓ) === */
+        .label-section{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:36px;margin-bottom:48px;
+        }
+        .label-section h3{font-size:22px;font-weight:700;margin-bottom:8px}
+        .label-section > p{font-size:13.5px;color:var(--text-dim);margin-bottom:24px}
+
+        .label-guide{
+            display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;
+        }
+        .label-image-container{
+            position:relative;
+        }
+        .label-img{
+            width:100%;border-radius:16px;
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .label-tips{
+            display:flex;flex-direction:column;gap:14px;
+        }
+        .label-tip{
+            background:rgba(255,255,255,0.03);
+            border-left:3px solid var(--orange);
+            border-radius:0 12px 12px 0;
+            padding:14px 18px;
+        }
+        .label-tip h4{font-size:13.5px;font-weight:700;color:var(--orange);margin-bottom:6px}
+        .label-tip p{font-size:12px;color:var(--text-dim);line-height:1.6}
+
+        .traffic-lights{
+            display:flex;gap:12px;margin-top:20px;
+            justify-content:center;
+        }
+        .tl-item{
+            padding:10px 20px;border-radius:12px;text-align:center;font-weight:700;font-size:12px;
+        }
+        .tl-green{background:rgba(76,175,80,0.2);color:var(--green-light);border:1px solid rgba(76,175,80,0.3)}
+        .tl-yellow{background:rgba(253,216,53,0.2);color:var(--yellow);border:1px solid rgba(253,216,53,0.3)}
+        .tl-red{background:rgba(239,83,80,0.2);color:var(--red);border:1px solid rgba(239,83,80,0.3)}
+
+        /* === MITES NUTRICIONALS (NOVA SECCIÓ) === */
+        .myths-section{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:36px;margin-bottom:48px;
+        }
+        .myths-section h3{font-size:22px;font-weight:700;margin-bottom:8px}
+        .myths-section > p{font-size:13.5px;color:var(--text-dim);margin-bottom:24px}
+
+        .myth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+        .myth-card{
+            background:rgba(239,83,80,0.04);
+            border:1px solid rgba(239,83,80,0.12);
+            border-radius:16px;padding:20px;
+            transition:all .3s;
+        }
+        .myth-card:hover{
+            background:rgba(239,83,80,0.07);
+            border-color:rgba(239,83,80,0.2);
+            transform:translateX(4px);
+        }
+        .myth-badge{
+            display:inline-block;background:rgba(239,83,80,0.15);
+            color:var(--red);font-size:10px;font-weight:800;
+            padding:4px 10px;border-radius:20px;
+            text-transform:uppercase;letter-spacing:0.5px;
+            margin-bottom:10px;
+        }
+        .myth-card h4{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:8px}
+        .myth-card p{font-size:12.5px;color:var(--text-dim);line-height:1.65}
+        .myth-fact{
+            color:var(--green-light);font-weight:600;
+        }
+
+        /* === CONSELLS EXPANDITS === */
         .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:48px}
         .tip-card{
             background:var(--card);border:1px solid var(--card-border);
@@ -191,7 +340,7 @@
         .tip-card h4{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text)}
         .tip-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55}
 
-        /* === HIDRATACIÓ === */
+        /* === HIDRATACIÓ MILLORADA === */
         .hydration{
             background:var(--card);border:1px solid var(--card-border);
             border-radius:var(--radius);padding:32px;margin-bottom:48px;
@@ -229,8 +378,40 @@
         .h-stat .h-val{font-size:20px;font-weight:800;color:var(--blue)}
         .h-stat .h-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 
-        /* === DADES CURIOSES === */
-        .facts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:48px}
+        /* === NECESSITATS ENERGÈTIQUES (NOVA SECCIÓ) === */
+        .calories-section{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:36px;margin-bottom:48px;
+        }
+        .calories-section h3{font-size:22px;font-weight:700;margin-bottom:8px}
+        .calories-section > p{font-size:13.5px;color:var(--text-dim);margin-bottom:24px}
+
+        .cal-table{
+            width:100%;border-collapse:collapse;margin-top:20px;
+        }
+        .cal-table th{
+            background:rgba(76,175,80,0.1);
+            color:var(--green-light);
+            font-size:12px;font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:0.5px;
+            padding:12px 16px;
+            text-align:left;
+            border-bottom:2px solid rgba(76,175,80,0.2);
+        }
+        .cal-table td{
+            padding:12px 16px;
+            font-size:13px;
+            color:var(--text-dim);
+            border-bottom:1px solid rgba(255,255,255,0.04);
+        }
+        .cal-table tr:hover td{
+            background:rgba(76,175,80,0.04);
+            color:var(--text);
+        }
+
+        /* === DADES CURIOSES EXPANIDES === */
+        .facts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:48px}
         .fact{
             background:var(--card);border:1px solid var(--card-border);
             border-radius:16px;padding:20px 16px;text-align:center;
@@ -245,6 +426,28 @@
         .fv-blue{color:var(--blue)}
         .fv-purple{color:var(--purple)}
 
+        /* === GLOSSARI (NOU) === */
+        .glossary{
+            background:var(--card);border:1px solid var(--card-border);
+            border-radius:var(--radius);padding:36px;margin-bottom:48px;
+        }
+        .glossary h3{font-size:22px;font-weight:700;margin-bottom:20px;text-align:center}
+        .glossary-grid{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;
+        }
+        .glossary-item{
+            background:rgba(255,255,255,0.02);
+            border-left:3px solid var(--purple);
+            border-radius:0 12px 12px 0;
+            padding:14px 18px;
+        }
+        .glossary-term{
+            font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:4px
+        }
+        .glossary-def{
+            font-size:12px;color:var(--text-muted);line-height:1.6
+        }
+
         /* === FOOTER === */
         .footer{text-align:center;padding:20px 0;border-top:1px solid var(--card-border)}
         .btn-back{
@@ -258,14 +461,19 @@
         .footer-copy{margin-top:20px;font-size:11px;color:var(--text-muted)}
 
         /* === RESPONSIVE === */
-        @media(max-width:640px){
+        @media(max-width:768px){
             .page{padding:28px 14px 40px}
             .macro-grid{grid-template-columns:1fr}
             .tips-grid{grid-template-columns:1fr}
             .hydration{flex-direction:column;text-align:center}
             .hydration-stats{justify-content:center}
             .facts-row{grid-template-columns:1fr 1fr}
-            .plate-viz{height:70px}
+            .label-guide{grid-template-columns:1fr}
+            .myth-grid{grid-template-columns:1fr}
+            .plate-rules{grid-template-columns:1fr}
+            .gi-categories{grid-template-columns:1fr}
+            .cal-table{font-size:11px}
+            .cal-table th,.cal-table td{padding:8px 10px}
         }
         @media(prefers-reduced-motion:reduce){
             *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -286,64 +494,168 @@
     <!-- HEADER -->
     <header class="header">
         <span class="header-icon">🥦</span>
-        <h1>Mon de la Nutricio</h1>
-        <p>Entendre què menjes és la primera passa per menjar millor. Aquí trobaràs les claus per alimentar el teu cos de forma intel·ligent.</p>
+        <h1>Món de la Nutrició</h1>
+        <p>Entendre què menjes és la primera passa per menjar millor. Guia completa basada en evidència científica per alimentar el teu cos de forma intel·ligent.</p>
         <div class="header-divider"></div>
+        
+        <!-- Estadístiques ràpides -->
+        <div class="quick-stats">
+            <div class="qs-item">
+                <div class="qs-val">~2000</div>
+                <div class="qs-lbl">kcal/dia (adult mitjà)</div>
+            </div>
+            <div class="qs-item">
+                <div class="qs-val">40+</div>
+                <div class="qs-lbl">nutrients essencials</div>
+            </div>
+            <div class="qs-item">
+                <div class="qs-val">6</div>
+                <div class="qs-lbl">grups d'aliments</div>
+            </div>
+        </div>
     </header>
 
-    <!-- MACRONUTRIENTS -->
-    <div class="section-title"><i class="fa-solid fa-cubes" style="color:var(--green)"></i> Macronutrients</div>
+    <!-- MACRONUTRIENTS EXPANDITS -->
+    <div class="section-title"><i class="fa-solid fa-cubes" style="color:var(--green)"></i> Macronutrients: Els Pilars Energètics</div>
     <div class="macro-grid">
         <div class="macro-card mc-carbs">
             <div class="macro-icon"><i class="fa-solid fa-wheat-awn"></i></div>
-            <h3>Hidrats de carboni</h3>
-            <p>La principal font d'energia del cervell i els músculs. El cos els transforma en glucosa per mantenir-te actiu tot el dia.</p>
+            <h3>Hidrats de Carboni</h3>
+            
+            <div class="macro-data">
+                <div class="macro-data-row">
+                    <span>Recomanació diària:</span>
+                    <strong>45-65% energia total</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Quantitat:</span>
+                    <strong>225-325 g/dia</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Energia:</span>
+                    <strong>4 kcal/g</strong>
+                </div>
+            </div>
+            
+            <p>La principal font d'energia del cervell i músculs. Es transformen en glucosa per mantenir-te actiu. Prioritza els complexos (integrales) sobre els simples (refinats).</p>
             <div class="macro-sources">
                 <span class="macro-tag">Pa integral</span>
-                <span class="macro-tag">Arròs</span>
+                <span class="macro-tag">Arròs integral</span>
                 <span class="macro-tag">Fruites</span>
                 <span class="macro-tag">Patata</span>
-                <span class="macro-tag">Cereal</span>
+                <span class="macro-tag">Llegums</span>
+                <span class="macro-tag">Quinoa</span>
             </div>
         </div>
+
         <div class="macro-card mc-protein">
             <div class="macro-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
             <h3>Proteïnes</h3>
-            <p>Essencials per créixer, reparar teixits i construir músculs. Cada cel·la del teu cos en necessita per funcionar correctament.</p>
+            
+            <div class="macro-data">
+                <div class="macro-data-row">
+                    <span>Recomanació diària:</span>
+                    <strong>10-35% energia total</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Quantitat:</span>
+                    <strong>0.8-2.0 g/kg pes</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Energia:</span>
+                    <strong>4 kcal/g</strong>
+                </div>
+            </div>
+            
+            <p>Essencials per créixer, reparar teixits, construir músculs, produir enzimes i hormones. Conté 20 aminoàcids (9 essencials que el cos no pot fabricar).</p>
             <div class="macro-sources">
-                <span class="macro-tag">Carn</span>
+                <span class="macro-tag">Carn magra</span>
                 <span class="macro-tag">Peix</span>
                 <span class="macro-tag">Ous</span>
                 <span class="macro-tag">Llegums</span>
                 <span class="macro-tag">Tofu</span>
+                <span class="macro-tag">Iogurt</span>
             </div>
         </div>
+
         <div class="macro-card mc-fats">
             <div class="macro-icon"><i class="fa-solid fa-droplet"></i></div>
-            <h3>Greixos saludables</h3>
-            <p>Protegeixen els òrgans, ajuden a absorbir vitamines (A, D, E, K) i són fonamentals per al cervell. No tots els greixos són dolents.</p>
+            <h3>Greixos Saludables</h3>
+            
+            <div class="macro-data">
+                <div class="macro-data-row">
+                    <span>Recomanació diària:</span>
+                    <strong>20-35% energia total</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Quantitat:</span>
+                    <strong>44-77 g/dia</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Energia:</span>
+                    <strong>9 kcal/g</strong>
+                </div>
+            </div>
+            
+            <p>Protegeixen òrgans vitals, ajuden a absorbir vitamines liposolubles (A,D,E,K), són fonamentals pel cervell i regulen hormones. No tots els greixos són dolents!</p>
             <div class="macro-sources">
-                <span class="macro-tag">Oli d'oliva</span>
+                <span class="macro-tag">Oli d'oliva extra</span>
                 <span class="macro-tag">Alvocat</span>
                 <span class="macro-tag">Fruita seca</span>
                 <span class="macro-tag">Peix blau</span>
+                <span class="macro-tag">Olives</span>
             </div>
         </div>
+
         <div class="macro-card mc-fiber">
             <div class="macro-icon"><i class="fa-solid fa-seedling"></i></div>
-            <h3>Fibra alimentària</h3>
-            <p>Regula el trànsit intestinal, ajuda a controlar el sucre en sang i et fa sentir satiat. La majoria de persones en mengen menys del recomanat.</p>
+            <h3>Fibra Alimentària</h3>
+            
+            <div class="macro-data">
+                <div class="macro-data-row">
+                    <span>Recomanació diària:</span>
+                    <strong>25-38 g/dia</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Consum mitjà:</span>
+                    <strong>~15 g/dia (insuficient!)</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Tipus:</span>
+                    <strong>Soluble / Insoluble</strong>
+                </div>
+            </div>
+            
+            <p>Regula el trànsit intestinal, controla el colesterol i glucosa en sang, augmenta la sacietat i alimenta la microbiota beneficiosa. La majoria de persones en consumeixen la meitat del recomanat.</p>
             <div class="macro-sources">
                 <span class="macro-tag">Verdures</span>
                 <span class="macro-tag">Llegums</span>
                 <span class="macro-tag">Fruita completa</span>
                 <span class="macro-tag">Cereals integrals</span>
+                <span class="macro-tag">Nuts</span>
             </div>
         </div>
+
         <div class="macro-card mc-water">
             <div class="macro-icon"><i class="fa-solid fa-glass-water"></i></div>
             <h3>Hidratació</h3>
-            <p>El 60% del teu cos és aigua. Intervé en la digestió, la circulació, la temperatura corporal i l'eliminació de toxines.</p>
+            
+            <div class="macro-data">
+                <div class="macro-data-row">
+                    <span>Recomanació diària:</span>
+                    <strong>2-2.5 litres</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Del cos és aigua:</span>
+                    <strong>60%</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Pèrdues diàries:</span>
+                    <strong>2-2.5 litres</strong>
+                </div>
+            </div>
+            
+            <p>Intervé en TOTES les funcions corporals: digestió, circulació, temperatura, eliminació de toxines, lubricació articulions, funcionament cerebral. La sed ja indica deshidratació lleu.</p>
             <div class="macro-sources">
                 <span class="macro-tag">Aigua</span>
                 <span class="macro-tag">Infusions</span>
@@ -351,108 +663,294 @@
                 <span class="macro-tag">Fruita i verdura</span>
             </div>
         </div>
+
         <div class="macro-card mc-vitamins">
             <div class="macro-icon"><i class="fa-solid fa-pills"></i></div>
-            <h3>Vitamines i minerals</h3>
-            <p>Micronutrients que el cos necessita en petites quantitats però són imprescindibles: defenses, ossos, visió, coagulació...</p>
+            <h3>Vitamines i Minerals</h3>
+            
+            <div class="macro-data">
+                <div class="macro-data-row">
+                    <span>Vitamines essencials:</span>
+                    <strong>13 (4 liposolubles + 9 hidrosolubles)</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Minerals principals:</span>
+                    <strong>16+ macro/microelements</strong>
+                </div>
+                <div class="macro-data-row">
+                    <span>Funcions:</span>
+                    <strong>Defenses, ossos, visió, coagulació...</strong>
+                </div>
+            </div>
+            
+            <p>Micronutrients indispensables en petites quantitats. Regulen metabolisme, fortaleixen sistema immunitari, mantenen ossos i dents, permeten produir energia cel·lular. Una dieta variada n'assegureix el subministrament.</p>
             <div class="macro-sources">
-                <span class="macro-tag">Vit. C (cítrics)</span>
+                <span class="macro-tag">Vit C (cítrics)</span>
                 <span class="macro-tag">Calci (làctics)</span>
-                <span class="macro-tag">Ferro (espinacs)</span>
-                <span class="macro-tag">Zinc (carn)</span>
+                <span class="macro-tag">Ferro (carn/legums)</span>
+                <span class="macro-tag">Zinc (marisc)</span>
+                <span class="macro-tag">Vit D (sol)</span>
             </div>
         </div>
     </div>
 
-    <!-- PLAT SALUDABLE -->
-    <div class="section-title"><i class="fa-solid fa-plate-wheat" style="color:var(--lime)"></i> El plat saludable</div>
+    <!-- PLAT SALUDABLE DE HARVARD (MILLORAT) -->
+    <div class="section-title"><i class="fa-solid fa-plate-wheat" style="color:var(--lime)"></i> El Plat Saludable: Mètode Harvard</div>
     <div class="plate-section">
-        <h3>Mètode del Plat de Harvard</h3>
-        <p class="plate-sub">Així haurien de ser les teves regles d'or per a dinars i sopars</p>
-        <div class="plate-viz">
-            <div class="plate-part pp-veg">
-                <span class="pp-emoji">🥬</span>
-                <span>Verdures</span>
-                <span class="pp-pct">50%</span>
+        <h3>🍽️ El Plat per Menjar Saludable</h3>
+        <p class="plate-sub">Guia visual desenvolupada per la Harvard T.H. Chan School of Public Health — Més efectiva que les piràmides tradicionals</p>
+        
+        <!-- Imatge oficial Harvard -->
+        <img src="https://qc4n.bigmodel.cn/imageaInE_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970852&Signature=pGO8HHr6c2rZuYmXqUhK61%2B4nAw%3D" alt="Plato para Comer Saludable - Harvard" class="harvard-plate-img">
+
+        <div class="plate-rules">
+            <div class="rule-card">
+                <h4><i class="fa-solid fa-leaf"></i> Verdures i Fruites (50%)</h4>
+                <p>Ocupen la meitat del plat. Prioritza verdures de tots colors (més verdura que fruita). Les patates NO compten com a verdura (són midó).</p>
             </div>
-            <div class="plate-part pp-pro">
-                <span class="pp-emoji">🍗</span>
-                <span>Proteïna</span>
-                <span class="pp-pct">25%</span>
+            <div class="rule-card">
+                <h4><i class="fa-solid fa-drumstick-bite"></i> Proteïna Saludable (25%)</h4>
+                <p>Carn magra, pollastre, peix, ou, llegums, nous, tofu. Limita carn vermella processada (botifarra, bacon). Evita fregits.</p>
             </div>
-            <div class="plate-part pp-hid">
-                <span class="pp-emoji">🍚</span>
-                <span>Hidrats</span>
-                <span class="pp-pct">25%</span>
+            <div class="rule-card">
+                <h4><i class="fa-solid fa-wheat-awn"></i> Grans Integrals (25%)</h4>
+                <p>Arròs integral, pa integral, pasta integral, quinoa, civada. Limits grains refinats (pa blanc, arròs blanc) que eleven ràpidament la glucosa.</p>
+            </div>
+            <div class="rule-card">
+                <h4><i class="fa-solid fa-oil-can"></i> Oli Saludable + Aigua</h4>
+                <p>Utilitza oli d'oliva, canola o soja en quantitats moderades. Beu aigua, té o cafè sense sucre. Evita begudes ensucrades.</p>
             </div>
         </div>
+
         <div class="plate-tip">
             <i class="fa-solid fa-lightbulb"></i>
-            <p><strong>La clau és la varietat i el color.</strong> Cada color en verdura i fruita aporta compostos protectors diferents. Intenta que el teu plat tingui almenys 3 colors distints. Afegeix una porció de fruita com a postre i aigua com a beguda principal.</p>
+            <p><strong>La clau és la varietat i el color.</strong> Cada color en verdura i fruita aporta fitonutrients únics i antioxidants diferents. Intenta que el teu plat tingui almenys <strong>3 colors distints</strong>. Afegeix fruita com a postre i mantén-te actiu físicament cada dia. Recorda: la mida de les racions importa tant com la qualitat!</p>
         </div>
     </div>
 
-    <!-- CONSELLS -->
-    <div class="section-title"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--orange)"></i> Consells pràctics</div>
+    <!-- ÍNDEX GLUCÈMIC (NOVA SECCIÓ) -->
+    <div class="section-title"><i class="fa-solid fa-chart-line" style="color:var(--blue)"></i> Índex Glucèmic: Control de l'Energia</div>
+    <div class="gi-section">
+        <h3>📊 Entenent l'Índex Glucèmic (IG)</h3>
+        <p>Mesura la velocitat amb la què un aliment eleva la glucosa (sucre) en sang després de ser consumit. És crucial per prevenir diabetis tipus 2, controlar pes i mantenir energia estable.</p>
+
+        <div class="gi-explanation">
+            <h4>⚡ Per què és important?</h4>
+            <p>Els aliments amb IG <strong>alt</strong> provoquen pics de glucosa ràpids → pic d'insulina → emmagatzematge de greix → fam al cap de poc temps. Els de IG <strong>baix</strong> alliberen energia lentament → sacietat prolongada → estabilitat metabòlica. No has d'eliminar els aliments d'alt IG, sinó combinar-los amb fibra, proteïnes o greixos saludables.</p>
+        </div>
+
+        <!-- Taula d'exemples -->
+        <img src="https://qc4n.bigmodel.cn/imageFaYs_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807970950&Signature=rYZ%2FcOoF4Ws6zf9chme%2FerNKzIA%3D" alt="Tabla índice glucémico alimentos" class="gi-table-img">
+
+        <div class="gi-categories">
+            <div class="gi-cat gi-low">
+                <div class="gi-cat-icon">✅</div>
+                <div class="gi-cat-range">IG BAIX (0-55)</div>
+                <div class="gi-cat-label">Alliberament Lent</div>
+                <div class="gi-cat-desc"><strong>Llegums, verdes, fruits secs, llet, iogurt, poma, taronja, pastanaga, integral</strong><br><br>Alliberen energia de forma gradual. Ideals per diabètics i control de pes.</div>
+            </div>
+            <div class="gi-cat gi-med">
+                <div class="gi-cat-icon">⚠️</div>
+                <div class="gi-cat-range">IG MITJÀ (56-69)</div>
+                <div class="gi-cat-label">Alliberament Moderat</div>
+                <div class="gi-cat-desc"><strong>Arròs integral, plàtan madur, meló, raïm, sucre, galetes, pans integrals</strong><br><br>Bons en combinació amb fibra o proteïnes. Consum moderat.</div>
+            </div>
+            <div class="gi-cat gi-high">
+                <div class="gi-cat-icon">🔴</div>
+                <div class="gi-cat-range">IG ALT (>70)</div>
+                <div class="gi-cat-label">Alliberament Ràpid</div>
+                <div class="gi-cat-desc"><strong>Pa blanc, arròs blanc, patates, melmelada, refrescos, patates fregides, croissants</strong><br><br>Evitar o limitar dràsticament. Provoquen pics insulínics i fam rebote.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COM LLEGIR ETIQUETES (NOVA SECCIÓ) -->
+    <div class="section-title"><i class="fa-solid fa-tags" style="color:var(--orange)"></i> Decodificant Etiquetes Nutricionals</div>
+    <div class="label-section">
+        <h3>🔍 Com Llegir una Etiqueta en 30 Segons</h3>
+        <p>L'etiquetatge nutricional és la teva eina més poderosa per prendre decisions informades. Aprèn a identificar la informació clau ràpidament.</p>
+
+        <div class="label-guide">
+            <div class="label-image-container">
+                <img src="https://qc4n.bigmodel.cn/imageBtjz_searched_original.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1807971028&Signature=%2BAvpammTrOkvAj4lN3Hj%2BbsuyRM%3D" alt="Guía etiqueta nutricional" class="label-img">
+                
+                <div class="traffic-lights">
+                    <div class="tl-item tl-green">BAIX (&lt;5%)</div>
+                    <div class="tl-item tl-yellow">MITJÀ (5-20%)</div>
+                    <div class="tl-item tl-red">ALT (&gt;20%)</div>
+                </div>
+            </div>
+
+            <div class="label-tips">
+                <div class="label-tip">
+                    <h4>1️⃣ Mira primer la PORCIÓ</h4>
+                    <p>Totes les dades es refereixen a UNA porció, no a l'envàs sencer. Compara amb el que realment menges (sovint mengem 2-3 porcions sense adonar-nos-en).</p>
+                </div>
+                <div class="label-tip">
+                    <h4>2️⃣ Verifica els ingredients (ordre importa!)</h4>
+                    <p>Els ingredients apareixen en ordre decreixent de quantitat. Si el <strong>primer ingredient</strong> és sucre, farina refinada o oli de palma → alerta!</p>
+                </div>
+                <div class="label-tip">
+                    <h4>3️⃣ Atenció als "amagats"</h4>
+                    <p>El sucre apareix amb molts noms: xarop de glucosa-fructosa, maltosa, dextrosa, sacarosa, melassa, suc de canya concentrat... Suma'ls tots!</p>
+                </div>
+                <div class="label-tip">
+                    <h4>4️⃣ Regla del 5-20%</h4>
+                    <p><strong>&lt;5%</strong> = Baix (bé per a nutrients positius com fibra, proteïna)<br>
+                    <strong>&gt;20%</strong> = Alt (dolent per a sucre, greix saturat, sodi)</p>
+                </div>
+                <div class="label-tip">
+                    <h4>5️⃣ Cuidado amb reclams enganyosos</h4>
+                    <p>"Natural", "Light", "Zero greixos"... no sempre significa saludable. Un producte "zero greixos" pot contenir molt sucre. Llegeix SEMPRE la taula nutricional.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MITES NUTRICIONALS (NOVA SECCIÓ) -->
+    <div class="section-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i> Mites Nutricionals: Ciència vs Falsedats</div>
+    <div class="myths-section">
+        <h3>🚫 10 Mites Comuns Desmentits per la Ciència</h3>
+        <p>La desinformació nutricional està arrelada. Aquests mites han estat refutats per estudis rigorosos i organitzacions sanitàries internacionals.</p>
+
+        <div class="myth-grid">
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"El pan engorda"</h4>
+                <p><span class="myth-fact">REALITAT:</span> El pa té un contingut calòric moderat (261 kcal/100g). El problema és el tipus (refinat vs integral) i la quantitat. El pa integral és saludable i necessari.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Menjar tard de nit engorda més"</h4>
+                <p><span class="myth-fact">REALITAT:</span> El cos no té rellotge calòric. El que importa és el TOTAL de calories diàries, no quan les menges. Menjar de nit pot portar a excessos, però l'hora en si no canvia la física.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"El gluten és dolent per tothom"</h4>
+                <p><span class="myth-fact">REALITAT:</span> Només el 1% de la població té celíaquia i ~6% sensibilitat al gluten. Per la resta, els cereals complets amb gluten aporten fibra, vitamines B i són beneficiosos.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Els productes 'light' són millors"</h4>
+                <p><span class="myth-fact">REALITAT:</span> En reduir greixos, sovint s'afegeix sucre, sal i additius per compensar sabor. Molts 'light' tenen més calories que l'original o són menys saciants.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"El sucre moreno/mel és més sa"</h4>
+                <p><span class="myof-fact">REALITAT:</span> Químicament són gairebé idèntics al sucre blanc. Poden contenir traces de minerals, però la diferència és negligible. Tots són sucres afegits i cal limitar-los.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Has de menjar cada 3 hores per accelerar metabolisme"</h4>
+                <p><span class="myth-fact">REALITAT:</span> La freqüència de menjars té efecte mínim en el metabolisme total. El que importa són les calories totals i la qualitat nutricional. Algunes persones milloren dejunant intermitent.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Els carbohidrats fan grassa"</h4>
+                <p><span class="myth-fact">REALITAT:</span> Els carbohidrats NO s'emmagatzemen directament com a greix (excepte en excés extrem). El problema són els carbohidrats REFINATS + exces calorico. Els complexos són essencials.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Els detox i dietes depuratives netegen el cos"</h4>
+                <p><span class="myth-fact">REALITAT:</span> El fetge i els ronyons ja "netegen" el cos 24/7. Les dietes detox només produeixen pèrdua d'aigua i muscular temporal. Són innecessàries i potencialment perilloses.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Els ovomaltines i barretes energètiques són saludables"</h4>
+                <p><span class="myth-fact">REALITAT:</span> Moltes són bombes de sucre disfressades d'aliment sa. Alguns tenen més xocolata i caramel que un postre. Llegeix l'etiqueta: molts superen 30% sucre.</p>
+            </div>
+
+            <div class="myth-card">
+                <span class="myth-badge">❌ MITE</span>
+                <h4>"Si és natural/vegetal, és saludable"</h4>
+                <p><span class="myof-fact">REALITAT:</span> L'oli de coco és 100% natural però 82% greix saturat. El suc de fruita natural conté fructose lliure (igual que un refresc). "Natural" ≠ "saludable". Context importa.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONSELLS PRÀCTICS EXPANDITS -->
+    <div class="section-title"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--orange)"></i> Consells Pràctics Basats en Evidència</div>
     <div class="tips-grid">
         <div class="tip-card">
             <div class="tip-num">1</div>
             <div>
-                <h4>Desjunja sempre</h4>
-                <p>El desjunjudor trenca el dejuni nocturn i reactiva el metabolisme. Un bon desjuny inclou proteïna, fruita i cereals.</p>
+                <h4>Desjunja sempre (mai saltis)</h4>
+                <p>Trenca el dejuni nocturn de 8-12 hores. Un bon desjuny inclou proteïna + fibra + gra sancer. Millora concentració, metabolisme i evita excesses posteriors.</p>
             </div>
         </div>
         <div class="tip-card">
             <div class="tip-num">2</div>
             <div>
-                <h4>Pensa als colors del plat</h4>
-                <p>Més colors vol dir més nutrients diferents. Verd, taronja, vermell, porpra... cada un té vitamines i antioxidants únics.</p>
+                <h4>La regla dels colors</h4>
+                <p>Més colors = més fitonutrients diferents. Verd (clorofil·la), taronja (beta-carotè), vermell (licopè), porpra (antocianines)... Objectiu: 3+ colors/plat.</p>
             </div>
         </div>
         <div class="tip-card">
             <div class="tip-num">3</div>
             <div>
-                <h4>Llegeix les etiquetes</h4>
-                <p>Fixa't en la llista d'ingredients: si el primer element és sucre o farina refinada, no és la millor opció.</p>
+                <h4>Domina les etiquetes (30 segons)</h4>
+                <p>Porció → Ingredients (primers 3) → Sucre total &lt;5g → Greix saturat &lt;2g → Fibra &gt;3g. Si el primer ingredient és sucre/refinat, deixa-ho.</p>
             </div>
         </div>
         <div class="tip-card">
             <div class="tip-num">4</div>
             <div>
-                <h4>Menja consciemment</h4>
-                <p>Triga almenys 20 minuts per menjar. Mastega bé i apaga la pantalla. El cervell necessita temps per registrar la sacietat.</p>
+                <h4>Menja conscientment (mindful eating)</h4>
+                <p>Triga ≥20 minuts. Mastega 20-30 vegades cada mossegada. Sense pantalles. El cervell triga 20 minuts a registrar sacietat. Menjar ràpid = menjar de més.</p>
             </div>
         </div>
         <div class="tip-card">
             <div class="tip-num">5</div>
             <div>
-                <h4>Planifica els àpats</h4>
-                <p>Quan planifiques, evites decisions impulsives. Fer la compra amb llista redueix les compres ultraprocessades.</p>
+                <h4>Planifica i prepara (meal prep)</h4>
+                <p>Dedica 2-3 hores setmanals a preparar ingredients base (grans cuits, verdures tallades, proteïnes marinades). Redueix decisions impulsives i consum d'ultraprocessats un 40%.</p>
             </div>
         </div>
         <div class="tip-card">
             <div class="tip-num">6</div>
             <div>
-                <h4>No hi ha aliments prohibits</h4>
-                <p>La freqüència i la quantitat importen més que l'aliment en si. Un dolç ocasional encaixa en una dieta equilibrada.</p>
+                <h4>No hi ha aliments prohibits, només frequències</h4>
+                <p>Un dolç ocasional (10% calories) encaixa en dieta equilibrada. La restrictivitat genera ansietat i efecte rebote. Equilibri a llarg termini &gt; perfecció a curt termini.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">7</div>
+            <div>
+                <h4>Hidrata't abans de tenir set</h4>
+                <p>Beu 1-2 vedells en llepar-se. Porta una ampolla sempre. Orina groga clar = ben hidratat. La confusió set/fam porta a menjar innecessariament.</p>
+            </div>
+        </div>
+        <div class="tip-card">
+            <div class="tip-num">8</div>
+            <div>
+                <h4>Proteïna en cada àpat principal</h4>
+                <p>20-30g proteïna/menjar manté massa muscular, augmenta sacietat (efecte tèrmic), estabilitza glucosa. Inclou font animal o vegetal en esmorzar, dinar i sopar.</p>
             </div>
         </div>
     </div>
 
     <!-- HIDRATACIÓ -->
-    <div class="section-title"><i class="fa-solid fa-droplet" style="color:var(--blue)"></i> Hidratació</div>
+    <div class="section-title"><i class="fa-solid fa-droplet" style="color:var(--blue)"></i> Hidratació: El Nutrient Oblidad</div>
     <div class="hydration">
         <div class="water-viz">
             <div class="water-fill"></div>
             <div class="water-label">2L</div>
         </div>
         <div class="hydration-info">
-            <h3>Quanta aigua necessites?</h3>
-            <p>La recomanació general és d'uns 2 litres diaris, però depèn de l'edat, l'activitat física, la temperatura i l'estat de salut. El millor indicador és la sed: si tens set, ja comences a estar deshidratat.</p>
+            <h3>Quanta aigua necessites realment?</h3>
+            <p>Recomanació general: <strong>2-2.5 litres/dia</strong> (9-13 gots). Depèn de: pes, activitat física, clima, embarç/lactàcia, malalties. El millor indicador NO és la sed (ja és tard!), sinó el color de l'orina (ha de ser groc clar/translúcid).</p>
             <div class="hydration-stats">
                 <div class="h-stat">
                     <div class="h-val">60%</div>
-                    <div class="h-lbl">Del cos es aigua</div>
+                    <div class="h-lbl">Cos = aigua</div>
                 </div>
                 <div class="h-stat">
                     <div class="h-val">2-2.5L</div>
@@ -460,43 +958,154 @@
                 </div>
                 <div class="h-stat">
                     <div class="h-val">20%</div>
-                    <div class="h-lbl">Ve de l'alimentacio</div>
+                    <div class="h-lbl">Ve de l'alimentació</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- DADES CURIOSES -->
-    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color:var(--purple)"></i> Dades que et sorprendran</div>
+    <!-- NECESSITATS ENERGÈTIQUES (NOVA SECCIÓ) -->
+    <div class="section-title"><i class="fa-solid fa-fire" style="color:var(--orange)"></i> Necessitats Energètiques: Quant et cal?</div>
+    <div class="calories-section">
+        <h3>🔥 Guia de Calories Diàries Recomanades</h3>
+        <p>Aquests valors són estimacions per a adults sans. Les necessitats individuals varien segons composició corporal, metabolisme basal, nivell d'activitat i objectius personals (pèrdua/manteniment/gananci de pes).</p>
+
+        <table class="cal-table">
+            <thead>
+                <tr>
+                    <th>Grup Poblacional</th>
+                    <th>Sedentari (poc exercici)</th>
+                    <th>Moderat (3-5 dies/setmana)</th>
+                    <th>Actiu (6-7 dies/setmana)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Dones 19-30 anys</strong></td>
+                    <td>2000 kcal</td>
+                    <td>2200 kcal</td>
+                    <td>2400 kcal</td>
+                </tr>
+                <tr>
+                    <td><strong>Dones 31-50 anys</strong></td>
+                    <td>1800 kcal</td>
+                    <td>2000 kcal</td>
+                    <td>2200 kcal</td>
+                </tr>
+                <tr>
+                    <td><strong>Dones 51+ anys</strong></td>
+                    <td>1600 kcal</td>
+                    <td>1800 kcal</td>
+                    <td>2000 kcal</td>
+                </tr>
+                <tr>
+                    <td><strong>Homes 19-30 anys</strong></td>
+                    <td>2400 kcal</td>
+                    <td>2600-2800 kcal</td>
+                    <td>3000 kcal</td>
+                </tr>
+                <tr>
+                    <td><strong>Homes 31-50 anys</strong></td>
+                    <td>2200 kcal</td>
+                    <td>2400-2600 kcal</td>
+                    <td>2800-3000 kcal</td>
+                </tr>
+                <tr>
+                    <td><strong>Homes 51+ anys</strong></td>
+                    <td>2000 kcal</td>
+                    <td>2200-2400 kcal</td>
+                    <td>2400-2800 kcal</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="plate-tip" style="margin-top:24px">
+            <i class="fa-solid fa-circle-info"></i>
+            <p><strong>Per perdre pes:</strong> dèficit de 500 kcal/dia ≈ 0.5 kg/setmana (sa i sostenible). <strong>Per guanyar massa muscular:</strong> superàvit de 300-500 kcal + entrenament de força. <strong>Never baixi de 1200 kcal/dia</strong> (home) o 1000 kcal/dia (dona) sense supervisió mèdica.</p>
+        </div>
+    </div>
+
+    <!-- DADES CURIOSES EXPANIDES -->
+    <div class="section-title"><i class="fa-solid fa-chart-pie" style="color:var(--purple)"></i> Dades que et Sorprendran</div>
     <div class="facts-row">
         <div class="fact">
             <span class="fact-emoji">🧠</span>
             <div class="fact-val fv-blue">20%</div>
-            <div class="fact-label">De l'energia del cos la consumeix el cervell, tot i que només pesa l'1.5%</div>
+            <div class="fact-label">De l'energia total la consumeix el cervell, tot i que només pesa l'1.5% del cos. Requereix glucosa constant.</div>
         </div>
         <div class="fact">
             <span class="fact-emoji">🦴</span>
             <div class="fact-val fv-orange">206</div>
-            <div class="fact-label">Ossos té un adult, que necessiten calci i vitamina D per mantenir-se forts</div>
+            <div class="fact-label">Ossos té un adult. Necessiten calci + vitamina D + exercici de càrrega per mantenir densitat òssia.</div>
         </div>
         <div class="fact">
             <span class="fact-emoji">🫁</span>
             <div class="fact-val fv-green">10.000L</div>
-            <div class="fact-label">D'aire respirem cada dia, per això els antioxidants són tan importants</div>
+            <div class="fact-label">D'aire respirem cada dia. Els antioxidants (fruita/verdura) neutralitzen radicals lliures d'aquest oxigen.</div>
         </div>
         <div class="fact">
             <span class="fact-emoji">🔄</span>
-            <div class="fact-val fv-purple">3-5h</div>
-            <div class="fact-label">Triga la digestió completa. Menjar lent ajuda a que sigui més eficient</div>
+            <div class="fact-val fv-purple">24-72h</div>
+            <div class="fact-label">Hores triga la digestió completa. Menjar lent i mastegar bé millora eficiència nutricional un 30%.</div>
+        </div>
+        <div class="fact">
+            <span class="fact-emoji">🦠</span>
+            <div class="fact-val fv-blue">100B+</div>
+            <div class="fact-label">Bacteris viuen al teu intestí (microbiota). Pesen 1-2 kg i influeixen en immunitat, estat d'ànim i pes.</div>
+        </div>
+        <div class="fact">
+            <span class="fact-emoji">💧</span>
+            <div class="fact-val fv-orange">2-3%</div>
+            <div class="fact-label">Deshidratació necessària per reduir rendiment físic i cognitiu un 20%. La seu ja significa pèrdua d'1-2%.</div>
+        </div>
+    </div>
+
+    <!-- GLOSSARI (NOU) -->
+    <div class="section-title"><i class="fa-solid fa-book" style="color:var(--purple)"></i> Glossari de Termes Clau</div>
+    <div class="glossary">
+        <h3>📖 Vocabulari Nutricional Essencial</h3>
+        <div class="glossary-grid">
+            <div class="glossary-item">
+                <div class="glossary-term">Caloria (kcal)</div>
+                <div class="glossary-def">Unitat d'energia. 1 kcal = energia per elevar 1kg d'aigua 1°C. Els macronutrients: HC=4kcal/g, Proteïnes=4kcal/g, Greixos=9kcal/g</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Metabolisme Basal (MB)</div>
+                <div class="glossary-def">Calories que el cos en repós per funcions vitals (cor, respiració, cervell). Suposa 60-75% del gast energètic diari.</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Índex Glucèmic (IG)</div>
+                <div class="glossary-def">Velocitat (0-100) amb la què un aliment eleva glucosa en sang. Baix=&lt;55, Mitjà=56-69, Alt=&gt;70</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Aminoàcids Essencials</div>
+                <div class="glossary-def">9 dels 20 aminoàcids que el cos NO pot fabricar. S'han d'obtenir obligatòriament de la dieta (histidina, isoleucina, leucina, lisina, metionina, fenilalanina, treonina, triptòfan, valina)</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Antioxidants</div>
+                <div class="glossary-def">Compostos que neutralitzen radicals lliures (molècules inestables que envelleixen cèl·les i provoquen malalties). Abundants en fruita/verdura colorida.</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Fibra Soluble / Insoluble</div>
+                <div class="glossary-def">Soluble (avena, llegums): forma gel, redueix colesterol i glucosa. Insoluble (fulles, salvat): afavoreix trànsit intestinal i prevé restrenyiment.</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Greixos Omega-3</div>
+                <div class="glossary-def">Àcids grassos essencials antiinflamatoris (EPA, DHA, ALA). Beneficiosos per cor, cervell i articulacions. Fonts: peix blau, nous, llavors de llinosa.</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Ultraprocessats</div>
+                <div class="glossary-def">Aliments industrials amb 5+ ingredients, incloent additius, aromes artificials i substàncies no trobades en cuines casolanes (snacks, refrescs, plats preparats).</div>
+            </div>
         </div>
     </div>
 
     <!-- FOOTER -->
     <footer class="footer">
         <a href="index.html" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i> Tornar al Portal
+            <i class="fa-solid fa-arrow-left"></i> Tornar al Portal de Salut
         </a>
-        <p class="footer-copy">© 2026 Portal de Salut — Nutrició Conscient</p>
+        <p class="footer-copy">© 2026 Portal de Salut — Nutrició Basada en Evidència Científica<br>Fuentes: Harvard School of Public Health, OMS, EFSA, Mayo Clinic</p>
     </footer>
 
 </div>
@@ -514,11 +1123,11 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     /* Aplicar a totes les targetes i seccions animables */
-    document.querySelectorAll('.macro-card, .tip-card, .fact, .plate-section, .hydration').forEach((el, i) => {
+    document.querySelectorAll('.macro-card, .tip-card, .fact, .plate-section, .hydration, .myth-card, .gi-cat, .rule-card, .label-tip, .glossary-item').forEach((el, i) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(24px)';
         el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        el.dataset.delay = Math.min(i * 60, 300);
+        el.dataset.delay = Math.min(i * 50, 400);
         observer.observe(el);
     });
 
