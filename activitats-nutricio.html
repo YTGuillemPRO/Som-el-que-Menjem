@@ -2,528 +2,580 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutri-Dash | IE Temple</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Nutri-Dash App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg: #060a10;
-            --card: rgba(12,18,32,0.85);
-            --card-border: rgba(255,255,255,0.05);
-            --green: #00e676;
-            --green-glow: rgba(0,230,118,0.12);
-            --green-deep: #00c853;
-            --red: #ff5252;
-            --red-glow: rgba(255,82,82,0.12);
-            --gold: #ffd740;
-            --gold-glow: rgba(255,215,64,0.12);
-            --cyan: #18ffff;
-            --text: #e8edf5;
-            --muted: #4e5f7a;
-            --radius: 30px;
+            --bg: #000000;
+            --card: #121212;
+            --primary: #00e676;
+            --danger: #ff3d00;
+            --gold: #ffea00;
+            --text: #ffffff;
+            --accent: #2979ff;
+            --lane-w: 33.33%;
         }
-        *{margin:0;padding:0;box-sizing:border-box}
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
+        
         body{
-            font-family:'Plus Jakarta Sans',sans-serif;
+            font-family:'Plus Jakarta Sans', sans-serif;
             background:var(--bg);color:var(--text);
             height:100vh;height:100dvh;
-            overflow:hidden;display:flex;justify-content:center;align-items:center;
-            -webkit-tap-highlight-color:transparent;
+            overflow:hidden;
+            position:fixed;
+            inset:0;
+            touch-action:none; /* Bloqueja gestos del navegador */
         }
 
-        canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-        .bg-layer{
-            position:fixed;inset:0;z-index:1;pointer-events:none;
-            background:
-                radial-gradient(ellipse 700px 500px at 15% 15%,rgba(0,230,118,0.035),transparent),
-                radial-gradient(ellipse 600px 500px at 85% 85%,rgba(255,82,82,0.025),transparent),
-                radial-gradient(ellipse 400px 400px at 50% 40%,rgba(255,215,64,0.015),transparent);
+        /* === LAYOUT GENERAL === */
+        .app-view{
+            position:absolute;inset:0;
+            display:flex;flex-direction:column;
+            background:var(--bg);
+            z-index:10;
+            transition:transform 0.3s ease, opacity 0.3s;
+        }
+        .view-hidden{
+            transform:translateY(20px);
+            opacity:0;pointer-events:none;
+            z-index:0;
+        }
+        .active-view{
+            transform:translateY(0);
+            opacity:1;pointer-events:auto;
+            z-index:10;
         }
 
-        .screen{
-            position:fixed;inset:0;z-index:10;
-            display:flex;justify-content:center;align-items:center;flex-direction:column;
-            transition:opacity .45s ease,transform .45s ease;
-            padding:16px;
+        /* === MENÚ PRINCIPAL (SCROLLABLE) === */
+        .app-header{
+            padding:20px 20px 10px;
+            background:linear-gradient(to bottom, #000, transparent);
+            z-index:20;
         }
-        .screen.hidden{opacity:0;pointer-events:none;transform:scale(0.9) translateY(20px)}
+        .app-logo{font-size:14px;color:var(--primary);font-weight:900;letter-spacing:1px;margin-bottom:5px}
+        .app-title{font-size:28px;font-weight:900;color:#fff}
 
-        .card{
-            background:var(--card);
-            border:1px solid var(--card-border);
-            backdrop-filter:blur(60px);-webkit-backdrop-filter:blur(60px);
-            border-radius:var(--radius);
-            padding:42px 38px;width:100%;max-width:480px;
-            text-align:center;position:relative;overflow:hidden;
-            box-shadow:0 8px 60px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.03) inset;
+        .scroll-list{
+            flex:1;overflow-y:auto;padding:10px 20px 80px; /* Padding bottom per scroll */
+            -webkit-overflow-scrolling:touch;
         }
-        .card::before{
-            content:'';position:absolute;top:0;left:0;right:0;height:1px;
-            background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.08) 50%,transparent 95%);
-        }
+        /* Estil barra scroll minimalista */
+        .scroll-list::-webkit-scrollbar{width:3px}
+        .scroll-list::-webkit-scrollbar-thumb{background:#333;border-radius:10px}
 
-        .logo-wrap{position:relative;margin-bottom:32px}
-        .logo-icon{
-            font-size:76px;display:block;
-            filter:drop-shadow(0 0 40px rgba(0,230,118,0.25));
-            animation:logoFloat 4s ease-in-out infinite;
+        .menu-btn-large{
+            display:flex;align-items:center;gap:20px;
+            background:#1a1a1a;border:1px solid #333;
+            padding:20px;border-radius:20px;margin-bottom:15px;
+            position:relative;overflow:hidden;
+            box-shadow:0 4px 10px rgba(0,0,0,0.3);
+            transition:transform 0.1s, background 0.2s;
         }
-        @keyframes logoFloat{
-            0%,100%{transform:translateY(0) rotate(-2deg) scale(1)}
-            33%{transform:translateY(-6px) rotate(1deg) scale(1.04)}
-            66%{transform:translateY(3px) rotate(-1deg) scale(0.98)}
+        .menu-btn-large:active{transform:scale(0.98);background:#222}
+        .menu-icon-wrap{
+            width:50px;height:50px;border-radius:12px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:24px;
         }
-        .logo-ring{
-            position:absolute;inset:-18px;
-            border:2px solid rgba(0,230,118,0.1);
-            border-radius:50%;animation:ringPulse 3s ease-in-out infinite;
-        }
-        .logo-ring:nth-child(2){inset:-30px;border-color:rgba(0,230,118,0.05);animation-delay:-1s}
-        @keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.5}}
+        .bg-green{background:rgba(0,230,118,0.15);color:var(--primary)}
+        .bg-gold{background:rgba(255,234,0,0.15);color:var(--gold)}
+        .bg-grey{background:rgba(255,255,255,0.05);color:#888}
+        .menu-txt h3{font-size:18px;font-weight:800}
+        .menu-txt p{font-size:13px;color:#888;margin-top:2px}
+        .chevron{margin-left:auto;color:#444;font-size:12px}
 
-        .title-wrap{position:relative;margin-bottom:8px}
-        .title{font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1.1;color:#fff;position:relative}
-        .title-glow{
-            position:absolute;inset:0;font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1.1;
-            background:linear-gradient(135deg,#00ff88 0%,#66ffbb 30%,#ffd740 70%,#ffab00 100%);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-            filter:blur(18px) brightness(1.5);pointer-events:none;
+        /* === QUIZ UI === */
+        .quiz-container{
+            display:flex;flex-direction:column;justify-content:center;align-items:center;
+            height:100%;padding:30px;text-align:center;
         }
-        .title-shine{
-            position:absolute;inset:0;font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1.1;
-            background:linear-gradient(135deg,#00ff88 0%,#aaffcc 35%,#ffe082 65%,#ffc107 100%);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        .food-card{
+            width:100%;max-width:320px;
+            background:#1a1a1a;border-radius:24px;padding:40px 20px;
+            margin-bottom:30px;
+            border:1px solid rgba(255,255,255,0.05);
+            box-shadow:0 10px 30px rgba(0,0,0,0.5);
+            position:relative;
+        }
+        .food-emoji{font-size:100px;display:block;margin-bottom:15px;animation:pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275)}
+        @keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+        .quiz-ctrls{display:flex;gap:15px;width:100%;max-width:320px}
+        .q-btn{
+            flex:1;height:100px;border-radius:20px;border:none;
+            font-size:20px;font-weight:900;color:#fff;
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            gap:5px;
+            box-shadow:0 8px 0 rgba(0,0,0,0.3);
+            transition:transform 0.1s, box-shadow 0.1s;
+        }
+        .q-btn:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,0.3)}
+        .btn-yes{background:var(--primary);color:#000}
+        .btn-no{background:var(--danger)}
+        .q-label{font-size:12px;opacity:0.7;font-weight:400;text-transform:uppercase}
+
+        /* === RUNNER UI (EL "COM DEL MÒBIL") === */
+        .runner-game{
+            position:absolute;inset:0;
+            background:linear-gradient(to bottom, #000 20%, #111 100%);
+            perspective:600px;
+            overflow:hidden;
+        }
+        /* PERSPECTIVA TERRA */
+        .road-grid{
+            position:absolute;inset:-50%;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size:100% 100px; /* El quadrat és de 100px d'alt */
+            transform-origin:center center;
+            transform:rotateX(60deg) translateY(-50px);
+            animation:moveRoad 0.5s linear infinite;
             pointer-events:none;
         }
+        @keyframes moveRoad{from{background-position:0 0}to{background-position:0 100px}}
 
-        .subtitle{color:var(--muted);font-size:14px;font-weight:400;margin-bottom:28px;line-height:1.7}
-        .subtitle strong{color:#7a8ba8;font-weight:600}
-
-        .rules-box{
-            background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);
-            border-radius:16px;padding:16px 18px;margin-bottom:28px;text-align:left;
+        /* EL JUGADOR */
+        .player-minion{
+            position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
+            width:70px;height:70px;z-index:50;
+            transition:left 0.15s cubic-bezier(0.2, 0.8, 0.2, 1); /* Moviment fluid */
+            display:flex;justify-content:center;align-items:center;
         }
-        .rule{display:flex;align-items:center;gap:11px;font-size:12.5px;color:#7a8da5;padding:5px 0}
-        .rule i{width:22px;text-align:center;font-size:13px;flex-shrink:0}
-        .ri{color:var(--green)}.rr{color:var(--red)}.rg{color:var(--gold)}.rc{color:var(--cyan)}
+        .minion-sprite{font-size:55px;filter:drop-shadow(0 15px 10px rgba(0,0,0,0.6))}
+        .jump-anim{animation:minionJump 0.3s ease-out}
+        @keyframes minionJump{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
 
-        .best-score{font-size:11px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:6px}
-        .best-score i{color:var(--gold);font-size:12px}
-        .best-score span{color:#8a9bb8;font-weight:700}
-
-        .btn-main{
-            display:inline-flex;align-items:center;justify-content:center;gap:10px;
-            padding:18px 44px;border-radius:18px;border:none;
-            font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;
-            color:var(--bg);position:relative;overflow:hidden;
-            background:linear-gradient(135deg,var(--green),var(--green-deep));
-            box-shadow:0 6px 30px var(--green-glow),0 2px 8px rgba(0,0,0,0.4);
-            transition:all .25s cubic-bezier(.175,.885,.32,1.275);
+        /* OBSTACLES */
+        .obstacle{
+            position:absolute;width:60px;height:60px;
+            left:50%;top:-80px;
+            transform:translateX(-50%) rotateX(60deg); /* Plana amb la perspectiva */
+            font-size:40px;z-index:40;
+            display:flex;align-items:center;justify-content:center;
+            text-shadow:0 5px 5px rgba(0,0,0,0.5);
         }
-        .btn-main::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,0.2) 100%);opacity:0;transition:.3s}
-        .btn-main:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 44px rgba(0,230,118,0.22)}
-        .btn-main:hover::before{opacity:1}
-        .btn-main:active{transform:scale(0.97)}
-
-        .btn-ghost{display:inline-flex;align-items:center;gap:6px;margin-top:18px;color:var(--muted);text-decoration:none;font-size:12.5px;font-weight:600;transition:.2s;background:none;border:none;cursor:pointer;font-family:inherit}
-        .btn-ghost:hover{color:var(--text)}
-
-        /* === GAME UI === */
-        .hud{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
-        .hud-item{display:flex;flex-direction:column;align-items:center;gap:1px}
-        .hud-label{font-size:9px;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted);font-weight:700}
-        .hud-value{font-size:24px;font-weight:900;line-height:1.1;transition:transform .2s}
-        .hud-value.bump{animation:hudBump .35s cubic-bezier(.175,.885,.32,1.275)}
-        @keyframes hudBump{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
-        .score-val{color:var(--green)}.combo-val{color:var(--gold)}.round-val{color:var(--text)}
-
-        .combo-bar-wrap{height:3px;background:rgba(255,255,255,0.04);border-radius:3px;margin-bottom:6px;overflow:hidden;opacity:0;transition:opacity .3s}
-        .combo-bar-wrap.active{opacity:1}
-        .combo-bar-fill{height:100%;border-radius:3px;width:0%;background:linear-gradient(90deg,var(--gold),#ff9100);transition:width .4s cubic-bezier(.22,1,.36,1)}
-
-        .progress-track{width:100%;height:3px;background:rgba(255,255,255,0.04);border-radius:3px;margin-bottom:16px;overflow:hidden}
-        .progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));border-radius:3px;transition:width .5s cubic-bezier(.22,1,.36,1);width:0%}
-
-        .question-label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
-
-        #foodDisplay{font-size:110px;line-height:1;margin:4px 0;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.5));will-change:transform}
-        #foodDisplay.pop-in{animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) forwards}
-        @keyframes popIn{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.08) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
-        #foodDisplay.shake{animation:shake .55s ease}
-        @keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-14px) rotate(-4deg)}30%{transform:translateX(12px) rotate(3deg)}45%{transform:translateX(-10px) rotate(-2deg)}60%{transform:translateX(8px) rotate(2deg)}75%{transform:translateX(-4px) rotate(-1deg)}}
-
-        /* === NOM DEL ALIMENT ARRREGLAT === */
-        .food-name{
-            font-size:20px;
-            font-weight:800;
-            color:#d0daea;
-            margin-bottom:28px;
-            min-height:28px;
-            letter-spacing:.3px;
-            text-shadow:0 0 20px rgba(208,218,234,0.15);
+        
+        /* HUD RUNNER */
+        .runner-hud{
+            position:absolute;top:20px;left:0;right:0;
+            display:flex;justify-content:space-between;padding:0 20px;
+            z-index:100;pointer-events:none;
+        }
+        .hud-stat{
+            background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);
+            padding:8px 16px;border-radius:20px;
+            border:1px solid rgba(255,255,255,0.1);
+            font-weight:800;font-size:16px;
+            display:flex;align-items:center;gap:8px;
         }
 
-        .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .btn-choice{
-            padding:20px 12px;border-radius:22px;border:2px solid transparent;
-            font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;
-            color:rgba(255,255,255,0.8);display:flex;flex-direction:column;align-items:center;gap:3px;
-            transition:all .2s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;
-            -webkit-user-select:none;user-select:none;
+        /* ZONES TOUCH INVISIBLES */
+        .touch-lane{position:absolute;top:0;bottom:0;width:50%;z-index:200;}
+        
+        /* OVERLAY INICI JOG */
+        .game-overlay{
+            position:absolute;inset:0;z-index:300;
+            background:rgba(0,0,0,0.85);backdrop-filter:blur(5px);
+            display:flex;flex-direction:column;justify-content:center;align-items:center;
+            padding:40px;text-align:center;
         }
-        .btn-choice .btn-sub{font-size:10px;opacity:.5;font-weight:400;letter-spacing:.5px}
-        .btn-choice .btn-icon{font-size:28px;margin-bottom:2px;transition:transform .2s}
 
-        .btn-yes{background:rgba(0,230,118,0.07);border-color:rgba(0,230,118,0.18)}
-        .btn-yes:hover{background:rgba(0,230,118,0.15);border-color:rgba(0,230,118,0.4);transform:translateY(-4px);box-shadow:0 14px 36px var(--green-glow)}
-        .btn-yes:hover .btn-icon{transform:scale(1.15)}
-        .btn-yes:active{transform:scale(0.95)!important}
-        .btn-yes.flash-correct{background:var(--green)!important;border-color:var(--green)!important;color:var(--bg)!important}
-        .btn-yes.flash-wrong{border-color:var(--red)!important;box-shadow:0 0 30px var(--red-glow)!important}
-
-        .btn-no{background:rgba(255,82,82,0.07);border-color:rgba(255,82,82,0.18)}
-        .btn-no:hover{background:rgba(255,82,82,0.15);border-color:rgba(255,82,82,0.4);transform:translateY(-4px);box-shadow:0 14px 36px var(--red-glow)}
-        .btn-no:hover .btn-icon{transform:scale(1.15)}
-        .btn-no:active{transform:scale(0.95)!important}
-        .btn-no.flash-correct{background:var(--red)!important;border-color:var(--red)!important;color:white!important}
-        .btn-no.flash-wrong{border-color:var(--red)!important;box-shadow:0 0 30px var(--red-glow)!important}
-
-        .btn-choice:disabled{cursor:not-allowed;opacity:.4;transform:none!important}
-        .btn-choice:disabled .btn-icon{transform:none!important}
-
-        .key-hint{display:flex;justify-content:center;gap:28px;margin-top:14px}
-        .key-hint span{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px}
-        .key-hint kbd{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:2px 7px;font-family:inherit;font-size:10px;font-weight:700;color:#6a7b96}
-
-        .feedback-layer{position:fixed;inset:0;z-index:50;pointer-events:none;display:flex;justify-content:center;align-items:center}
-        .fb-text{font-size:52px;font-weight:900;opacity:0;transform:scale(0.4) translateY(20px);transition:all .3s cubic-bezier(.175,.885,.32,1.275);text-shadow:0 6px 30px rgba(0,0,0,0.6);letter-spacing:-1px}
-        .fb-text.show{opacity:1;transform:scale(1) translateY(-15px)}
-        .fb-text.fade{opacity:0;transform:scale(1.15) translateY(-50px);transition:all .4s ease-in}
-
-        .score-particle{position:fixed;font-size:22px;font-weight:900;pointer-events:none;z-index:60;animation:sFloat 1.1s ease-out forwards;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
-        @keyframes sFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-90px) scale(.5)}}
-
-        .fire-particle{position:fixed;pointer-events:none;z-index:55;width:6px;height:6px;border-radius:50%;animation:fireUp .8s ease-out forwards}
-        @keyframes fireUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(0)}}
-
-        .screen-flash{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .08s}
-        .screen-flash.green{background:radial-gradient(circle at center,var(--green),transparent 70%);opacity:.1}
-        .screen-flash.red{background:radial-gradient(circle at center,var(--red),transparent 70%);opacity:.12}
-
-        .card.shake-card{animation:cardShake .5s ease}
-        @keyframes cardShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
-
-        .result-grade{font-size:100px;font-weight:900;line-height:1;margin-bottom:2px;filter:drop-shadow(0 4px 20px rgba(0,0,0,0.4))}
-        .result-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:6px}
-        .result-score-big{font-size:60px;font-weight:900;margin:10px 0 2px;letter-spacing:-2px}
-        .result-max{font-size:14px;color:var(--muted);margin-bottom:24px}
-        .result-perfect{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,215,64,0.15),rgba(255,145,0,0.1));border:1px solid rgba(255,215,64,0.25);border-radius:30px;padding:6px 16px;font-size:12px;font-weight:800;color:var(--gold);margin-bottom:20px;letter-spacing:1px}
-
-        .stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px}
-        .stat-box{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:14px 6px}
-        .stat-num{font-size:24px;font-weight:900;line-height:1.2}
-        .stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-        .s-correct .stat-num{color:var(--green)}
-        .s-wrong .stat-num{color:var(--red)}
-        .s-combo .stat-num{color:var(--gold)}
-
-        .result-foods{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:20px}
-        .result-food{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:21px;border:2px solid;transition:transform .25s cubic-bezier(.175,.885,.32,1.275);cursor:default}
-        .result-food:hover{transform:scale(1.35)}
-        .rf-ok{border-color:var(--green);background:rgba(0,230,118,0.06)}
-        .rf-fail{border-color:var(--red);background:rgba(255,82,82,0.06)}
-
-        .result-message{font-size:14px;color:#7a8da5;line-height:1.7;margin-bottom:24px}
-        .new-record{font-size:12px;color:var(--gold);font-weight:800;margin-bottom:16px;letter-spacing:1px;animation:pulse 1s ease-in-out infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-
-        @media(max-width:500px){
-            .card{padding:30px 20px;border-radius:24px}
-            .title,.title-glow,.title-shine{font-size:38px}
-            #foodDisplay{font-size:84px}
-            .food-name{font-size:18px}
-            .btn-choice{padding:16px 8px;border-radius:18px}
-            .btn-choice .btn-icon{font-size:24px}
-            .fb-text{font-size:40px}
-            .result-grade{font-size:76px}
-            .result-score-big{font-size:48px}
-            .key-hint{display:none}
+        /* UTILS */
+        .full-btn{
+            background:#fff;color:#000;border:none;
+            padding:18px 40px;border-radius:50px;
+            font-size:18px;font-weight:900;
+            width:100%;max-width:300px;
+            margin-bottom:15px;
+            box-shadow:0 0 20px rgba(255,255,255,0.2);
         }
-        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+        .icon-btn{background:none;border:none;color:#fff;font-size:30px;margin-top:20px}
+        .txt-big{font-size:40px;font-weight:900;margin-bottom:10px;display:block}
+
     </style>
 </head>
 <body>
 
-<canvas id="bgCanvas"></canvas>
-<div class="bg-layer"></div>
-<div id="screenFlash" class="screen-flash"></div>
-<div class="feedback-layer"><div id="fbText" class="fb-text"></div></div>
+<!-- === FONDS === -->
+<div style="position:fixed;inset:0;background:#000;z-index:-1"></div>
+<div style="position:fixed;inset:0;z-index:-1;opacity:0.3;background:radial-gradient(circle at center, #1a2a1a, #000))"></div>
 
-<!-- INICI -->
-<div id="startScreen" class="screen">
-    <div class="card">
-        <div class="logo-wrap">
-            <div class="logo-ring"></div>
-            <div class="logo-ring"></div>
-            <span class="logo-icon">🥗</span>
-        </div>
-        <div class="title-wrap">
-            <div class="title-glow" aria-hidden="true">Nutri-Dash</div>
-            <h1 class="title">Nutri-Dash</h1>
-            <div class="title-shine" aria-hidden="true">Nutri-Dash</div>
-        </div>
-        <p class="subtitle">Separa els aliments saludables dels que no ho son.<br><strong>10 rondes, sense pressa, combos explosius.</strong></p>
-        <div class="rules-box">
-            <div class="rule"><i class="fa-solid fa-check ri"></i>Encerta per sumar <strong style="color:#c0cde0">10 punts base</strong></div>
-            <div class="rule"><i class="fa-solid fa-fire rg"></i>Encadena encerts: combo <strong style="color:#c0cde0">x2, x3... x5</strong></div>
-            <div class="rule"><i class="fa-solid fa-xmark rr"></i>Un error trencara el combo</div>
-            <div class="rule"><i class="fa-solid fa-keyboard ri"></i>Tecles <strong style="color:#c0cde0">F</strong> (Si) i <strong style="color:#c0cde0">J</strong> (No)</div>
-        </div>
-        <div id="bestScoreStart" class="best-score" style="display:none">
-            <i class="fa-solid fa-trophy"></i> Millor marca: <span id="bestVal">0</span>
-        </div>
-        <button class="btn-main" onclick="startGame()">
-            <i class="fa-solid fa-play"></i> COMENCAR
-        </button>
-        <br>
-        <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menu</a>
+<!-- === PANTALLA 1: MENÚ (SCROLLABLE) === -->
+<div id="viewMenu" class="app-view active-view">
+    <div class="app-header">
+        <div class="app-logo">NUTRI • DASH</div>
+        <h1 class="app-title">Benvingut</h1>
     </div>
-</div>
-
-<!-- JOC -->
-<div id="gameScreen" class="screen hidden">
-    <div class="card" id="gameCard">
-        <div class="hud">
-            <div class="hud-item">
-                <span class="hud-label">Punts</span>
-                <span id="hudPoints" class="hud-value score-val">0</span>
+    
+    <div class="scroll-list">
+        <!-- Mode Quiz -->
+        <div class="menu-btn-large" onclick="nav.to('quiz')">
+            <div class="menu-icon-wrap bg-green"><i class="fa-solid fa-brain"></i></div>
+            <div class="menu-txt">
+                <h3>Mode Preguntes</h3>
+                <p>Ràpid, mental i adictiu.</p>
             </div>
-            <div class="hud-item">
-                <span class="hud-label">Combo</span>
-                <span id="hudCombo" class="hud-value combo-val">-</span>
-            </div>
-            <div class="hud-item">
-                <span class="hud-label">Ronda</span>
-                <span id="hudRound" class="hud-value round-val">1/10</span>
-            </div>
+            <i class="fa-solid fa-chevron-right chevron"></i>
         </div>
 
-        <div id="comboBarWrap" class="combo-bar-wrap"><div id="comboBarFill" class="combo-bar-fill"></div></div>
-        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
-
-        <p class="question-label">Aquest aliment es saludable?</p>
-        <div id="foodDisplay" class="pop-in">🥦</div>
-        <p id="foodName" class="food-name"></p>
-
-        <div class="controls">
-            <button id="btnYes" class="btn-choice btn-yes" onclick="answer(true)">
-                <span class="btn-icon"><i class="fa-solid fa-circle-check"></i></span>
-                SI
-                <span class="btn-sub">Es sa</span>
-            </button>
-            <button id="btnNo" class="btn-choice btn-no" onclick="answer(false)">
-                <span class="btn-icon"><i class="fa-solid fa-circle-xmark"></i></span>
-                NO
-                <span class="btn-sub">No es sa</span>
-            </button>
+        <!-- Mode Carrera -->
+        <div class="menu-btn-large" onclick="nav.to('runner')">
+            <div class="menu-icon-wrap bg-gold"><i class="fa-solid fa-bolt"></i></div>
+            <div class="menu-txt">
+                <h3>Mode Carrera</h3>
+                <p>Minion Run: Córrer i esquivar.</p>
+            </div>
+            <i class="fa-solid fa-chevron-right chevron"></i>
         </div>
-        <div class="key-hint">
-            <span><kbd>F</kbd> Si</span>
-            <span><kbd>J</kbd> No</span>
+
+        <!-- Separador visual -->
+        <div style="height:1px;background:#222;margin:10px 0"></div>
+
+        <!-- Elements decoratius per permetre Scroll -->
+        <div class="menu-btn-large" onclick="alert('Aquí anirà el rànquing online!')">
+            <div class="menu-icon-wrap bg-grey"><i class="fa-solid fa-trophy"></i></div>
+            <div class="menu-txt">
+                <h3>Rànquing</h3>
+                <p>Millors jugadors mundials.</p>
+            </div>
+            <i class="fa-solid fa-lock chevron"></i>
+        </div>
+
+        <div class="menu-btn-large" onclick="alert('Configuració de so i vibració')">
+            <div class="menu-icon-wrap bg-grey"><i class="fa-solid fa-gear"></i></div>
+            <div class="menu-txt">
+                <h3>Configuració</h3>
+                <p>Personalitza la teva experiència.</p>
+            </div>
+            <i class="fa-solid fa-chevron-right chevron"></i>
+        </div>
+
+        <div class="menu-btn-large" onclick="alert('Desenvolupat per AI Team 2024')">
+            <div class="menu-icon-wrap bg-grey"><i class="fa-solid fa-info"></i></div>
+            <div class="menu-txt">
+                <h3>Sobre l'App</h3>
+                <p>Versió 2.0.1</p>
+            </div>
+        </div>
+        
+        <div style="padding:20px;text-align:center;color:#444;font-size:12px">
+            Desliza para ver más opciones
         </div>
     </div>
 </div>
 
-<!-- FINAL -->
-<div id="endScreen" class="screen hidden">
-    <div class="card">
-        <div id="resultGrade" class="result-grade"></div>
-        <p id="resultLabel" class="result-label"></p>
-        <div id="resultPerfect" class="result-perfect" style="display:none"><i class="fa-solid fa-crown"></i> PARTIDA PERFECTA</div>
-        <div id="resultScoreBig" class="result-score-big"></div>
-        <p class="result-max">de 400 punts possibles</p>
-        <div id="newRecord" class="new-record" style="display:none"><i class="fa-solid fa-star"></i> NOVA MARCA PERSONAL</div>
-        <div class="stats-row">
-            <div class="stat-box s-correct"><div id="statCorrect" class="stat-num">0</div><div class="stat-lbl">Encerts</div></div>
-            <div class="stat-box s-wrong"><div id="statWrong" class="stat-num">0</div><div class="stat-lbl">Errors</div></div>
-            <div class="stat-box s-combo"><div id="statCombo" class="stat-num">0</div><div class="stat-lbl">Max Combo</div></div>
+<!-- === PANTALLA 2: QUIZ === -->
+<div id="viewQuiz" class="app-view view-hidden">
+    <div style="padding:15px;display:flex;align-items:center">
+        <button class="icon-btn" onclick="nav.to('menu')"><i class="fa-solid fa-arrow-left"></i></button>
+        <span style="margin-left:auto;font-weight:900;color:var(--primary)">PUNTS: <span id="qScoreVal">0</span></span>
+    </div>
+    <div class="quiz-container">
+        <div class="food-card">
+            <span id="qEmoji" class="food-emoji">🍎</span>
+            <h2 id="qName" style="color:#fff;margin-bottom:10px">Poma</h2>
+            <p style="color:#888;font-size:14px">És saludable?</p>
         </div>
-        <div id="resultFoods" class="result-foods"></div>
-        <p id="resultMessage" class="result-message"></p>
-        <button class="btn-main" style="width:100%" onclick="restartGame()">
-            <i class="fa-solid fa-rotate-right"></i> TORNA A JUGAR
-        </button>
-        <br>
-        <a href="index.html" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Tornar al menu</a>
+        <div class="quiz-ctrls">
+            <button class="q-btn btn-yes" onclick="quiz.ans(true)">
+                <i class="fa-solid fa-check"></i> <span class="q-label">SÍ</span>
+            </button>
+            <button class="q-btn btn-no" onclick="quiz.ans(false)">
+                <i class="fa-solid fa-xmark"></i> <span class="q-label">NO</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- === PANTALLA 3: RUNNER (JOC) === -->
+<div id="viewRunner" class="app-view view-hidden">
+    
+    <!-- El joc real -->
+    <div id="runnerGameArea" class="runner-game">
+        <div class="road-grid"></div>
+        
+        <div class="runner-hud">
+            <div class="hud-stat" style="color:var(--gold)">
+                <span id="rScore">0</span> <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="hud-stat" style="color:var(--danger)">
+                <span id="rLives">❤️❤️❤️</span>
+            </div>
+        </div>
+
+        <div class="player-minion" id="player">
+            <div class="minion-sprite">🍌</div>
+        </div>
+
+        <!-- Zones de toc (Invisible) -->
+        <div class="touch-lane" style="left:0" onclick="runner.tap('left')"></div>
+        <div class="touch-lane" style="right:0" onclick="runner.tap('right')"></div>
+    </div>
+
+    <!-- Pantalla d'inici dins el runner -->
+    <div id="runnerOverlay" class="game-overlay">
+        <div style="font-size:60px;margin-bottom:20px">🍌</div>
+        <h2 style="margin-bottom:30px">PREPARAT?</h2>
+        <button class="full-btn" onclick="runner.start()">CÓRRER</button>
+        <button class="icon-btn" onclick="nav.to('menu')"><i class="fa-solid fa-times"></i></button>
+    </div>
+
+    <!-- Pantalla Game Over -->
+    <div id="runnerGameOver" class="game-overlay" style="display:none">
+        <span class="txt-big" style="color:var(--danger)">GAME OVER</span>
+        <p style="color:#888;margin-bottom:10px">Puntuació Final</p>
+        <h1 class="txt-big" id="finalRScore">0</h1>
+        <button class="full-btn" onclick="runner.start()">TORNAR-HO A PROVAR</button>
+        <button class="icon-btn" onclick="nav.to('menu')"><i class="fa-solid fa-house"></i></button>
     </div>
 </div>
 
 <script>
-const AudioCtx=window.AudioContext||window.webkitAudioContext;
-let audioCtx=null;
-function ensureAudio(){if(!audioCtx)audioCtx=new AudioCtx();if(audioCtx.state==='suspended')audioCtx.resume()}
-function playTone(f,t,d,v){ensureAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d)}
-function sfxCorrect(){playTone(523,'sine',.12,.15);setTimeout(()=>playTone(659,'sine',.12,.12),70);setTimeout(()=>playTone(784,'sine',.18,.1),140)}
-function sfxWrong(){playTone(200,'sawtooth',.25,.08);setTimeout(()=>playTone(160,'sawtooth',.3,.06),100)}
-function sfxCombo(n){const b=600+n*80;playTone(b,'sine',.08,.1);setTimeout(()=>playTone(b*1.25,'sine',.08,.08),50);setTimeout(()=>playTone(b*1.5,'triangle',.15,.06),100)}
-function sfxEnd(good){if(good){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.2,.1),i*120))}else{[400,350,300,250].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',.3,.06),i*150))}}
+// --- AUDIO & FX ---
+const Aud = {
+    ctx: null,
+    init: function(){
+        if(!this.ctx) this.ctx = new(window.AudioContext||window.webkitAudioContext)();
+        if(this.ctx.state==='suspended') this.ctx.resume();
+    },
+    t: function(f, t, d, v=0.1){
+        if(!this.ctx)return;
+        const o=this.ctx.createOscillator(), g=this.ctx.createGain();
+        o.type=t; o.frequency.value=f;
+        g.gain.setValueAtTime(v, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime+d);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime+d);
+    },
+    click: function(){ this.init(); this.t(800, 'sine', 0.05); },
+    coin: function(){ this.init(); this.t(1200, 'sine', 0.1); setTimeout(()=>this.t(1800, 'sine', 0.1), 50); },
+    hit: function(){ this.init(); this.t(100, 'sawtooth', 0.3, 0.2); },
+    jump: function(){ this.init(); this.t(200, 'triangle', 0.1); }
+};
 
-const bgCanvas=document.getElementById('bgCanvas');
-const ctx=bgCanvas.getContext('2d');
-let particles=[],mouseX=0,mouseY=0;
-function resizeCanvas(){bgCanvas.width=innerWidth;bgCanvas.height=innerHeight}
-resizeCanvas();window.addEventListener('resize',resizeCanvas);
-document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
-for(let i=0;i<55;i++){particles.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5,alpha:Math.random()*.25+.05,color:['0,230,118','255,82,82','255,215,64','24,255,255'][Math.floor(Math.random()*4)]})}
-function animBg(){ctx.clearRect(0,0,bgCanvas.width,bgCanvas.height);const w=bgCanvas.width,h=bgCanvas.height;particles.forEach(p=>{const dx=mouseX-p.x,dy=mouseY-p.y,dist=Math.sqrt(dx*dx+dy*dy)||1;if(dist<280){p.vx+=dx/dist*.003;p.vy+=dy/dist*.003}p.vx*=.99;p.vy*=.99;p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.color},${p.alpha})`;ctx.fill()});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=dx*dx+dy*dy;if(d<11000){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(255,255,255,${.014*(1-d/11000)})`;ctx.lineWidth=.5;ctx.stroke()}}}requestAnimationFrame(animBg)}
-animBg();
+// --- NAVEGACIÓN ---
+const nav = {
+    to: function(viewId) {
+        Aud.click();
+        document.querySelectorAll('.app-view').forEach(v => {
+            v.classList.remove('active-view');
+            v.classList.add('view-hidden');
+        });
+        const target = document.getElementById('view'+viewId.charAt(0).toUpperCase()+viewId.slice(1));
+        target.classList.remove('view-hidden');
+        setTimeout(()=>target.classList.add('active-view'), 50);
+        
+        if(viewId !== 'runner') runner.stop();
+    }
+};
 
-const allFoods=[
-    {e:'🥦',n:'Broquil',h:true},{e:'🍎',n:'Poma',h:true},{e:'🥑',n:'Alvocat',h:true},
-    {e:'🥗',n:'Amanida verda',h:true},{e:'🥚',n:'Ou ferrat',h:true},{e:'🍌',n:'Platan',h:true},
-    {e:'🍇',n:'Raim',h:true},{e:'🍓',n:'Maduixa',h:true},{e:'🍊',n:'Taronja',h:true},
-    {e:'🥕',n:'Pastanaga',h:true},{e:'🌽',n:'Blat de moro',h:true},{e:'🥜',n:'Cacauet',h:true},
-    {e:'🍉',n:'Sindria',h:true},{e:'🫐',n:'Arande',h:true},{e:'🐟',n:'Salmo',h:true},
-    {e:'🥬',n:'Enciam',h:true},{e:'🫑',n:'Pim verd',h:true},{e:'🍠',n:'Moniato',h:true},
-    {e:'🥒',n:'Cogombre',h:true},{e:'🍆',n:'Alberginia',h:true},{e:'🍄',n:'Bolet',h:true},
-    {e:'🫘',n:'Mongetes',h:true},{e:'🍚',n:'Arrros integral',h:true},{e:'🫒',n:'Oliva',h:true},
-    {e:'🍯',n:'Mel natural',h:true},{e:'🥜',n:'Ametlla',h:true},
-    {e:'🍩',n:'Donut',h:false},{e:'🍟',n:'Patates fregides',h:false},{e:'🍕',n:'Pizza',h:false},
-    {e:'🍭',n:'Piruleta',h:false},{e:'🥓',n:'Bacon',h:false},{e:'🍔',n:'Hamburguesa',h:false},
-    {e:'🧁',n:'Pastis',h:false},{e:'🍪',n:'Galeta',h:false},{e:'🧃',n:'Beguda ensucrada',h:false},
-    {e:'🌭',n:'Gos salzat',h:false},{e:'🧈',n:'Mantega',h:false},{e:'🍦',n:'Gelat',h:false},
-    {e:'🍬',n:'Caramel',h:false},{e:'🥤',n:'Refresc',h:false},{e:'🍫',n:'Xocolata amb llet',h:false},
-    {e:'🧀',n:'Formatge proces',h:false},{e:'🥨',n:'Pretzel',h:false},
-    {e:'🍿',n:'Palomites amb mantega',h:false},{e:'🧃',n:'Zumet de fruita',h:false},
-    {e:'🥣',n:'Cereals ensucrats',h:false},{e:'🥪',n:'Pa blanc amb formatge',h:false},
+// --- JOC 1: QUIZ ---
+const foods=[
+    {e:'🥦',n:'Broquil',g:1},{e:'🍎',n:'Poma',g:1},{e:'🥑',n:'Alvocat',g:1},{e:'🍗',n:'Pollastre',g:1},
+    {e:'🍩',n:'Donut',g:0},{e:'🍔',n:'Hamburguesa',g:0},{e:'🍟',n:'Patates',g:0},{e:'🍕',n:'Pizza',g:0},
+    {e:'🥦',n:'Broquil',g:1},{e:'🍇',n:'Raim',g:1},{e:'🥥',n:'Coco',g:1},{e:'🍓',n:'Maduixa',g:1},
+    {e:'🧁',n:'Pastis',g:0},{e:'🥤',n:'Refresc',g:0},{e:'🧀',n:'Formatge',g:0},{e:'🍬',n:'Caramel',g:0}
 ];
 
-const TOTAL=10;
-let gameFoods=[],points=0,round=0,combo=0,maxCombo=0;
-let correctCount=0,wrongCount=0,results=[],isAnswering=false;
-const $=id=>document.getElementById(id);
-
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-function showScreen(s){[$('startScreen'),$('gameScreen'),$('endScreen')].forEach(x=>x.classList.add('hidden'));setTimeout(()=>s.classList.remove('hidden'),60)}
-function flashScreen(c){const el=$('screenFlash');el.className='screen-flash '+c;setTimeout(()=>el.className='screen-flash',250)}
-function showFeedback(t,c){const fb=$('fbText');fb.className='fb-text';fb.innerText=t;fb.style.color=c;void fb.offsetWidth;fb.classList.add('show');setTimeout(()=>{fb.classList.remove('show');fb.classList.add('fade')},500);setTimeout(()=>{fb.className='fb-text'},950)}
-function spawnParticle(t,c,x,y){const el=document.createElement('div');el.className='score-particle';el.innerText=t;el.style.color=c;el.style.left=x+'px';el.style.top=y+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),1100)}
-function spawnFire(x,y,n){const cols=['#ff6d00','#ff9100','#ffd740','#ff3d00'];for(let i=0;i<n;i++){const el=document.createElement('div');el.className='fire-particle';el.style.background=cols[Math.floor(Math.random()*cols.length)];el.style.left=(x+(Math.random()-.5)*40)+'px';el.style.top=y+'px';const s=3+Math.random()*5;el.style.width=s+'px';el.style.height=s+'px';el.style.animationDuration=(.5+Math.random()*.5)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}}
-function bumpHud(el){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}
-
-function getBest(){return parseInt(localStorage.getItem('nutri-dash-best')||'0',10)}
-function setBest(v){localStorage.setItem('nutri-dash-best',v)}
-function updateBestUI(){const b=getBest();const el=$('bestScoreStart');if(b>0){el.style.display='flex';$('bestVal').innerText=b}else{el.style.display='none'}}
-updateBestUI();
-
-function startGame(){
-    ensureAudio();
-    const healthy=shuffle(allFoods.filter(f=>f.h));
-    const unhealthy=shuffle(allFoods.filter(f=>!f.h));
-    gameFoods=shuffle([...healthy.slice(0,5),...unhealthy.slice(0,5)]);
-    points=0;round=0;combo=0;maxCombo=0;correctCount=0;wrongCount=0;results=[];isAnswering=false;
-    $('hudPoints').innerText='0';$('hudCombo').innerText='-';
-    $('comboBarWrap').classList.remove('active');$('comboBarFill').style.width='0%';
-    showScreen($('gameScreen'));
-    setTimeout(loadRound,350);
-}
-
-function loadRound(){
-    if(round>=TOTAL){endGame();return}
-    isAnswering=false;
-    $('btnYes').disabled=false;$('btnNo').disabled=false;
-    $('btnYes').className='btn-choice btn-yes';$('btnNo').className='btn-choice btn-no';
-    const food=gameFoods[round];
-    $('hudRound').innerText=`${round+1}/${TOTAL}`;
-    $('progressFill').style.width=`${(round/TOTAL)*100}%`;
-    const fd=$('foodDisplay');fd.className='';void fd.offsetWidth;fd.className='pop-in';
-    fd.innerText=food.e;$('foodName').innerText=food.n;
-}
-
-function answer(userSaysHealthy){
-    if(isAnswering)return;
-    isAnswering=true;
-    const food=gameFoods[round];
-    const correct=food.h===userSaysHealthy;
-    let gained=0;
-    if(correct){
-        combo++;if(combo>maxCombo)maxCombo=combo;
-        const mult=Math.min(combo,5);
-        gained=10*mult;points+=gained;correctCount++;
-        flashScreen('green');sfxCorrect();if(combo>1)sfxCombo(combo);
-        showFeedback(combo>1?`x${mult} COMBO!`:'MOLT BE!','var(--green)');
-        (userSaysHealthy?$('btnYes'):$('btnNo')).classList.add('flash-correct');
-        const rect=$('foodDisplay').getBoundingClientRect();
-        spawnParticle(`+${gained}`,'var(--green)',rect.left+rect.width/2-15,rect.top+10);
-        if(combo>=3)spawnFire(rect.left+rect.width/2,rect.bottom,combo*3);
-        bumpHud($('hudPoints'));if(combo>1)bumpHud($('hudCombo'));
-        $('comboBarWrap').classList.add('active');$('comboBarFill').style.width=`${Math.min(combo/5*100,100)}%`;
-    }else{
-        combo=0;wrongCount++;
-        flashScreen('red');sfxWrong();showFeedback('ERROR','var(--red)');
-        const fd=$('foodDisplay');fd.classList.remove('pop-in');fd.classList.add('shake');
-        $('gameCard').classList.add('shake-card');setTimeout(()=>$('gameCard').classList.remove('shake-card'),500);
-        (food.h?$('btnYes'):$('btnNo')).classList.add('flash-correct');
-        (userSaysHealthy?$('btnYes'):$('btnNo')).classList.add('flash-wrong');
-        $('comboBarWrap').classList.remove('active');$('comboBarFill').style.width='0%';
-    }
-    results.push({food,correct,gained});
-    $('hudPoints').innerText=points;
-    $('hudCombo').innerText=combo>1?`x${Math.min(combo,5)}`:'-';
-    $('btnYes').disabled=true;$('btnNo').disabled=true;
-    round++;setTimeout(loadRound,950);
-}
-
-function endGame(){
-    $('progressFill').style.width='100%';
-    const simplePct=correctCount/TOTAL;
-    let grade,gradeColor,label;
-    if(simplePct>=1){grade='S+';gradeColor='var(--gold)';label='PERFECCIO ABSOLUTA'}
-    else if(simplePct>=.9){grade='S';gradeColor='var(--gold)';label='EXTRAORDINARI'}
-    else if(simplePct>=.75){grade='A';gradeColor='var(--green)';label='NOTABLE'}
-    else if(simplePct>=.55){grade='B';gradeColor='#42a5f5';label='APROVAT'}
-    else if(simplePct>=.35){grade='C';gradeColor='#ff9800';label='SUFICIENT'}
-    else{grade='D';gradeColor='var(--red)';label='NO SUPERAT'}
-    showScreen($('endScreen'));
-    $('resultGrade').innerText=grade;$('resultGrade').style.color=gradeColor;
-    $('resultLabel').innerText=label;$('resultScoreBig').innerText=points;$('resultScoreBig').style.color=gradeColor;
-    $('resultPerfect').style.display=simplePct>=1?'inline-flex':'none';
-    const best=getBest();const isNew=points>best;
-    if(isNew&&points>0){setBest(points);$('newRecord').style.display='block'}else{$('newRecord').style.display='none'}
-    $('statCorrect').innerText=correctCount;$('statWrong').innerText=wrongCount;
-    $('statCombo').innerText=maxCombo>1?`x${maxCombo}`:'-';
-    const msgs={
-        'S+':'Impressionant. Has encertat totes les rondes sense cap error. Nivell mestre de la nutricio.',
-        'S':'El teu criteri nutricional es excepcional. Quasi cap aliment se\'t escapa.',
-        'A':'Molt bon treball. Tens una base solida de nutricio amb poques escletxes.',
-        'B':'Bona base, pero hi ha hagut alguns aliments trampa que t\'han enganyat.',
-        'C':'Acceptable, pero necessites revisar quins aliments son realment saludables.',
-        'D':'Cal estudiar mes sobre nutricio. No et rendeixis, la proxima sera millor!'
-    };
-    $('resultMessage').innerText=msgs[grade];
-    $('resultFoods').innerHTML=results.map(r=>`<div class="result-food ${r.correct?'rf-ok':'rf-fail'}" title="${r.food.n} — ${r.correct?'Correcte (+'+r.gained+')':'Incorrecte'}">${r.food.e}</div>`).join('');
-    sfxEnd(simplePct>=.75);
-    if(simplePct>=.9){
-        setTimeout(()=>confetti({particleCount:150,spread:80,origin:{y:.6},colors:['#00e676','#ffd740','#18ffff']}),400);
-        if(simplePct>=1){
-            setTimeout(()=>confetti({particleCount:100,spread:120,origin:{x:.15,y:.45},colors:['#ffd740','#ff9100']}),600);
-            setTimeout(()=>confetti({particleCount:100,spread:120,origin:{x:.85,y:.45},colors:['#ffd740','#ff9100']}),800);
-            setTimeout(()=>confetti({particleCount:80,spread:100,origin:{y:.3},colors:['#00e676','#18ffff']}),1000);
+const quiz = {
+    active: false, score:0, data:[],
+    ans: function(yes){
+        if(!this.active) return;
+        Aud.init();
+        const f = this.data[Math.floor(Math.random()*this.data.length)];
+        const correct = (yes && f.g) || (!yes && !f.g);
+        
+        if(correct){
+            this.score += 10;
+            Aud.coin();
+        } else {
+            this.score = Math.max(0, this.score - 5);
+            Aud.hit();
         }
-    }else if(simplePct>=.75){
-        setTimeout(()=>confetti({particleCount:60,spread:60,origin:{y:.65},colors:['#00e676','#18ffff']}),400);
+        
+        document.getElementById('qScoreVal').innerText = this.score;
+        
+        // Carregar nou (animació simple)
+        const el = document.getElementById('qEmoji');
+        el.style.transform='scale(0)';
+        setTimeout(()=>{
+            el.style.transform='scale(1)';
+            document.getElementById('qEmoji').innerText=f.e;
+            document.getElementById('qName').innerText=f.n;
+        }, 100);
+    },
+    init: function(){
+        this.active=true; this.score=0;
+        this.data = [...foods];
+        document.getElementById('qScoreVal').innerText='0';
     }
-}
+};
+// Inicialitzar quiz al primer cop
+quiz.init();
 
-function restartGame(){updateBestUI();showScreen($('startScreen'));setTimeout(startGame,400)}
+// --- JOC 2: RUNNER (COM DEL MÒBIL) ---
+const runner = {
+    active: false, score:0, lives:3, lane:1, speed:8, objects:[],
+    animId: null,
+    
+    start: function(){
+        Aud.init();
+        this.active=true; this.score=0; this.lives=3; this.lane=1; this.speed=8; this.objects=[];
+        
+        document.getElementById('runnerOverlay').style.display='none';
+        document.getElementById('runnerGameOver').style.display='none';
+        
+        // Netejar obstacles antics
+        document.querySelectorAll('.obstacle').forEach(e=>e.remove());
+        
+        this.updateHUD();
+        this.loop();
+    },
+    
+    stop: function(){
+        this.active=false; cancelAnimationFrame(this.animId);
+    },
+    
+    // INPUT: Tocar pantalla
+    tap: function(side){
+        if(!this.active) return;
+        Aud.jump();
+        
+        // Animació salt
+        const p = document.getElementById('player');
+        const s = p.querySelector('.minion-sprite');
+        s.classList.remove('jump-anim');
+        void s.offsetWidth; s.classList.add('jump-anim');
 
-document.addEventListener('keydown',e=>{
-    if($('gameScreen').classList.contains('hidden'))return;
-    if(e.key==='f'||e.key==='F')answer(true);
-    if(e.key==='j'||e.key==='J')answer(false);
-});
+        if(side==='left' && this.lane > 0) this.lane--;
+        if(side==='right' && this.lane < 2) this.lane++;
+        
+        // Actualitzar posició (0=16%, 1=50%, 2=84%)
+        const pos = this.lane===0 ? '16%' : (this.lane===2 ? '84%' : '50%');
+        p.style.left = pos;
+    },
+
+    // INPUT: Lliscar (SWIPE)
+    swipe: function(dir){
+        if(!this.active) return;
+        if(dir==='left') this.tap('left');
+        if(dir==='right') this.tap('right');
+    },
+
+    spawn: function(){
+        const lane = Math.floor(Math.random()*3);
+        const isGood = Math.random() > 0.35; // 65% fruites
+        const pool = foods.filter(f => f.g === isGood);
+        const item = pool[Math.floor(Math.random()*pool.length)];
+        
+        const el = document.createElement('div');
+        el.className='obstacle';
+        el.innerText=item.e;
+        el.dataset.good = isGood;
+        el.dataset.lane = lane;
+        
+        const pos = lane===0 ? '16%' : (lane===2 ? '84%' : '50%');
+        el.style.left = pos;
+        
+        document.getElementById('runnerGameArea').appendChild(el);
+        this.objects.push({el, y: -100, good: isGood, lane: lane});
+    },
+
+    loop: function(){
+        if(!this.active) return;
+        this.animId = requestAnimationFrame(()=>this.loop());
+        
+        // Spawn rate
+        if(Math.random() < 0.03 + (this.score/5000)) this.spawn();
+        
+        // Accelerar
+        if(this.speed < 20) this.speed += 0.005;
+        
+        const playerEl = document.getElementById('player');
+        const pRect = playerEl.getBoundingClientRect();
+        
+        // Hitbox del jugador (més petit que visual)
+        const hitY = pRect.top + 20;
+        const hitBot = pRect.bottom - 20;
+
+        for(let i=this.objects.length-1; i>=0; i--){
+            let o = this.objects[i];
+            o.y += this.speed;
+            o.el.style.top = o.y + 'px';
+            
+            // Col·lisió
+            if(o.active !== false && o.y > hitY && o.y < hitBot && o.lane === this.lane){
+                o.active = false;
+                o.el.style.transform = `translateX(-50%) rotateX(60deg) scale(1.5)`;
+                o.el.style.opacity = 0;
+                o.el.style.transition = 'all 0.2s';
+                
+                if(o.good){
+                    this.score += 10;
+                    Aud.coin();
+                    // Efecte visual de punts (opcional)
+                } else {
+                    this.lives--;
+                    Aud.hit();
+                    // Vibrar mòbil
+                    if(navigator.vibrate) navigator.vibrate(200);
+                    if(this.lives<=0) this.gameOver();
+                }
+                this.updateHUD();
+            }
+            
+            // Treure fora de pantalla
+            if(o.y > window.innerHeight + 100){
+                o.el.remove();
+                this.objects.splice(i,1);
+            }
+        }
+    },
+
+    updateHUD: function(){
+        document.getElementById('rScore').innerText = this.score;
+        document.getElementById('rLives').innerText = '❤️'.repeat(this.lives);
+    },
+
+    gameOver: function(){
+        this.stop();
+        document.getElementById('finalRScore').innerText = this.score;
+        document.getElementById('runnerGameOver').style.display='flex';
+    }
+};
+
+// --- GESTOS TOUCH (SWIPE) ---
+let tsX = 0;
+let tsY = 0;
+
+document.addEventListener('touchstart', e => {
+    tsX = e.touches[0].clientX;
+    tsY = e.touches[0].clientY;
+}, {passive: false});
+
+document.addEventListener('touchend', e => {
+    const teX = e.changedTouches[0].clientX;
+    const teY = e.changedTouches[0].clientY;
+    const diffX = teX - tsX;
+    const diffY = teY - tsY;
+    
+    // Si es fa un swipe horitzontal clar (X mes gran que Y)
+    if(Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30){
+        // Evitar que el swipe afecti al menú si estem jugant
+        if(runner.active) runner.swipe(diffX > 0 ? 'right' : 'left');
+    }
+}, {passive: false});
+
+// Prevenir scroll al menú quan no cal
+document.body.addEventListener('touchmove', e => {
+    if(runner.active) e.preventDefault();
+}, {passive: false});
+
 </script>
 </body>
 </html>
