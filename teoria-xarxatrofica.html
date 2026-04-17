@@ -2,86 +2,1530 @@
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Teoria Xarxa Tròfica</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoria Xarxa Tròfica - Ecosistemes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  line-height: 1.6;
-}
+  :root {
+    --bg: #0a1a0f;
+    --surface: #112118;
+    --card: #162a1e;
+    --border: #2a4a35;
+    --fg: #e8f5e9;
+    --muted: #81c784;
+    --accent: #fdd835;
+    --producer: #4caf50;
+    --primary: #8bc34a;
+    --secondary: #ff9800;
+    --tertiary: #f44336;
+    --decomposer: #795548;
+  }
 
-h1, h2 {
-  color: darkgreen;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-section {
-  margin-bottom: 25px;
-  padding: 15px;
-  border-left: 5px solid green;
-  background: #f5fff5;
-  border-radius: 8px;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+
+  /* Fons animat amb boires */
+  .bg-blobs {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    animation: blobFloat 20s ease-in-out infinite alternate;
+  }
+
+  .blob-1 {
+    width: 600px; height: 600px;
+    background: var(--producer);
+    top: -200px; left: -100px;
+    animation-delay: 0s;
+  }
+
+  .blob-2 {
+    width: 500px; height: 500px;
+    background: var(--accent);
+    bottom: -150px; right: -100px;
+    animation-delay: -7s;
+  }
+
+  .blob-3 {
+    width: 400px; height: 400px;
+    background: var(--secondary);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -14s;
+  }
+
+  @keyframes blobFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -30px) scale(1.1); }
+    66% { transform: translate(-30px, 50px) scale(0.9); }
+    100% { transform: translate(20px, 20px) scale(1.05); }
+  }
+
+  /* Partícules flotants */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--muted);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleRise linear infinite;
+  }
+
+  @keyframes particleRise {
+    0% { opacity: 0; transform: translateY(100vh) scale(0); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+  }
+
+  /* Secció principal */
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    background: linear-gradient(135deg, var(--producer), var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    animation: titleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: var(--muted);
+    max-width: 650px;
+    font-weight: 400;
+    animation: fadeUp 1s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    animation: bounce 2s ease-in-out infinite, fadeUp 1s 1s both;
+    color: var(--muted);
+    font-size: 1.5rem;
+  }
+
+  @keyframes titleIn {
+    from { opacity: 0; transform: translateY(60px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  /* Seccions */
+  .theory-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .theory-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid rgba(253, 216, 53, 0.3);
+    border-radius: 100px;
+    background: rgba(253, 216, 53, 0.05);
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--fg);
+  }
+
+  .section-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #a5d6a7;
+    max-width: 750px;
+  }
+
+  /* Targetes comparatives */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
+  .compare-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .compare-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--muted);
+  }
+
+  .compare-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+  }
+
+  .compare-card.linear::before {
+    background: linear-gradient(90deg, var(--primary), var(--producer));
+  }
+
+  .compare-card.network::before {
+    background: linear-gradient(90deg, var(--producer), var(--accent), var(--secondary), var(--tertiary));
+  }
+
+  .compare-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .compare-card.linear .compare-icon {
+    background: rgba(139, 195, 74, 0.15);
+    color: var(--primary);
+  }
+
+  .compare-card.network .compare-icon {
+    background: rgba(253, 216, 53, 0.15);
+    color: var(--accent);
+  }
+
+  .compare-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .compare-card p {
+    color: #a5d6a7;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  /* Flux visual cadena vs xarxa */
+  .chain-visual {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .chain-node {
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .chain-arrow {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  /* Diagrama de piràmide interactiu */
+  .pyramid-container {
+    margin-top: 2.5rem;
+    position: relative;
+  }
+
+  .pyramid-level {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pyramid-level::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 100%;
+    background: rgba(255,255,255,0.05);
+    transition: width 0.5s;
+  }
+
+  .pyramid-level:hover::after {
+    width: 100%;
+  }
+
+  .pyramid-level.active::after {
+    width: 100%;
+  }
+
+  .pyramid-bar {
+    height: 8px;
+    border-radius: 4px;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .pyramid-level:hover .pyramid-bar,
+  .pyramid-level.active .pyramid-bar {
+    filter: brightness(1.3);
+    box-shadow: 0 0 20px currentColor;
+  }
+
+  .pyramid-info {
+    font-size: 0.85rem;
+    color: #a5d6a7;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s;
+    padding-left: 5rem;
+  }
+
+  .pyramid-info.show {
+    opacity: 1;
+    max-height: 200px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .pyramid-label {
+    min-width: 160px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    z-index: 1;
+  }
+
+  .pyramid-energy {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 600;
+    z-index: 1;
+  }
+
+  /* Targetes flip per als nivells tròfics */
+  .flip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .flip-card {
+    perspective: 800px;
+    height: 260px;
+    cursor: pointer;
+  }
+
+  .flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flip-card.flipped .flip-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flip-front, .flip-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .flip-front {
+    background: var(--card);
+  }
+
+  .flip-back {
+    background: var(--surface);
+    transform: rotateY(180deg);
+  }
+
+  .flip-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .flip-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .flip-hint {
+    font-size: 0.75rem;
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  .flip-back-text {
+    font-size: 0.9rem;
+    color: #a5d6a7;
+    line-height: 1.6;
+  }
+
+  .flip-back-examples {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Flux d'energia visual */
+  .energy-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 2.5rem;
+    position: relative;
+  }
+
+  .energy-flow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--producer), transparent);
+    transform: translateX(-50%);
+  }
+
+  .energy-step {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    position: relative;
+  }
+
+  .energy-step:nth-child(odd) {
+    flex-direction: row;
+    padding-right: 50%;
+  }
+
+  .energy-step:nth-child(even) {
+    flex-direction: row-reverse;
+    padding-left: 50%;
+  }
+
+  .energy-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 15px rgba(253, 216, 53, 0.5);
+    z-index: 2;
+  }
+
+  .energy-content {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    flex: 1;
+    transition: border-color 0.3s;
+  }
+
+  .energy-content:hover {
+    border-color: var(--accent);
+  }
+
+  .energy-content h4 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+  }
+
+  .energy-content p {
+    font-size: 0.9rem;
+    color: #a5d6a7;
+    line-height: 1.6;
+  }
+
+  .energy-loss-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(244, 67, 54, 0.15);
+    color: #ef9a9a;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+
+  /* Xarxa tròfica visual SVG */
+  .web-diagram {
+    margin-top: 2.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .web-diagram svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .web-node {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .web-node:hover {
+    transform: scale(1.15);
+  }
+
+  .web-line {
+    stroke-dasharray: 5, 5;
+    animation: dashMove 1.5s linear infinite;
+  }
+
+  @keyframes dashMove {
+    to { stroke-dashoffset: -20; }
+  }
+
+  /* Importància - icones destacades */
+  .importance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .importance-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .importance-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+
+  .importance-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(253, 216, 53, 0.08), transparent 70%);
+    border-radius: 50%;
+    transition: all 0.5s;
+  }
+
+  .importance-card:hover::before {
+    transform: scale(3);
+  }
+
+  .imp-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .importance-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .importance-card p {
+    font-size: 0.9rem;
+    color: #a5d6a7;
+    line-height: 1.65;
+  }
+
+  /* Quiz interactiu */
+  .quiz-container {
+    margin-top: 2.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quiz-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--producer), var(--accent), var(--secondary), var(--tertiary));
+  }
+
+  .quiz-question {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .quiz-options { grid-template-columns: 1fr; }
+  }
+
+  .quiz-option {
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+    background: transparent;
+    color: var(--fg);
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .quiz-option:hover:not(.selected) {
+    border-color: var(--muted);
+    background: rgba(129, 199, 132, 0.05);
+  }
+
+  .quiz-option.correct {
+    border-color: var(--producer);
+    background: rgba(76, 175, 80, 0.15);
+    color: #a5d6a7;
+  }
+
+  .quiz-option.wrong {
+    border-color: var(--tertiary);
+    background: rgba(244, 67, 54, 0.1);
+    color: #ef9a9a;
+  }
+
+  .quiz-option.selected {
+    pointer-events: none;
+  }
+
+  .quiz-feedback {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .quiz-feedback.show { display: block; }
+
+  .quiz-feedback.correct-fb {
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: #a5d6a7;
+  }
+
+  .quiz-feedback.wrong-fb {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    color: #ef9a9a;
+  }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .quiz-progress {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .quiz-btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: var(--accent);
+    color: #1a1a1a;
+  }
+
+  .quiz-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(253, 216, 53, 0.3);
+  }
+
+  .quiz-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Separador */
+  .divider {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    opacity: 0.6;
+  }
+
+  /* Animació d'entrada per als elements interns */
+  .stagger-in > * {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stagger-in.visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: none; }
+  .stagger-in.visible > *:nth-child(2) { transition-delay: 0.1s; opacity: 1; transform: none; }
+  .stagger-in.visible > *:nth-child(3) { transition-delay: 0.2s; opacity: 1; transform: none; }
+  .stagger-in.visible > *:nth-child(4) { transition-delay: 0.3s; opacity: 1; transform: none; }
+  .stagger-in.visible > *:nth-child(5) { transition-delay: 0.4s; opacity: 1; transform: none; }
+  .stagger-in.visible > *:nth-child(6) { transition-delay: 0.5s; opacity: 1; transform: none; }
+
+  /* Piràmide responsive */
+  @media (max-width: 768px) {
+    .energy-step:nth-child(odd),
+    .energy-step:nth-child(even) {
+      flex-direction: row;
+      padding-left: 0;
+      padding-right: 0;
+      padding-left: 2.5rem;
+    }
+
+    .energy-flow::before {
+      left: 0.75rem;
+    }
+
+    .energy-dot {
+      left: 0.75rem;
+    }
+
+    .pyramid-label {
+      min-width: 120px;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card);
+    border: 1px solid var(--accent);
+    color: var(--fg);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    z-index: 100;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 </style>
 </head>
-
 <body>
 
-<h1>🌍 Teoria de la Xarxa Tròfica</h1>
+<!-- Fons atmosfèric -->
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
 
-<section>
-<h2>Què és una xarxa tròfica?</h2>
-<p>
-Una <strong>xarxa tròfica</strong> és el conjunt de relacions alimentàries entre els éssers vius d’un ecosistema.
-Mostra qui es menja a qui i com circula l’energia.
-</p>
-</section>
+<div class="particles" id="particles"></div>
 
-<section>
-<h2>Diferència entre cadena i xarxa tròfica</h2>
-<p>
-<strong>Cadena alimentària:</strong> és una seqüència simple i lineal.<br>
-Exemple: planta → conill → guineu
-</p>
-<p>
-<strong>Xarxa tròfica:</strong> és més complexa, ja que uneix moltes cadenes alimentàries alhora.
-</p>
-</section>
+<div class="content-wrapper">
 
-<section>
-<h2>Nivells tròfics</h2>
-<ul>
-<li><strong>Productors:</strong> fabriquen el seu propi aliment (plantes, algues).</li>
-<li><strong>Consumidors primaris:</strong> herbívors que mengen plantes (conill, vaca).</li>
-<li><strong>Consumidors secundaris:</strong> carnívors que mengen herbívors.</li>
-<li><strong>Consumidors terciaris:</strong> depredadors superiors.</li>
-<li><strong>Descomponedors:</strong> fongs i bacteris que descomponen matèria orgànica.</li>
-</ul>
-</section>
+  <!-- HERO -->
+  <header class="hero">
+    <h1 class="hero-title">Xarxa Trofica</h1>
+    <p class="hero-sub">
+      Descobriu com l'energia circula pels ecosistemes, qui es menja a qui i per què cada organisme és imprescindible per al equilibri de la vida.
+    </p>
+    <div class="scroll-hint">
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </header>
 
-<section>
-<h2>Flux d’energia</h2>
-<p>
-L’energia prové del Sol i passa als productors. Després es transfereix als consumidors.
-En cada nivell es perd energia, per això hi ha menys éssers vius als nivells superiors.
-</p>
-</section>
+  <!-- SECCIÓ 1: Què és -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-seedling"></i> Concepte fonamental</div>
+    <h2 class="section-title">Que es una xarxa trofica?</h2>
+    <p class="section-text">
+      Una <strong style="color:var(--fg)">xarxa trofica</strong> es el conjunt complet de relacions alimentaries entre els organismes d'un ecosistema. A diferencia d'una cadena simple, una xarxa mostra totes les interconnexions possibles: un mateix organisme pot ser consumidor de varies preses i alhora presa de multiples depredadors.
+    </p>
+    <p class="section-text" style="margin-top:1rem;">
+      Representa, en essencia, <strong style="color:var(--accent)">com circula l'energia</strong> des del Sol fins als ultims depredadors, passant per cada nivell trofic.
+    </p>
+  </section>
 
-<section>
-<h2>Importància de la xarxa tròfica</h2>
-<ul>
-<li>Manté l’equilibri de l’ecosistema</li>
-<li>Permet el pas d’energia i nutrients</li>
-<li>La desaparició d’una espècie pot afectar moltes altres</li>
-</ul>
-</section>
+  <div class="divider"></div>
 
-<section>
-<h2>Exemple</h2>
-<p>
-🌱 Planta → 🐰 Conill → 🦊 Guineu → 🦅 Àguila
-</p>
-</section>
+  <!-- SECCIÓ 2: Cadena vs Xarxa -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-project-diagram"></i> Comparativa</div>
+    <h2 class="section-title">Cadena alimentaria vs Xarxa trofica</h2>
+    <div class="compare-grid stagger-in" data-observe-stagger>
+      <div class="compare-card linear">
+        <div class="compare-icon"><i class="fas fa-arrow-right"></i></div>
+        <h3>Cadena alimentaria</h3>
+        <p>Seqüencia lineal i simple on cada organisme menja nomes un tipus d'organisme. Es una visió simplificada.</p>
+        <div class="chain-visual">
+          <span class="chain-node" style="background:rgba(76,175,80,0.2);color:var(--producer)">Planta</span>
+          <span class="chain-arrow"><i class="fas fa-arrow-right"></i></span>
+          <span class="chain-node" style="background:rgba(139,195,74,0.2);color:var(--primary)">Conill</span>
+          <span class="chain-arrow"><i class="fas fa-arrow-right"></i></span>
+          <span class="chain-node" style="background:rgba(255,152,0,0.2);color:var(--secondary)">Guineu</span>
+        </div>
+      </div>
+      <div class="compare-card network">
+        <div class="compare-icon"><i class="fas fa-share-alt"></i></div>
+        <h3>Xarxa trofica</h3>
+        <p>Multiples cadenes interconnectades. Refleix la complexitat real: cada especie te varies fonts d'aliment i varies amenaces.</p>
+        <div class="chain-visual">
+          <span class="chain-node" style="background:rgba(76,175,80,0.2);color:var(--producer)">Plantes</span>
+          <span class="chain-arrow"><i class="fas fa-arrows-alt-h"></i></span>
+          <span class="chain-node" style="background:rgba(139,195,74,0.2);color:var(--primary)">Herbivors</span>
+          <span class="chain-arrow"><i class="fas fa-arrows-alt-h"></i></span>
+          <span class="chain-node" style="background:rgba(255,152,0,0.2);color:var(--secondary)">Carnivors</span>
+          <span class="chain-arrow"><i class="fas fa-arrows-alt-h"></i></span>
+          <span class="chain-node" style="background:rgba(244,67,54,0.2);color:var(--tertiary)">Superdepredadors</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓ 3: Nivells tròfics (Targetes Flip) -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-layer-group"></i> Estructura</div>
+    <h2 class="section-title">Nivells trofics</h2>
+    <p class="section-text">Feu clic a cada targeta per descobrir-ne els detalls.</p>
+    <div class="flip-grid stagger-in" data-observe-stagger>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front" style="border-color:var(--producer)">
+            <div class="flip-icon" style="color:var(--producer)"><i class="fas fa-leaf"></i></div>
+            <div class="flip-title" style="color:var(--producer)">Productors</div>
+            <div class="flip-hint">Clica per veure mes</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-back-text">Fabriquen el seu propi aliment mitjancant la fotosintesi. Son la base de qualsevol xarxa trofica.</div>
+            <div class="flip-back-examples">Plantes, algues, fitoplàncton</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front" style="border-color:var(--primary)">
+            <div class="flip-icon" style="color:var(--primary)"><i class="fas fa-horse"></i></div>
+            <div class="flip-title" style="color:var(--primary)">Consumidors primaris</div>
+            <div class="flip-hint">Clica per veure mes</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-back-text">Herbivors que s'alimenten directament dels productors. Transfereixen l'energia al seguent nivell.</div>
+            <div class="flip-back-examples">Conill, vaca, cavallet de mar</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front" style="border-color:var(--secondary)">
+            <div class="flip-icon" style="color:var(--secondary)"><i class="fas fa-paw"></i></div>
+            <div class="flip-title" style="color:var(--secondary)">Consumidors secundaris</div>
+            <div class="flip-hint">Clica per veure mes</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-back-text">Carnivors que caçen herbivors. Poden ser també omnivors que mengen tant plantes com animals.</div>
+            <div class="flip-back-examples">Guineu, granota, serp</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front" style="border-color:var(--tertiary)">
+            <div class="flip-icon" style="color:var(--tertiary)"><i class="fas fa-crow"></i></div>
+            <div class="flip-title" style="color:var(--tertiary)">Consumidors terciaris</div>
+            <div class="flip-hint">Clica per veure mes</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-back-text">Superdepredadors al cim de la xarxa. No tenen depredadors naturals (o gairebé cap). Regulen les poblacions inferiors.</div>
+            <div class="flip-back-examples">Aguila, llop, tigre</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front" style="border-color:var(--decomposer)">
+            <div class="flip-icon" style="color:var(--decomposer)"><i class="fas fa-recycle"></i></div>
+            <div class="flip-title" style="color:var(--decomposer)">Descomponedors</div>
+            <div class="flip-hint">Clica per veure mes</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-back-text">Transformen la matèria orgànica morta en nutrients inorganics. Tanquen el cicle i permeten que els productors tornin a nodrir-se.</div>
+            <div class="flip-back-examples">Fongs, bacteris, cucs de terra</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓ 4: Piràmide d'energia -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-bolt"></i> Energetica</div>
+    <h2 class="section-title">Piramid d'energia</h2>
+    <p class="section-text">
+      En cada pas d'un nivell trofic al seguent, s'aproximadament un <strong style="color:var(--accent)">90% de l'energia es perd</strong> en forma de calor i metabelisme. Només un 10% s'acumula en biomass. Clica a cada nivell per veure els detalls.
+    </p>
+    <div class="pyramid-container" id="pyramid">
+      <div class="pyramid-level" onclick="togglePyramid(this, 0)" style="background:var(--card)">
+        <span class="pyramid-label" style="color:var(--tertiary)"><i class="fas fa-crow" style="margin-right:0.5rem"></i>Superdepredadors</span>
+        <div class="pyramid-bar" style="background:var(--tertiary);color:var(--tertiary);width:10%"></div>
+        <span class="pyramid-energy">10 kcal</span>
+      </div>
+      <div class="pyramid-info" id="pyr-info-0">Representen el cim de la piràmide. Hi ha molt pocs individus perque l'energia disponible es minima. Son essencials per regular les poblacions inferiors.</div>
+
+      <div class="pyramid-level" onclick="togglePyramid(this, 1)" style="background:var(--card)">
+        <span class="pyramid-label" style="color:var(--secondary)"><i class="fas fa-paw" style="margin-right:0.5rem"></i>Carnivors</span>
+        <div class="pyramid-bar" style="background:var(--secondary);color:var(--secondary);width:20%"></div>
+        <span class="pyramid-energy">100 kcal</span>
+      </div>
+      <div class="pyramid-info" id="pyr-info-1">Mengen herbivors i obtenen l'energia que aquests havien acumulat. La seva biomassa es ja bastant menor que la dels nivells inferiors.</div>
+
+      <div class="pyramid-level" onclick="togglePyramid(this, 2)" style="background:var(--card)">
+        <span class="pyramid-label" style="color:var(--primary)"><i class="fas fa-horse" style="margin-right:0.5rem"></i>Herbivors</span>
+        <div class="pyramid-bar" style="background:var(--primary);color:var(--primary);width:40%"></div>
+        <span class="pyramid-energy">1.000 kcal</span>
+      </div>
+      <div class="pyramid-info" id="pyr-info-2">S'alimenten de productors. Parteix de l'energia que consumeixen la utilitzen per al seu propi metabolisme, i nomes una fraccio es acumula en els seus teixits.</div>
+
+      <div class="pyramid-level" onclick="togglePyramid(this, 3)" style="background:var(--card)">
+        <span class="pyramid-label" style="color:var(--producer)"><i class="fas fa-leaf" style="margin-right:0.5rem"></i>Productors</span>
+        <div class="pyramid-bar" style="background:var(--producer);color:var(--producer);width:70%"></div>
+        <span class="pyramid-energy">10.000 kcal</span>
+      </div>
+      <div class="pyramid-info" id="pyr-info-3">Captan l'energia solar mitjancant la fotosintesi. Son el nivell mes ampli de la piràmide, ja que disposen de tota l'energia que entra a l'ecosistema.</div>
+
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;padding:0.75rem 1.25rem;background:rgba(244,67,54,0.08);border:1px solid rgba(244,67,54,0.2);border-radius:10px;">
+        <i class="fas fa-fire" style="color:var(--tertiary);font-size:1.2rem"></i>
+        <span style="font-size:0.9rem;color:#ef9a9a;">En cada nivell es perd approximately un <strong>90%</strong> de l'energia en forma de calor, respiracio i moviment.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓ 5: Flux d'energia -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-exchange-alt"></i> Flux</div>
+    <h2 class="section-title">El viatge de l'energia</h2>
+    <p class="section-text">L'energia recorre un cami de sentit unic a traves de l'ecosistema.</p>
+    <div class="energy-flow stagger-in" data-observe-stagger>
+      <div class="energy-step">
+        <div class="energy-dot"></div>
+        <div class="energy-content">
+          <h4 style="color:var(--accent)"><i class="fas fa-sun" style="margin-right:0.5rem"></i>Font: el Sol</h4>
+          <p>L'energia solar arribla a la Terra. Les plantes la capturen a traves de la fotosintesi i la converteixen en energia quimica.</p>
+        </div>
+      </div>
+      <div class="energy-step">
+        <div class="energy-dot" style="background:var(--producer);box-shadow:0 0 15px rgba(76,175,80,0.5)"></div>
+        <div class="energy-content">
+          <h4 style="color:var(--producer)"><i class="fas fa-leaf" style="margin-right:0.5rem"></i>Productors</h4>
+          <p>Les plantes, algues i fitoplàncton transformen la llum en glucosa. Es el primer pas de la conversio energetica.</p>
+        </div>
+      </div>
+      <div class="energy-step">
+        <div class="energy-dot" style="background:var(--primary);box-shadow:0 0 15px rgba(139,195,74,0.5)"></div>
+        <div class="energy-content">
+          <h4 style="color:var(--primary)"><i class="fas fa-horse" style="margin-right:0.5rem"></i>Consumidors primaris</h4>
+          <p>Els herbivors mengen les plantes i incorporen una petita fraccio de la seva energia (aprox. 10%).</p>
+          <div class="energy-loss-badge"><i class="fas fa-arrow-down"></i> 90% perdua en calor</div>
+        </div>
+      </div>
+      <div class="energy-step">
+        <div class="energy-dot" style="background:var(--secondary);box-shadow:0 0 15px rgba(255,152,0,0.5)"></div>
+        <div class="energy-content">
+          <h4 style="color:var(--secondary)"><i class="fas fa-paw" style="margin-right:0.5rem"></i>Consumidors secundaris i terciaris</h4>
+          <p>Cada pas succesiu retenc nomes un 10% de l'energia del nivell anterior. Per aixo no poden existir molts nivells.</p>
+          <div class="energy-loss-badge"><i class="fas fa-arrow-down"></i> 90% perdua en calor</div>
+        </div>
+      </div>
+      <div class="energy-step">
+        <div class="energy-dot" style="background:var(--decomposer);box-shadow:0 0 15px rgba(121,85,72,0.5)"></div>
+        <div class="energy-content">
+          <h4 style="color:var(--decomposer)"><i class="fas fa-recycle" style="margin-right:0.5rem"></i>Descomponedors</h4>
+          <p>Quan els organismes moren, els descomponedors allibereen els nutrients residuals al sol, tancant el cicle de la matèria (no de l'energia).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓ 6: Diagrama de xarxa -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-bezier-curve"></i> Visualitzacio</div>
+    <h2 class="section-title">Xarxa trofica interactiva</h2>
+    <p class="section-text">Passeu el ratoli per sobre dels organismes per veure les seves connexions.</p>
+    <div class="web-diagram">
+      <svg viewBox="0 0 800 450" id="webSvg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Línies de conexió (es dibuixen dinàmicament) -->
+        <g id="webLines"></g>
+        <!-- Nodes -->
+        <g id="webNodes"></g>
+      </svg>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓ 7: Importància -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-shield-alt"></i> Importancia</div>
+    <h2 class="section-title">Per que es important?</h2>
+    <div class="importance-grid stagger-in" data-observe-stagger>
+      <div class="importance-card">
+        <div class="imp-icon" style="background:rgba(76,175,80,0.15);color:var(--producer)"><i class="fas fa-balance-scale"></i></div>
+        <h3>Equilibri de l'ecosistema</h3>
+        <p>Cada especie actua com a reguladora de les altres. Si una desapareix, el desequilibri pot ser catastrofic per a tota la xarxa.</p>
+      </div>
+      <div class="importance-card">
+        <div class="imp-icon" style="background:rgba(253,216,53,0.15);color:var(--accent)"><i class="fas fa-bolt"></i></div>
+        <h3>Circulacio d'energia</h3>
+        <p>Garanteix que l'energia solar arribi a tots els nivells de la cadena vital, permetent la supervivencia de tots els organismes.</p>
+      </div>
+      <div class="importance-card">
+        <div class="imp-icon" style="background:rgba(255,152,0,0.15);color:var(--secondary)"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3>Efecte cascada</h3>
+        <p>L'eliminacio d'una sola especie clau pot provocar una reaccio en cadena que altera tot l'ecosistema. Exemple: els llops de Yellowstone.</p>
+      </div>
+      <div class="importance-card">
+        <div class="imp-icon" style="background:rgba(121,85,72,0.15);color:var(--decomposer)"><i class="fas fa-recycle"></i></div>
+        <h3>Reciclaje de nutrients</h3>
+        <p>Els descomponedors tanquen el cicle: transformen la matèria organica morta en nutrients que les plantes tornen a utilitzar.</p>
+      </div>
+      <div class="importance-card">
+        <div class="imp-icon" style="background:rgba(244,67,54,0.15);color:var(--tertiary)"><i class="fas fa-vial"></i></div>
+        <h3>Bioacumulacio</h3>
+        <p>Les toxines s'acumulen als nivells superiors. Entendre la xarxa trofica es essencial per protegir la salut humana i animal.</p>
+      </div>
+      <div class="importance-card">
+        <div class="imp-icon" style="background:rgba(139,195,74,0.15);color:var(--primary)"><i class="fas fa-map-marked-alt"></i></div>
+        <h3>Gestio ambiental</h3>
+        <p>Permet als cientifics dissenyar estrategies de conservacio, protegint especies clau i restaurant ecosistemes degradats.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓ 8: Quiz -->
+  <section class="theory-section" data-observe>
+    <div class="section-label"><i class="fas fa-brain"></i> Comprovacio</div>
+    <h2 class="section-title">Posa a prova els teus coneixements</h2>
+    <div class="quiz-container" id="quizContainer">
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-nav">
+        <span class="quiz-progress" id="quizProgress"></span>
+        <button class="quiz-btn" id="quizBtn" disabled onclick="nextQuestion()">Seguent</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Teoria de la Xarxa Trofica — Recurs educatiu interactiu
+  </footer>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== PARTÍCULES FLOTANTS =====
+  (function() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (8 + Math.random() * 15) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+      container.appendChild(p);
+    }
+  })();
+
+  // ===== OBSERVADOR D'INTERSECCIÓ (Scroll reveal) =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('[data-observe]').forEach(el => observer.observe(el));
+  document.querySelectorAll('[data-observe-stagger]').forEach(el => observer.observe(el));
+
+  // ===== PIRÀMIDE INTERACTIVA =====
+  function togglePyramid(levelEl, index) {
+    const info = document.getElementById('pyr-info-' + index);
+    const isActive = levelEl.classList.contains('active');
+
+    // Tancar tots
+    document.querySelectorAll('.pyramid-level').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.pyramid-info').forEach(i => i.classList.remove('show'));
+
+    // Obrir si no estava actiu
+    if (!isActive) {
+      levelEl.classList.add('active');
+      info.classList.add('show');
+    }
+  }
+
+  // ===== DIAGRAMA DE XARXA TRÒFICA SVG =====
+  (function() {
+    const nodes = [
+      { id: 'sol', label: 'Sol', x: 400, y: 40, r: 28, color: '#fdd835', icon: '\uf185', type: 'source' },
+      { id: 'planta1', label: 'Herba', x: 180, y: 140, r: 26, color: '#4caf50', icon: '\uf06c', type: 'producer' },
+      { id: 'planta2', label: 'Alga', x: 400, y: 140, r: 26, color: '#4caf50', icon: '\uf06c', type: 'producer' },
+      { id: 'planta3', label: 'Arbre', x: 620, y: 140, r: 26, color: '#4caf50', icon: '\uf1bb', type: 'producer' },
+      { id: 'herb1', label: 'Conill', x: 140, y: 260, r: 24, color: '#8bc34a', icon: '\uf6d3', type: 'primary' },
+      { id: 'herb2', label: 'Cargol', x: 340, y: 260, r: 24, color: '#8bc34a', icon: '\uf70e', type: 'primary' },
+      { id: 'herb3', label: 'Perdriu', x: 540, y: 260, r: 24, color: '#8bc34a', icon: '\uf424', type: 'primary' },
+      { id: 'herb4', label: 'Ratoli', x: 680, y: 260, r: 24, color: '#8bc34a', icon: '\uf2da', type: 'primary' },
+      { id: 'carn1', label: 'Guineu', x: 240, y: 370, r: 24, color: '#ff9800', icon: '\uf6d5', type: 'secondary' },
+      { id: 'carn2', label: 'Serp', x: 460, y: 370, r: 24, color: '#ff9800', icon: '\uf7d0', type: 'secondary' },
+      { id: 'carn3', label: 'Musaranya', x: 660, y: 370, r: 24, color: '#ff9800', icon: '\uf725', type: 'secondary' },
+      { id: 'top', label: 'Aguila', x: 350, y: 430, r: 28, color: '#f44336', icon: '\uf7a5', type: 'tertiary' },
+      { id: 'decomp', label: 'Fongs', x: 680, y: 430, r: 24, color: '#795548', icon: '\uf714', type: 'decomposer' },
+    ];
+
+    // Connexions: des de -> cap a
+    const links = [
+      { from: 'sol', to: 'planta1' }, { from: 'sol', to: 'planta2' }, { from: 'sol', to: 'planta3' },
+      { from: 'planta1', to: 'herb1' }, { from: 'planta1', to: 'herb2' },
+      { from: 'planta2', to: 'herb2' }, { from: 'planta2', to: 'herb3' },
+      { from: 'planta3', to: 'herb3' }, { from: 'planta3', to: 'herb4' },
+      { from: 'herb1', to: 'carn1' }, { from: 'herb2', to: 'carn1' }, { from: 'herb2', to: 'carn2' },
+      { from: 'herb3', to: 'carn2' }, { from: 'herb3', to: 'top' },
+      { from: 'herb4', to: 'carn3' }, { from: 'herb4', to: 'carn2' },
+      { from: 'carn1', to: 'top' }, { from: 'carn2', to: 'top' }, { from: 'carn3', to: 'top' },
+      { from: 'herb1', to: 'decomp' }, { from: 'carn1', to: 'decomp' }, { from: 'herb4', to: 'decomp' },
+    ];
+
+    const svg = document.getElementById('webSvg');
+    const linesG = document.getElementById('webLines');
+    const nodesG = document.getElementById('webNodes');
+
+    const nodeMap = {};
+    nodes.forEach(n => nodeMap[n.id] = n);
+
+    // Dibuixar línies
+    links.forEach(link => {
+      const from = nodeMap[link.from];
+      const to = nodeMap[link.to];
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', from.x);
+      line.setAttribute('y1', from.y);
+      line.setAttribute('x2', to.x);
+      line.setAttribute('y2', to.y);
+      line.setAttribute('stroke', 'rgba(129,199,132,0.15)');
+      line.setAttribute('stroke-width', '1.5');
+      line.classList.add('web-line');
+      line.setAttribute('data-from', link.from);
+      line.setAttribute('data-to', link.to);
+      linesG.appendChild(line);
+    });
+
+    // Dibuixar nodes
+    nodes.forEach(n => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.classList.add('web-node');
+      g.setAttribute('transform', `translate(${n.x}, ${n.y})`);
+      g.setAttribute('data-id', n.id);
+
+      // Cercle de fons
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', n.r);
+      circle.setAttribute('fill', n.color + '22');
+      circle.setAttribute('stroke', n.color);
+      circle.setAttribute('stroke-width', '2');
+      g.appendChild(circle);
+
+      // Icona (text amb fontawesome)
+      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      icon.setAttribute('text-anchor', 'middle');
+      icon.setAttribute('dominant-baseline', 'central');
+      icon.setAttribute('fill', n.color);
+      icon.setAttribute('font-size', '16');
+      icon.setAttribute('font-family', '"Font Awesome 6 Free"');
+      icon.setAttribute('font-weight', '900');
+      icon.textContent = n.icon;
+      g.appendChild(icon);
+
+      // Etiqueta
+      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('text-anchor', 'middle');
+      label.setAttribute('y', n.r + 18);
+      label.setAttribute('fill', '#a5d6a7');
+      label.setAttribute('font-size', '12');
+      label.setAttribute('font-family', 'DM Sans, sans-serif');
+      label.setAttribute('font-weight', '600');
+      label.textContent = n.label;
+      g.appendChild(label);
+
+      // Interacció hover
+      g.addEventListener('mouseenter', () => highlightNode(n.id));
+      g.addEventListener('mouseleave', () => resetHighlight());
+
+      nodesG.appendChild(g);
+    });
+
+    function highlightNode(id) {
+      // Ressaltar línies connectades
+      document.querySelectorAll('.web-line').forEach(line => {
+        const from = line.getAttribute('data-from');
+        const to = line.getAttribute('data-to');
+        if (from === id || to === id) {
+          line.setAttribute('stroke', 'rgba(253, 216, 53, 0.6)');
+          line.setAttribute('stroke-width', '3');
+        } else {
+          line.setAttribute('stroke', 'rgba(129,199,132,0.05)');
+          line.setAttribute('stroke-width', '1');
+        }
+      });
+      // Ressaltar nodes connectats
+      document.querySelectorAll('.web-node').forEach(node => {
+        const nid = node.getAttribute('data-id');
+        if (nid === id) {
+          node.style.opacity = '1';
+        } else {
+          // Comprovar si està connectat
+          const connected = links.some(l =>
+            (l.from === id && l.to === nid) || (l.to === id && l.from === nid)
+          );
+          node.style.opacity = connected ? '1' : '0.2';
+        }
+      });
+    }
+
+    function resetHighlight() {
+      document.querySelectorAll('.web-line').forEach(line => {
+        line.setAttribute('stroke', 'rgba(129,199,132,0.15)');
+        line.setAttribute('stroke-width', '1.5');
+      });
+      document.querySelectorAll('.web-node').forEach(node => {
+        node.style.opacity = '1';
+      });
+    }
+  })();
+
+  // ===== QUIZ =====
+  const quizData = [
+    {
+      question: "Quin organisme ocupa el primer nivell trofic d'una xarxa trofica?",
+      options: ["El guineu", "Les plantes", "Les bacteris", "L'aguila"],
+      correct: 1,
+      explanation: "Les plantes son els productors: capturen l'energia solar mitjancant la fotosintesi i son la base de la xarxa trofica."
+    },
+    {
+      question: "Quanta energia s'aproximadament es transfereix d'un nivell trofic al seguent?",
+      options: ["El 50%", "El 90%", "El 10%", "El 25%"],
+      correct: 2,
+      explanation: "Nomes un 10% de l'energia passa d'un nivell al seguent. La resta es perd en forma de calor, respiracio i activitat metabolica."
+    },
+    {
+      question: "Quina es la diferencia principal entre una cadena alimentaria i una xarxa trofica?",
+      options: [
+        "La cadena te mes nivells",
+        "La xarxa te mes organismes",
+        "La xarxa interconnecta multiples cadenes alimentaries",
+        "No hi ha diferencia"
+      ],
+      correct: 2,
+      explanation: "Una xarxa trofica es el conjunt de moltes cadenes alimentaries interconnectades, mostrant la complexitat real de les relacions alimentaries."
+    },
+    {
+      question: "Quina funcio compleixen els descomponedors en la xarxa trofica?",
+      options: [
+        "Caçar depredadors",
+        "Produir oxigen",
+        "Transformar matèria organica morta en nutrients inorganics",
+        "Regular la temperatura"
+      ],
+      correct: 2,
+      explanation: "Els fongs i bacteris descomponedors trenquen la matèria organica morta i allibereen nutrients al sol que les plantes poden tornar a absorbir."
+    },
+    {
+      question: "Que passa si s'elimina un superdepredador d'un ecosistema?",
+      options: [
+        "No passa res important",
+        "Els herbivors augmenten i poden sobreexplotar els productors",
+        "Les plantes creixen mes ràpid",
+        "Els descomponedors desapareixen"
+      ],
+      correct: 1,
+      explanation: "Sense superdepredadors, les preses (herbivors o carnivors inferiors) poden proliferar descontroladament i esgotar els recursos del nivell inferior. Es el que es coneix com a efecte cascada."
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+  let answered = false;
+
+  function renderQuestion() {
+    const q = quizData[currentQuestion];
+    document.getElementById('quizQuestion').textContent = `${currentQuestion + 1}. ${q.question}`;
+    document.getElementById('quizProgress').textContent = `Pregunta ${currentQuestion + 1} de ${quizData.length} — Encerts: ${score}`;
+    document.getElementById('quizFeedback').className = 'quiz-feedback';
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('quizBtn').disabled = true;
+    document.getElementById('quizBtn').textContent = currentQuestion < quizData.length - 1 ? 'Seguent' : 'Veure resultat';
+    answered = false;
+
+    const optionsEl = document.getElementById('quizOptions');
+    optionsEl.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => selectAnswer(i));
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(index) {
+    if (answered) return;
+    answered = true;
+
+    const q = quizData[currentQuestion];
+    const options = document.querySelectorAll('.quiz-option');
+    const feedback = document.getElementById('quizFeedback');
+
+    options.forEach((opt, i) => {
+      opt.classList.add('selected');
+      if (i === q.correct) {
+        opt.classList.add('correct');
+      } else if (i === index && i !== q.correct) {
+        opt.classList.add('wrong');
+      }
+    });
+
+    if (index === q.correct) {
+      score++;
+      feedback.className = 'quiz-feedback show correct-fb';
+      feedback.innerHTML = `<i class="fas fa-check-circle" style="margin-right:0.5rem"></i>Correcte! ${q.explanation}`;
+    } else {
+      feedback.className = 'quiz-feedback show wrong-fb';
+      feedback.innerHTML = `<i class="fas fa-times-circle" style="margin-right:0.5rem"></i>Incorrecte. ${q.explanation}`;
+    }
+
+    document.getElementById('quizProgress').textContent = `Pregunta ${currentQuestion + 1} de ${quizData.length} — Encerts: ${score}`;
+    document.getElementById('quizBtn').disabled = false;
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < quizData.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    const container = document.getElementById('quizContainer');
+    const pct = Math.round((score / quizData.length) * 100);
+    let msg = '';
+    if (pct === 100) msg = 'Excelent! Domines la teoria de les xarxes trofiques.';
+    else if (pct >= 60) msg = 'Bon treball! Tens una bona base, pero pots millorar.';
+    else msg = 'T\'ho cal repassar. Revisa la teoria i torna-ho a intentar.';
+
+    container.innerHTML = `
+      <div style="text-align:center;padding:2rem 0;">
+        <div style="font-size:4rem;margin-bottom:1rem;">${pct === 100 ? '🏆' : pct >= 60 ? '👍' : '📚'}</div>
+        <div style="font-family:'Outfit';font-size:2rem;font-weight:800;margin-bottom:0.5rem;">${score} / ${quizData.length}</div>
+        <div style="font-size:1.1rem;color:var(--muted);margin-bottom:1.5rem;">${msg}</div>
+        <button class="quiz-btn" onclick="resetQuiz()">Tornar a intentar</button>
+      </div>
+    `;
+  }
+
+  function resetQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    document.getElementById('quizContainer').innerHTML = `
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-nav">
+        <span class="quiz-progress" id="quizProgress"></span>
+        <button class="quiz-btn" id="quizBtn" disabled onclick="nextQuestion()">Seguent</button>
+      </div>
+    `;
+    renderQuestion();
+  }
+
+  // Iniciar quiz
+  renderQuestion();
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+</script>
 
 </body>
 </html>
