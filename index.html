@@ -35,6 +35,12 @@
   --purple-bg: rgba(124,58,237,0.12);
   --purple-border: rgba(124,58,237,0.3);
   --purple-glow: rgba(124,58,237,0.25);
+  --cyan: #06b6d4;
+  --cyan-light: #22d3ee;
+  --cyan-deep: #0891b2;
+  --cyan-bg: rgba(6,182,212,0.12);
+  --cyan-border: rgba(6,182,212,0.3);
+  --cyan-glow: rgba(6,182,212,0.25);
   --dark: #1a1a2e;
   --dark-light: #2a2a4a;
   --dark-bg: rgba(26,26,46,0.5);
@@ -241,6 +247,10 @@ h1 {
   animation: cardEnter 0.7s cubic-bezier(0.16,1,0.3,1) 0.68s forwards,
              cardIdle 5s ease-in-out 1.38s infinite;
 }
+.stagger-in:nth-child(6) {
+  animation: cardEnter 0.7s cubic-bezier(0.16,1,0.3,1) 0.80s forwards,
+             cardIdle 5s ease-in-out 1.50s infinite;
+}
 
 @keyframes slideUp {
   to { opacity: 1; transform: translateY(0); }
@@ -307,6 +317,9 @@ h1 {
 .nav-card[data-color="purple"]::before {
   background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(139,92,246,0.05) 100%);
 }
+.nav-card[data-color="cyan"]::before {
+  background: linear-gradient(135deg, rgba(6,182,212,0.15) 0%, rgba(34,211,238,0.05) 100%);
+}
 
 .nav-card::after {
   content: '';
@@ -334,6 +347,9 @@ h1 {
 .nav-card[data-color="purple"]::after {
   box-shadow: 0 0 30px 4px var(--purple-glow), 0 8px 30px -6px rgba(124,58,237,0.2);
 }
+.nav-card[data-color="cyan"]::after {
+  box-shadow: 0 0 30px 4px var(--cyan-glow), 0 8px 30px -6px rgba(6,182,212,0.2);
+}
 
 .nav-card:hover::before,
 .nav-card:hover::after { opacity: 1; }
@@ -350,6 +366,7 @@ h1 {
 .nav-card[data-color="green"]:hover { border-color: var(--green-border); }
 .nav-card[data-color="dark"]:hover { border-color: var(--dark-border); }
 .nav-card[data-color="purple"]:hover { border-color: var(--purple-border); }
+.nav-card[data-color="cyan"]:hover { border-color: var(--cyan-border); }
 
 .nav-card:active {
   transform: translateY(-4px) scale(1.0);
@@ -371,6 +388,7 @@ h1 {
 .nav-card[data-color="green"] .ripple { background: rgba(5,150,105,0.2); }
 .nav-card[data-color="dark"] .ripple { background: rgba(255,255,255,0.1); }
 .nav-card[data-color="purple"] .ripple { background: rgba(124,58,237,0.2); }
+.nav-card[data-color="cyan"] .ripple { background: rgba(6,182,212,0.2); }
 
 @keyframes rippleOut {
   to { transform: scale(4); opacity: 0; }
@@ -410,6 +428,9 @@ h1 {
 .icon-circle.purple {
   background: var(--purple-bg); border: 1px solid var(--purple-border); color: var(--purple-light);
 }
+.icon-circle.cyan {
+  background: var(--cyan-bg); border: 1px solid var(--cyan-border); color: var(--cyan-light);
+}
 
 .nav-card h2 {
   font-size: 18px;
@@ -425,6 +446,7 @@ h1 {
 .nav-card[data-color="green"]:hover h2 { color: var(--green-light); }
 .nav-card[data-color="dark"]:hover h2 { color: #f0f0f0; }
 .nav-card[data-color="purple"]:hover h2 { color: var(--purple-light); }
+.nav-card[data-color="cyan"]:hover h2 { color: var(--cyan-light); }
 
 .nav-card p {
   font-size: 13px;
@@ -451,6 +473,7 @@ h1 {
 .nav-card[data-color="green"]:hover .arrow { color: var(--green-light); }
 .nav-card[data-color="dark"]:hover .arrow { color: rgba(255,255,255,0.6); }
 .nav-card[data-color="purple"]:hover .arrow { color: var(--purple-light); }
+.nav-card[data-color="cyan"]:hover .arrow { color: var(--cyan-light); }
 
 .view {
   display: none;
@@ -856,7 +879,7 @@ h1 {
 
   <div id="home-view" class="view active">
     <h1 class="title-anim">Quin és el vertitable cost del que menjo?</h1>
-    <p class="subtitle subtitle-anim">Fet per: Guillem Varela i Yasser Chikhi amb la col·laboració de Julian Navas</p>
+    <p class="subtitle subtitle-anim">Fet per: Guillem Varela i Yasser Chikhi</p>
 
     <div class="main-grid">
       <div class="nav-card stagger-in" data-color="blue" onclick="navTo('digestio', event)">
@@ -913,24 +936,15 @@ h1 {
           <span class="arrow"><iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon></span>
         </div>
       </div>
-    </div>
 
-    <div class="divider fade-section"></div>
-
-    <div class="contributors fade-section">
-      <h3>Col·laboradors</h3>
-      <div class="contributor-list">
-        <div class="contributor-tag">
-          <span class="contributor-avatar av-blue">AP</span>
-          Alex Puig
-        </div>
-        <div class="contributor-tag">
-          <span class="contributor-avatar av-orange">AT</span>
-          Alexa Tarragona
-        </div>
-        <div class="contributor-tag">
-          <span class="contributor-avatar av-green">AC</span>
-          Arnau Crujera
+      <div class="nav-card stagger-in" data-color="cyan" data-span="full" onclick="navTo('making-off', event)" style="grid-column: span 2;">
+        <div class="card-inner">
+          <div class="icon-circle cyan">
+            <iconify-icon icon="solar:clapperboard-bold-duotone"></iconify-icon>
+          </div>
+          <h2>Making off</h2>
+          <p>Darrere de càmeres: el procés creatiu del projecte</p>
+          <span class="arrow"><iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon></span>
         </div>
       </div>
     </div>
@@ -1107,7 +1121,8 @@ const sectionMeta = {
   'cost-ambiental': { title: 'Cost ambiental', icon: 'solar:cloud-bolt-bold-duotone', iconClass: 'blue', teoria: 'teoria-costambiental.html', joc: 'activitats-costambiental.html' },
   'cost-salut': { title: 'Cost de salut', icon: 'solar:heart-pulse-bold-duotone', iconClass: 'blue', teoria: 'teoria-costsalut.html', joc: 'activitats-costsalut.html' },
   'cost-social': { title: 'Cost social', icon: 'solar:users-group-rounded-bold-duotone', iconClass: 'green', teoria: 'teoria-costsocial.html', joc: 'activitats-costsocial.html' },
-  'entrevistes': { title: 'Entrevistes', icon: 'solar:microphone-3-bold-duotone', iconClass: 'purple', teoria: 'teoria-entrevistes.html', joc: 'activitats-entrevistes.html' }
+  'entrevistes': { title: 'Entrevistes', icon: 'solar:microphone-3-bold-duotone', iconClass: 'purple', teoria: 'teoria-entrevistes.html', joc: 'activitats-entrevistes.html' },
+  'making-off': { title: 'Making off', icon: 'solar:clapperboard-bold-duotone', iconClass: 'cyan', teoria: 'teoria-makingoff.html', joc: 'activitats-makingoff.html' }
 };
 
 function showView(viewId) {
@@ -1144,6 +1159,7 @@ function getConfettiColors(c) {
   if (c === 'orange') return ['#ea580c','#f97316','#fdba74','#fff7ed'];
   if (c === 'green') return ['#059669','#10b981','#6ee7b7','#ecfdf5'];
   if (c === 'purple') return ['#7c3aed','#8b5cf6','#c4b5fd','#ede9fe'];
+  if (c === 'cyan') return ['#06b6d4','#22d3ee','#67e8f9','#cffafe'];
   return ['#333','#555','#888','#aaa'];
 }
 
