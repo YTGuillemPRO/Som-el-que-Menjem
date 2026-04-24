@@ -996,7 +996,7 @@ h1 {
 
   <div id="home-view" class="view active">
     <h1 class="title-anim">Quin és el vertitable cost del que menjo?</h1>
-    <p class="subtitle subtitle-anim">Fet per: <a href="#" class="author-link" onclick="showGuillemView(event)">Guillem Varela Cors</a> i <a href="#" class="author-link" onclick="event.preventDefault()">Yasser Chikhi Ourinich</a> i amb la col·laboració de <a href="#" class="author-link" onclick="event.preventDefault()">Julian Navas Paños</a></p>
+    <p class="subtitle subtitle-anim">Fet per: <a href="#" class="author-link" onclick="showGuillemView(event)">Guillem Varela Cors</a> i <a href="#" class="author-link" onclick="showYasserView(event)">Yasser Chikhi Ourinich</a> i amb la col·laboració de <a href="#" class="author-link" onclick="showJulianView(event)">Julian Navas Paños</a></p>
 
     <div class="main-grid">
       <div class="nav-card stagger-in" data-color="blue" onclick="navTo('digestio', event)">
@@ -1160,6 +1160,34 @@ h1 {
     </div>
     <h1>Guillem Varela Cors</h1>
     <p class="subtitle">Creador de la web</p>
+
+    <div class="back-btn" onclick="goBack()">
+      <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+      Tornar
+    </div>
+  </div>
+
+  <!-- VISTA YASSER -->
+  <div id="yasser-view" class="view">
+    <div class="selection-icon icon-circle orange selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
+      <iconify-icon icon="solar:user-rounded-bold-duotone"></iconify-icon>
+    </div>
+    <h1>Yasser Chikhi Ourinich</h1>
+    <p class="subtitle">Co-Creador · Creador d'animacions</p>
+
+    <div class="back-btn" onclick="goBack()">
+      <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+      Tornar
+    </div>
+  </div>
+
+  <!-- VISTA JULIAN -->
+  <div id="julian-view" class="view">
+    <div class="selection-icon icon-circle green selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
+      <iconify-icon icon="solar:user-rounded-bold-duotone"></iconify-icon>
+    </div>
+    <h1>Julian Navas Paños</h1>
+    <p class="subtitle">Creador i ajudant de codi</p>
 
     <div class="back-btn" onclick="goBack()">
       <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
@@ -1374,6 +1402,10 @@ function goBack() {
     }, 310);
   } else if (prev === 'guillem-view') {
     showView('guillem-view');
+  } else if (prev === 'yasser-view') {
+    showView('yasser-view');
+  } else if (prev === 'julian-view') {
+    showView('julian-view');
   } else if (prev === 'entrevistes-view') {
     showView('entrevistes-view');
   } else {
@@ -1401,6 +1433,20 @@ function showGuillemView(e) {
   viewHistory.push('guillem-view');
   showView('guillem-view');
   confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 }, colors: ['#2563eb','#60a5fa','#93c5fd','#dbeafe'], ticks: 100, gravity: 0.9, scalar: 0.85, shapes: ['circle'] });
+}
+
+function showYasserView(e) {
+  e.preventDefault();
+  viewHistory.push('yasser-view');
+  showView('yasser-view');
+  confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 }, colors: ['#ea580c','#f97316','#fdba74','#fff7ed'], ticks: 100, gravity: 0.9, scalar: 0.85, shapes: ['circle'] });
+}
+
+function showJulianView(e) {
+  e.preventDefault();
+  viewHistory.push('julian-view');
+  showView('julian-view');
+  confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 }, colors: ['#059669','#10b981','#6ee7b7','#ecfdf5'], ticks: 100, gravity: 0.9, scalar: 0.85, shapes: ['circle'] });
 }
 
 document.addEventListener('keydown', (e) => {
