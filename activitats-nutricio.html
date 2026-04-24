@@ -243,75 +243,64 @@
             box-shadow: 0 0 25px rgba(255, 152, 0, 0.6);
         }
 
-        /* === MINION REALISTA === */
+        /* === MINION IMPROVED === */
         .player-container {
             position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
-            width: 120px; height: 150px;
+            width: 140px; height: 170px;
             z-index: 50;
             transition: left 0.09s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex; justify-content: center; align-items: flex-end;
-            perspective: 500px;
+            perspective: 800px;
         }
 
-        /* MINION REAL - PROPORCIONS CORRECTES */
+        /* MINION CHARACTER */
         .minion-character {
             position: relative;
-            width: 110px;
-            height: 150px;
-            
+            width: 130px;
+            height: 170px;
             animation: runReal 0.2s ease-in-out infinite;
             transform-origin: bottom center;
             transform-style: preserve-3d;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.7));
         }
 
         @keyframes runReal {
-            0%, 100% { 
-                transform: translateY(0) scaleY(1) scaleX(1) rotateY(0deg) rotateZ(0deg); 
-            }
-            50% { 
-                transform: translateY(-20px) scaleY(1.08) scaleX(0.96) rotateY(4deg) rotateZ(2deg); 
-            }
+            0%, 100% { transform: translateY(0) scaleY(1) scaleX(1) rotateY(0deg) rotateZ(0deg); }
+            50% { transform: translateY(-25px) scaleY(1.1) scaleX(0.94) rotateY(6deg) rotateZ(3deg); }
         }
 
-        /* CUERPO DEL MINION - OVALADO Y ALARGADO */
+        /* BODY - Enhanced proportions */
         .minion-body {
             position: absolute;
-            bottom: 25px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 95px;
-            height: 105px;
-            
+            width: 110px;
+            height: 120px;
             background: 
-                radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.5) 0%, transparent 45%),
-                radial-gradient(ellipse at 75% 85%, rgba(139,69,19,0.2) 0%, transparent 55%),
-                linear-gradient(145deg, 
+                radial-gradient(ellipse 40% 30% at 20% 20%, rgba(255,255,255,0.6) 0%, transparent 50%),
+                radial-gradient(ellipse 35% 45% at 80% 75%, rgba(139,69,19,0.25) 0%, transparent 60%),
+                linear-gradient(135deg, 
                     #FFE93A 0%, 
-                    #FFE93A 12%,
-                    #FFDF35 28%,
-                    #F4D03F 48%,
-                    #E8BF2D 68%,
-                    #DDAA1C 85%,
-                    #CC9918 98%
+                    #FFDF35 18%,
+                    #F4D03F 40%,
+                    #E8BF2D 65%,
+                    #DDAA1C 88%,
+                    #CC9918 100%
                 );
-                
-            border-radius: 48px 48px 45px 45px;
-            
+            border-radius: 55px 55px 50px 50px;
             box-shadow: 
-                inset 0 -20px 38px rgba(101, 67, 33, 0.32),
-                inset 0 20px 38px rgba(255, 255, 255, 0.48),
-                inset -5px 0 14px rgba(0,0,0,0.15),
-                inset 5px 0 14px rgba(255,255,255,0.18),
-                0 14px 32px rgba(0, 0, 0, 0.38),
-                0 5px 10px rgba(0, 0, 0, 0.25);
-                
-            overflow: hidden;
+                inset 0 -22px 45px rgba(101, 67, 33, 0.35),
+                inset 0 22px 40px rgba(255, 255, 255, 0.52),
+                inset -8px 0 18px rgba(0,0,0,0.18),
+                inset 8px 0 18px rgba(255,255,255,0.2),
+                0 18px 40px rgba(0, 0, 0, 0.45),
+                0 8px 15px rgba(0, 0, 0, 0.3);
+            overflow: visible;
             transform-style: preserve-3d;
         }
 
-        /* Textura sutil */
+        /* Body texture */
         .minion-body::before {
             content: '';
             position: absolute;
@@ -319,298 +308,245 @@
             background: 
                 repeating-linear-gradient(90deg, 
                     transparent 0px, 
-                    transparent 11px, 
-                    rgba(255,255,255,0.04) 11px, 
-                    rgba(255,255,255,0.04) 12px
+                    transparent 13px, 
+                    rgba(255,255,255,0.05) 13px, 
+                    rgba(255,255,255,0.05) 14px
                 ),
                 repeating-linear-gradient(0deg, 
                     transparent 0px, 
-                    transparent 22px, 
-                    rgba(0,0,0,0.02) 22px, 
-                    rgba(0,0,0,0.02) 23px
+                    transparent 24px, 
+                    rgba(0,0,0,0.025) 24px, 
+                    rgba(0,0,0,0.025) 25px
                 );
             border-radius: inherit;
         }
 
-        /* GOGGLE - MÉS GRAN I BLANC */
+        /* GOGGLE FRAME - Larger */
         .minion-goggle-frame {
             position: absolute;
-            top: 8px;
+            top: 5px;
             left: 50%;
-            transform: translateX(-50%) translateZ(12px);
-            
-            width: 72px;
-            height: 65px;
-            
-            background: linear-gradient(148deg, 
-                #999999 0%, 
-                #777777 22%,
-                #555555 44%,
-                #333333 66%,
-                #222222 82%,
-                #111111 100%
+            transform: translateX(-50%) translateZ(15px);
+            width: 85px;
+            height: 78px;
+            background: linear-gradient(150deg, 
+                #AAAAAA 0%, 
+                #888888 20%,
+                #666666 40%,
+                #444444 65%,
+                #252525 88%,
+                #0D0D0D 100%
             );
-            
-            border-radius: 36px 36px 32px 32px;
-            border: 4px solid #000000;
-            
+            border-radius: 42px 42px 38px 38px;
+            border: 5px solid #000;
             box-shadow: 
-                0 10px 24px rgba(0,0,0,0.6),
-                inset 0 5px 12px rgba(255,255,255,0.28),
-                inset 0 -5px 12px rgba(0,0,0,0.48),
-                0 3px 6px rgba(0,0,0, 0.32);
-            
-            z-index: 10;
+                0 12px 32px rgba(0,0,0,0.7),
+                inset 0 6px 14px rgba(255,255,255,0.3),
+                inset 0 -6px 14px rgba(0,0,0,0.55),
+                0 4px 8px rgba(0,0,0, 0.4);
+            z-index: 12;
             transform-style: preserve-3d;
         }
 
-        /* Ojo blanco GRAN */
-        .minion-eye-white {
+        /* LEFT EYE */
+        .minion-eye-left {
             position: absolute;
-            top: 52%;
-            left: 50%;
-            transform: translate(-50%, -50%) translateZ(8px);
-            
-            width: 58px;
-            height: 58px;
-            
-            background: radial-gradient(circle at 33% 33%, 
-                #FFFFFF 0%, 
-                #FAFAFA 25%,
-                #EEEEEE 50%,
-                #DDDDDD 72%,
-                #BBBBBB 92%,
-                #CCCCCC 100%
-            );
-            
+            top: 50%;
+            left: 28%;
+            transform: translate(-50%, -50%) translateZ(10px);
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #F0F0F0 20%, #E0E0E0 50%, #C0C0C0 80%, #A0A0A0 100%);
             border-radius: 50%;
-            border: 2.5px solid #888;
-            
+            border: 2px solid #666;
             box-shadow: 
-                inset 0 6px 16px rgba(0,0,0,0.14),
-                0 4px 10px rgba(0,0,0,0.24),
-                inset 0 -3px 10px rgba(0,0,0,0.08);
-            
+                inset 0 5px 12px rgba(0,0,0,0.12),
+                0 3px 8px rgba(0,0,0,0.25),
+                inset 0 -2px 6px rgba(0,0,0,0.08);
             overflow: hidden;
         }
 
-        /* Iris marrón */
+        /* RIGHT EYE */
+        .minion-eye-right {
+            position: absolute;
+            top: 50%;
+            right: 28%;
+            transform: translate(50%, -50%) translateZ(10px);
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #F0F0F0 20%, #E0E0E0 50%, #C0C0C0 80%, #A0A0A0 100%);
+            border-radius: 50%;
+            border: 2px solid #666;
+            box-shadow: 
+                inset 0 5px 12px rgba(0,0,0,0.12),
+                0 3px 8px rgba(0,0,0,0.25),
+                inset 0 -2px 6px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        /* IRIS */
         .minion-iris {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            
-            width: 28px;
-            height: 28px;
-            
-            background: radial-gradient(circle at 33% 33%,
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 35% 35%,
                 #8B7D52 0%,
-                #6D5E43 28%,
-                #494129 55%,
-                #2C1D10 78%,
-                #181208 92%,
-                #0E0C04 100%
+                #6D5E43 30%,
+                #494129 60%,
+                #2C1D10 85%,
+                #0A0602 100%
             );
-            
             border-radius: 50%;
-            
             animation: lookReal 4.5s ease-in-out infinite;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.6);
         }
 
         @keyframes lookReal {
             0%, 100% { transform: translate(-50%, -50%); }
-            16% { transform: translate(-42%, -50%); }
-            32% { transform: translate(-50%, -42%); }
-            48% { transform: translate(-64%, -50%); }
-            66% { transform: translate(-50%, -58%); }
-            84% { transform: translate(-38%, -48%); }
+            20% { transform: translate(-35%, -50%); }
+            40% { transform: translate(-50%, -35%); }
+            60% { transform: translate(-65%, -50%); }
+            80% { transform: translate(-50%, -65%); }
         }
 
-        /* Pupila - MÉS GRAN */
+        /* PUPIL */
         .minion-pupil {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            
-            width: 15px;
-            height: 15px;
-            
-            background: radial-gradient(circle at 38% 38%, #222 0%, #111 60%, #000 100%);
+            width: 9px;
+            height: 9px;
+            background: radial-gradient(circle at 38% 38%, #111 0%, #000 100%);
             border-radius: 50%;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.7);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.8);
         }
 
         .minion-pupil::after {
             content: '';
             position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #FFF 0%, #EEE 100%);
+            top: 1px;
+            left: 1px;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #FFF 0%, #DDD 100%);
             border-radius: 50%;
         }
 
-        .minion-pupil::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            width: 4px;
-            height: 4px;
-            background: rgba(255,255,255,0.8);
-            border-radius: 50%;
-        }
-
-        /* BRAZOS - MÉS CURTOS I GROSOS */
+        /* ARMS - Improved */
         .minion-arm-left {
             position: absolute;
-            top: 48px;
-            left: -14px;
-            
-            width: 22px;
-            height: 52px;
-            
+            top: 55px;
+            left: -18px;
+            width: 26px;
+            height: 60px;
             background: linear-gradient(98deg,
                 #CC9918 0%,
-                #FFE93A 22%,
-                #F4D03F 48%,
-                #E8BF2D 74%,
+                #FFE93A 24%,
+                #F4D03F 50%,
+                #E8BF2D 76%,
                 #DDAA1C 100%
             );
-            
-            border-radius: 12px;
+            border-radius: 15px;
             transform-origin: top center;
             animation: armLeftReal 0.2s ease-in-out infinite;
-            
             box-shadow: 
-                inset 5px 0 8px rgba(255,255,255,0.3),
-                5px 5px 14px rgba(0,0,0,0.3),
-                inset -4px 0 6px rgba(0,0,0,0.16);
-                
+                inset 6px 0 10px rgba(255,255,255,0.35),
+                8px 6px 16px rgba(0,0,0,0.35),
+                inset -5px 0 8px rgba(0,0,0,0.18);
             transform-style: preserve-3d;
         }
 
         .minion-arm-left::after {
             content: '';
             position: absolute;
-            bottom: -6px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 24px;
-            height: 24px;
-            
-            background: linear-gradient(180deg, 
-                #4A4A4A 0%, 
-                #2A2A2A 45%,
-                #1A1A1A 80%,
-                #0D0D0D 100%
-            );
-            
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(180deg, #555 0%, #333 45%, #1a1a1a 80%, #0a0a0a 100%);
             border-radius: 50%;
-            border: 3px solid #000;
-            box-shadow: 
-                0 6px 14px rgba(0,0,0,0.5),
-                inset 0 3px 6px rgba(255,255,255,0.2);
+            border: 4px solid #000;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.6), inset 0 3px 8px rgba(255,255,255,0.15);
         }
 
         .minion-arm-right {
             position: absolute;
-            top: 48px;
-            right: -14px;
-            
-            width: 22px;
-            height: 52px;
-            
+            top: 55px;
+            right: -18px;
+            width: 26px;
+            height: 60px;
             background: linear-gradient(262deg,
                 #CC9918 0%,
-                #FFE93A 22%,
-                #F4D03F 48%,
-                #E8BF2D 74%,
+                #FFE93A 24%,
+                #F4D03F 50%,
+                #E8BF2D 76%,
                 #DDAA1C 100%
             );
-            
-            border-radius: 12px;
+            border-radius: 15px;
             transform-origin: top center;
             animation: armRightReal 0.2s ease-in-out infinite;
-            
             box-shadow: 
-                inset -5px 0 8px rgba(255,255,255,0.3),
-                -5px 5px 14px rgba(0,0,0,0.3),
-                inset 4px 0 6px rgba(255,255,255,0.18);
-                
+                inset -6px 0 10px rgba(255,255,255,0.35),
+                -8px 6px 16px rgba(0,0,0,0.35),
+                inset 5px 0 8px rgba(255,255,255,0.2);
             transform-style: preserve-3d;
         }
 
         .minion-arm-right::after {
             content: '';
             position: absolute;
-            bottom: -6px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 24px;
-            height: 24px;
-            
-            background: linear-gradient(180deg, 
-                #4A4A4A 0%, 
-                #2A2A2A 45%,
-                #1A1A1A 80%,
-                #0D0D0D 100%
-            );
-            
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(180deg, #555 0%, #333 45%, #1a1a1a 80%, #0a0a0a 100%);
             border-radius: 50%;
-            border: 3px solid #000;
-            box-shadow: 
-                0 6px 14px rgba(0,0,0,0.5),
-                inset 0 3px 6px rgba(255,255,255,0.2);
+            border: 4px solid #000;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.6), inset 0 3px 8px rgba(255,255,255,0.15);
         }
 
         @keyframes armLeftReal {
-            0%, 100% { transform: rotateZ(24deg) rotateY(-8deg) rotateX(4deg); }
-            50% { transform: rotateZ(-28deg) rotateY(8deg) rotateX(-4deg); }
+            0%, 100% { transform: rotateZ(28deg) rotateY(-10deg) rotateX(5deg); }
+            50% { transform: rotateZ(-32deg) rotateY(10deg) rotateX(-5deg); }
         }
 
         @keyframes armRightReal {
-            0%, 100% { transform: rotateZ(-24deg) rotateY(8deg) rotateX(4deg); }
-            50% { transform: rotateZ(28deg) rotateY(-8deg) rotateX(-4deg); }
+            0%, 100% { transform: rotateZ(-28deg) rotateY(10deg) rotateX(5deg); }
+            50% { transform: rotateZ(32deg) rotateY(-10deg) rotateX(-5deg); }
         }
 
-        /* BOCA */
+        /* MOUTH - Improved */
         .minion-mouth-container {
             position: absolute;
-            bottom: 28px;
+            bottom: 32px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 42px;
-            height: 24px;
-            z-index: 5;
+            width: 50px;
+            height: 28px;
+            z-index: 8;
         }
 
         .minion-mouth {
             width: 100%;
             height: 100%;
-            
             background: linear-gradient(180deg,
-                #3D2416 0%,
-                #29180D 45%,
-                #1A0F07 75%,
-                #100905 100%
+                #4D2E1A 0%,
+                #361D0E 45%,
+                #1F1209 75%,
+                #0F0704 100%
             );
-            
-            border-radius: 0 0 21px 21px;
-            border: 4px solid #0A0602;
-            
+            border-radius: 0 0 25px 25px;
+            border: 4px solid #070503;
             box-shadow: 
-                inset 0 -8px 16px rgba(0,0,0,0.6),
-                0 5px 10px rgba(0,0,0,0.28),
-                inset 0 6px 8px rgba(255,255,255,0.08);
-            
+                inset 0 -10px 18px rgba(0,0,0,0.7),
+                0 6px 12px rgba(0,0,0,0.32),
+                inset 0 7px 10px rgba(255,255,255,0.08);
             overflow: hidden;
         }
 
@@ -619,27 +555,13 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 34px;
-            height: 12px;
-            
-            background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+            width: 40px;
+            height: 14px;
+            background: linear-gradient(180deg, #FAFAFA 0%, #E8E8E8 100%);
             clip-path: polygon(
-                0 0, 
-                9% 100%, 
-                18% 0, 
-                27% 100%, 
-                36% 0, 
-                45% 100%, 
-                54% 0, 
-                63% 100%, 
-                72% 0,
-                81% 100%,
-                90% 100%,
-                100% 100%
+                0 0, 8% 100%, 16% 0, 24% 100%, 32% 0, 40% 100%, 48% 0, 56% 100%, 64% 0, 72% 100%, 80% 0, 88% 100%, 100% 100%
             );
-            
-            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            box-shadow: 0 1px 5px rgba(0,0,0,0.18);
         }
 
         .minion-tongue {
@@ -647,115 +569,96 @@
             bottom: 2px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 19px;
-            height: 9px;
-            
-            background: linear-gradient(180deg, #EF5350 0%, #C62828 65%, #B71C1C 100%);
-            border-radius: 0 0 10px 10px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.35);
+            width: 22px;
+            height: 11px;
+            background: linear-gradient(180deg, #F44336 0%, #D32F2F 65%, #B71C1C 100%);
+            border-radius: 0 0 12px 12px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
         }
 
-        /* PANTALONS AZULS */
+        /* PANTS - Blue overalls */
         .minion-legs-container {
             position: absolute;
-            bottom: -26px;
+            bottom: -32px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 72px;
-            height: 36px;
-            
+            width: 85px;
+            height: 42px;
             display: flex;
             justify-content: space-between;
             transform-style: preserve-3d;
         }
 
         .minion-leg {
-            width: 26px;
-            height: 36px;
-            
+            width: 30px;
+            height: 42px;
             background: linear-gradient(180deg,
                 #5C6BC0 0%,
-                #3F51B5 22%,
-                #303F9F 48%,
-                #283593 72%,
-                #1A237E 92%,
-                #0D1647 100%
+                #3F51B5 25%,
+                #303F9F 50%,
+                #283593 75%,
+                #1A237E 100%
             );
-            
-            border-radius: 13px 13px 15px 15px;
-            
+            border-radius: 15px 15px 18px 18px;
             box-shadow: 
-                inset 4px 0 6px rgba(255,255,255,0.22),
-                inset -4px 0 6px rgba(0,0,0,0.2),
-                0 5px 12px rgba(0,0,0,0.35),
-                0 2px 5px rgba(0,0,0,0.2);
-            
+                inset 5px 0 8px rgba(255,255,255,0.24),
+                inset -5px 0 8px rgba(0,0,0,0.22),
+                0 6px 14px rgba(0,0,0,0.4),
+                0 2px 6px rgba(0,0,0,0.22);
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
         }
 
-        .minion-leg.left {
-            animation: legLeftReal 0.2s ease-in-out infinite;
-        }
-
-        .minion-leg.right {
-            animation: legRightReal 0.2s ease-in-out infinite;
-            animation-delay: 0.1s;
-        }
+        .minion-leg.left { animation: legLeftReal 0.2s ease-in-out infinite; }
+        .minion-leg.right { animation: legRightReal 0.2s ease-in-out infinite; animation-delay: 0.1s; }
 
         @keyframes legLeftReal {
             0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(0deg); }
-            50% { transform: translateY(-16px) rotateX(18deg) rotateZ(12deg); }
+            50% { transform: translateY(-18px) rotateX(20deg) rotateZ(14deg); }
         }
 
         @keyframes legRightReal {
             0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(0deg); }
-            50% { transform: translateY(-16px) rotateX(-18deg) rotateZ(-12deg); }
+            50% { transform: translateY(-18px) rotateX(-20deg) rotateZ(-14deg); }
         }
 
-        /* ZAPATOS */
+        /* SHOES */
         .minion-shoe {
             position: absolute;
-            bottom: -8px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            
-            width: 36px;
-            height: 18px;
-            
+            width: 40px;
+            height: 20px;
             background: linear-gradient(180deg,
-                #424242 0%,
-                #2D2D2D 28%,
-                #1A1A1A 60%,
-                #0D0D0D 90%,
-                #050505 100%
+                #4A4A4A 0%,
+                #323232 30%,
+                #1F1F1F 65%,
+                #0D0D0D 100%
             );
-            
-            border-radius: 10px 10px 12px 12px;
-            border: 3px solid #000;
+            border-radius: 12px 12px 14px 14px;
+            border: 4px solid #000;
             box-shadow: 
-                0 6px 16px rgba(0,0,0,0.5),
-                0 3px 6px rgba(0,0,0,0.3),
-                inset 0 3px 5px rgba(255,255,255,0.16),
-                inset 0 -2px 4px rgba(0,0,0,0.35);
+                0 8px 20px rgba(0,0,0,0.6),
+                0 4px 8px rgba(0,0,0,0.35),
+                inset 0 4px 6px rgba(255,255,255,0.18),
+                inset 0 -2px 5px rgba(0,0,0,0.4);
         }
 
-        /* ESTADOS DEL MINION */
+        /* JUMP & SLIDE */
         .player-jump .minion-character {
             animation: jumpReal 0.62s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         }
 
         @keyframes jumpReal {
-            0% { transform: translateY(0) scaleY(1) scaleX(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            15% { transform: translateY(-85px) scaleY(1.15) scaleX(0.89) rotateX(-8deg) rotateY(-4deg) rotateZ(-3deg); }
-            35% { transform: translateY(-190px) scaleY(1.22) scaleX(0.86) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            52% { transform: translateY(-200px) scaleY(1.25) scaleX(0.84) rotateX(2deg) rotateY(2deg) rotateZ(2deg); }
-            70% { transform: translateY(-185px) scaleY(1.2) scaleX(0.87) rotateX(-2deg) rotateY(-2deg) rotateZ(-2deg); }
-            85% { transform: translateY(-80px) scaleY(1.12) scaleX(0.91) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            100% { transform: translateY(0) scaleY(1) scaleX(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            0% { transform: translateY(0) scaleY(1) scaleX(1); }
+            15% { transform: translateY(-100px) scaleY(1.18) scaleX(0.88); }
+            35% { transform: translateY(-220px) scaleY(1.25) scaleX(0.85); }
+            52% { transform: translateY(-230px) scaleY(1.28) scaleX(0.82); }
+            70% { transform: translateY(-210px) scaleY(1.22) scaleX(0.86); }
+            85% { transform: translateY(-90px) scaleY(1.13) scaleX(0.90); }
+            100% { transform: translateY(0) scaleY(1) scaleX(1); }
         }
 
         .player-slide .minion-character {
@@ -763,39 +666,33 @@
         }
 
         @keyframes slideReal {
-            0% { transform: translateY(0) scaleY(1) scaleX(1) rotateX(0deg) rotateZ(0deg); }
-            18% { transform: translateY(40px) scaleY(0.28) scaleX(1.5) rotateX(20deg) rotateZ(-14deg); }
-            50% { transform: translateY(43px) scaleY(0.25) scaleX(1.53) rotateX(18deg) rotateZ(-12deg); }
-            82% { transform: translateY(40px) scaleY(0.27) scaleX(1.56) rotateX(16deg) rotateZ(-14deg); }
-            100% { transform: translateY(0) scaleY(1) scaleX(1) rotateX(0deg) rotateZ(0deg); }
+            0% { transform: translateY(0) scaleY(1) scaleX(1); }
+            18% { transform: translateY(45px) scaleY(0.28) scaleX(1.6); }
+            50% { transform: translateY(48px) scaleY(0.25) scaleX(1.65); }
+            82% { transform: translateY(45px) scaleY(0.27) scaleX(1.62); }
+            100% { transform: translateY(0) scaleY(1) scaleX(1); }
         }
 
-        /* OBSTACLES */
+        /* OBSTACLES - With 3D perspective */
         .obstacle-3d {
             position: absolute;
             display: flex;
             align-items: center;
             justify-content: center;
             pointer-events: none;
-            will-change: transform, opacity;
+            will-change: transform, opacity, font-size;
             z-index: 40;
-            font-size: 48px;
+            font-size: 24px;
         }
+
+        .obs-far { font-size: 16px; opacity: 0.4; filter: brightness(0.7); }
+        .obs-mid { font-size: 32px; opacity: 0.7; filter: brightness(0.9); }
+        .obs-near { font-size: 56px; opacity: 1; filter: brightness(1.2) saturate(1.2) drop-shadow(0 15px 35px rgba(0,0,0,0.5)); }
         
         .obs-hit {
             opacity: 0 !important;
-            transform: translate(-50%, -50%) scale(3) !important;
-            transition: opacity 0.18s, transform 0.18s !important;
-        }
-
-        .obstacle-near {
-            filter: brightness(1.2) saturate(1.2) drop-shadow(0 12px 28px rgba(0,0,0,0.45));
-            opacity: 1;
-        }
-
-        .obstacle-mid {
-            filter: brightness(1) saturate(1);
-            opacity: 0.95;
+            transform: translate(-50%, -50%) scale(4) !important;
+            transition: opacity 0.2s, transform 0.2s !important;
         }
 
         .obstacle-coin {
@@ -809,7 +706,7 @@
 
         @keyframes bounceCoin {
             0%, 100% { margin-top: 0; }
-            50% { margin-top: -12px; }
+            50% { margin-top: -14px; }
         }
 
         /* HUD */
@@ -968,7 +865,7 @@
             .card-arrow { width: 40px; height: 40px; right: 20px; }
             .quiz-controls { gap: 16px; }
             .answer-btn { height: 110px; font-size: 17px; }
-            .minion-character { transform: scale(0.72); }
+            .minion-character { transform: scale(0.8); }
             .overlay-title { font-size: 37px; }
             .final-score-value { font-size: 66px; }
         }
@@ -1072,7 +969,12 @@
             <div class="minion-character">
                 <div class="minion-body">
                     <div class="minion-goggle-frame">
-                        <div class="minion-eye-white">
+                        <div class="minion-eye-left">
+                            <div class="minion-iris">
+                                <div class="minion-pupil"></div>
+                            </div>
+                        </div>
+                        <div class="minion-eye-right">
                             <div class="minion-iris">
                                 <div class="minion-pupil"></div>
                             </div>
@@ -1109,7 +1011,7 @@
 </div>
 
 <script>
-    // Enhanced Food Database with difficulty levels
+    // Enhanced Food Database
     const foodDatabase = {
         easy: [
             { name: 'Poma', emoji: '🍎', healthy: true },
@@ -1130,8 +1032,6 @@
             { name: 'Pizza', emoji: '🍕', healthy: false },
             { name: 'Burgesa', emoji: '🍔', healthy: false },
             { name: 'Patates fregides', emoji: '🍟', healthy: false },
-            { name: 'Donut', emoji: '🍩', healthy: false },
-            { name: 'Xuxes', emoji: '🍰', healthy: false },
         ],
         hard: [
             { name: 'Kiwi', emoji: '🥝', healthy: true },
@@ -1142,12 +1042,10 @@
             { name: 'Oli d\'oliva', emoji: '🫒', healthy: true },
             { name: 'Pastís', emoji: '🎂', healthy: false },
             { name: 'Gelat', emoji: '🍦', healthy: false },
-            { name: 'Bonbons', emoji: '🍬', healthy: false },
-            { name: 'Refrescant', emoji: '🥃', healthy: false },
         ]
     };
 
-    // Navigation System
+    // Navigation
     const nav = {
         to: function(view) {
             document.querySelectorAll('.app-view').forEach(v => {
@@ -1162,14 +1060,13 @@
         }
     };
 
-    // QUIZ GAME ENHANCED
+    // ===== QUIZ GAME =====
     let quizState = {
         score: 0,
         streak: 0,
         multiplier: 1,
         difficulty: 'easy',
         currentFood: null,
-        timeBonus: 0,
         questionsAnswered: 0
     };
 
@@ -1181,7 +1078,7 @@
     }
 
     function initQuiz() {
-        quizState = { score: 0, streak: 0, multiplier: 1, difficulty: 'easy', currentFood: null, timeBonus: 0, questionsAnswered: 0 };
+        quizState = { score: 0, streak: 0, multiplier: 1, difficulty: 'easy', currentFood: null, questionsAnswered: 0 };
         document.getElementById('scoreQuiz').textContent = '0';
         setQuizDifficulty('easy');
     }
@@ -1208,7 +1105,6 @@
             quizState.streak++;
             quizState.multiplier = Math.min(1 + (quizState.streak * 0.1), 3);
             
-            // Visual feedback for streak
             if (quizState.streak >= 3) {
                 document.getElementById('streakDisplay').style.display = 'flex';
                 document.getElementById('streakCount').textContent = quizState.streak;
@@ -1229,7 +1125,7 @@
         loadNextFood();
     }
 
-    // RUNNER GAME ENHANCED
+    // ===== RUNNER GAME WITH 3D PERSPECTIVE =====
     let runnerState = {
         isRunning: false,
         playerPos: 50,
@@ -1243,12 +1139,13 @@
     };
 
     const gameConfig = {
-        playerWidth: 120,
-        playerHeight: 150,
+        playerWidth: 140,
+        playerHeight: 170,
         gameWidth: window.innerWidth,
         gameHeight: window.innerHeight,
         minObstacleInterval: 80,
-        maxObstacleInterval: 150
+        maxObstacleInterval: 150,
+        perspectiveStart: -500  // Far away distance
     };
 
     function initRunner() {
@@ -1292,7 +1189,6 @@
             jump();
         }
 
-        // Touch support
         if (e.touches) {
             const touchX = e.touches[0].clientX;
             if (touchX < gameConfig.gameWidth / 3) handleRunnerInput({ key: 'ArrowLeft' });
@@ -1316,15 +1212,31 @@
         runnerState.distance = Math.floor(runnerState.gameTime / 10);
         runnerState.speed = 1 + (runnerState.distance / 1000) * 0.5;
 
-        // Generate obstacles
         if (Math.random() < 0.02 * runnerState.speed) {
             createObstacle();
         }
 
-        // Update obstacles
+        // Update obstacles with 3D perspective
         document.querySelectorAll('.obstacle-3d').forEach(obstacle => {
-            const top = parseFloat(obstacle.style.top) + runnerState.speed * 8;
+            const top = parseFloat(obstacle.dataset.startTop || -50) + runnerState.speed * 8;
+            obstacle.dataset.startTop = top;
             obstacle.style.top = top + 'px';
+
+            // Apply 3D perspective: size and speed based on distance
+            const distanceToPlayer = gameConfig.gameHeight - top;
+            const scale = Math.max(0.3, Math.min(1, distanceToPlayer / gameConfig.gameHeight));
+            
+            // Update size dynamically
+            if (scale < 0.5) {
+                obstacle.classList.add('obs-far');
+                obstacle.classList.remove('obs-mid', 'obs-near');
+            } else if (scale < 0.85) {
+                obstacle.classList.add('obs-mid');
+                obstacle.classList.remove('obs-far', 'obs-near');
+            } else {
+                obstacle.classList.add('obs-near');
+                obstacle.classList.remove('obs-far', 'obs-mid');
+            }
 
             if (top > gameConfig.gameHeight) {
                 obstacle.remove();
@@ -1351,9 +1263,10 @@
         const left = Math.random() * (gameConfig.gameWidth - 50);
         
         const obstacle = document.createElement('div');
-        obstacle.className = 'obstacle-3d';
+        obstacle.className = 'obstacle-3d obs-far';
         obstacle.style.left = left + 'px';
         obstacle.style.top = '-50px';
+        obstacle.dataset.startTop = -50;
         
         if (type === 'wall') {
             obstacle.textContent = '🧱';
@@ -1400,7 +1313,6 @@
         initRunner();
     }
 
-    // Initialize menu
     window.addEventListener('load', () => {
         initQuiz();
     });
