@@ -717,6 +717,34 @@ h1 {
 .social-pill iconify-icon { font-size: 18px; color: var(--purple-light); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
 .social-pill:hover iconify-icon { transform: rotate(-10deg) scale(1.2); }
 
+.author-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.author-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--purple-light), var(--cyan-light));
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+.author-link:hover {
+  color: var(--purple-light);
+  text-shadow: 0 0 12px rgba(124,58,237,0.5);
+}
+
+.author-link:hover::after {
+  width: 100%;
+}
+
 /* ========== VISTA COST ========== */
 .cost-options-grid {
   display: flex;
@@ -845,6 +873,95 @@ h1 {
 .cost-option-card.co-enter:nth-child(2) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
 .cost-option-card.co-enter:nth-child(3) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s forwards; }
 
+/* ========== VISTA ENTREVISTES AMB FOTO ========== */
+.entrevistes-image-container {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 28px auto 0;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: default;
+  transition: all 0.45s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: 0 8px 32px -8px rgba(124,58,237,0.25);
+  border: 2px solid rgba(124,58,237,0.2);
+}
+
+.entrevistes-image-container:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 16px 48px -12px rgba(124,58,237,0.4), 0 0 0 4px rgba(124,58,237,0.08);
+  border-color: rgba(124,58,237,0.4);
+}
+
+.entrevistes-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+.entrevistes-image-container:hover .entrevistes-photo {
+  transform: scale(1.05);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: -44px;
+  right: -8px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  transform: scale(1.15) rotate(90deg);
+  color: var(--purple-light);
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px -16px rgba(124,58,237,0.4);
+  border: 2px solid rgba(124,58,237,0.3);
+}
+
 @media (max-width: 640px) {
   body { padding: 20px 12px; }
   .glass-panel { padding: 36px 22px; }
@@ -879,7 +996,7 @@ h1 {
 
   <div id="home-view" class="view active">
     <h1 class="title-anim">Quin és el vertitable cost del que menjo?</h1>
-    <p class="subtitle subtitle-anim">Fet per: Guillem Varela Cors i Yasser Chikhi i amb la col·laboració de Julian Navas Paños</p>
+    <p class="subtitle subtitle-anim">Fet per: <a href="#" class="author-link" onclick="showGuillemView(event)">Guillem Varela Cors</a> i <a href="#" class="author-link" onclick="event.preventDefault()">Yasser Chikhi Ourinich</a> i amb la col·laboració de <a href="#" class="author-link" onclick="event.preventDefault()">Julian Navas Paños</a></p>
 
     <div class="main-grid">
       <div class="nav-card stagger-in" data-color="blue" onclick="navTo('digestio', event)">
@@ -1011,6 +1128,52 @@ h1 {
     <div class="back-btn" onclick="goBack()">
       <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
       Tornar
+    </div>
+  </div>
+
+  <!-- VISTA ENTREVISTES AMB FOTO -->
+  <div id="entrevistes-view" class="view">
+    <div class="selection-icon icon-circle purple selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
+      <iconify-icon icon="solar:microphone-3-bold-duotone"></iconify-icon>
+    </div>
+    <h1>Entrevistes</h1>
+    <p class="subtitle">Converses amb professionals del sector</p>
+
+    <div class="entrevistes-image-container fade-section">
+      <img src="https://qc4n.bigmodel.cn/cd4aa4yzK_cropped.png?UCloudPublicKey=TOKEN_3f4277c6-f8d6-41a9-968b-dbfa0994d483&Expires=1808571783&Signature=lqGeoXvPqFkk3auPchVDGTj7SPw%3D" 
+           alt="Entrevistes amb professionals" 
+           class="entrevistes-photo">
+    </div>
+
+    <p style="margin-top: 20px; font-size: 15px; font-weight: 600; color: var(--purple-light);">Entrevista amb la biòloga marina Xènia</p>
+
+    <div class="back-btn" onclick="goBack()">
+      <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+      Tornar
+    </div>
+  </div>
+
+  <!-- VISTA GUILLEM -->
+  <div id="guillem-view" class="view">
+    <div class="selection-icon icon-circle blue selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
+      <iconify-icon icon="solar:user-rounded-bold-duotone"></iconify-icon>
+    </div>
+    <h1>Guillem Varela Cors</h1>
+    <p class="subtitle">Creador de la web</p>
+
+    <div class="back-btn" onclick="goBack()">
+      <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+      Tornar
+    </div>
+  </div>
+
+<!-- Modal per ampliar imatge -->
+  <div id="imageModal" class="modal-overlay" onclick="closeImageModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeImageModal()">
+        <iconify-icon icon="solar:close-circle-bold-duotone" width="32"></iconify-icon>
+      </button>
+      <img id="modalImage" src="" alt="Imatge ampliada" class="modal-image">
     </div>
   </div>
 
@@ -1165,6 +1328,12 @@ function getConfettiColors(c) {
 
 function navTo(type, e) {
   if (e) createCardRipple(e);
+  if (type === 'entrevistes') {
+    viewHistory.push('entrevistes-view');
+    showView('entrevistes-view');
+    confetti({ particleCount: 35, spread: 55, origin: { y: 0.7 }, colors: ['#7c3aed','#8b5cf6','#c4b5fd','#ede9fe'], ticks: 120, gravity: 0.8, scalar: 0.9, shapes: ['circle'] });
+    return;
+  }
   if (type === 'cost') {
     viewHistory.push('cost-view');
     showView('cost-view');
@@ -1203,10 +1372,40 @@ function goBack() {
         c.classList.remove('co-enter'); void c.offsetWidth; c.classList.add('co-enter');
       });
     }, 310);
+  } else if (prev === 'guillem-view') {
+    showView('guillem-view');
+  } else if (prev === 'entrevistes-view') {
+    showView('entrevistes-view');
   } else {
     showView('home-view');
   }
 }
+
+// Funcions pel modal d'imatge
+function openImageModal(src) {
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  modalImg.src = src;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function showGuillemView(e) {
+  e.preventDefault();
+  viewHistory.push('guillem-view');
+  showView('guillem-view');
+  confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 }, colors: ['#2563eb','#60a5fa','#93c5fd','#dbeafe'], ticks: 100, gravity: 0.9, scalar: 0.85, shapes: ['circle'] });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeImageModal();
+});
 
 document.getElementById('confettiBtn').addEventListener('mouseenter', () => {
   confetti({ particleCount: 15, spread: 28, origin: { x: 0.92, y: 0.92 }, colors: ['#2563eb','#60a5fa','#93c5fd'], ticks: 80, gravity: 1.2, scalar: 0.8 });
