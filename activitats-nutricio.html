@@ -47,19 +47,19 @@
         .menu-scroll-wrapper { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; position: relative; }
         .menu-scroll-wrapper::-webkit-scrollbar { width: 4px; }
         .menu-scroll-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .menu-scroll-wrapper::-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .menu-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
         .menu-content-full { min-height: 100%; display: flex; flex-direction: column; padding-bottom: 60px; }
         .menu-header { padding: 80px 40px 50px; text-align: center; position: relative; }
-        .brand-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.2); padding: 8px 20px; border-radius: 30px; font-size: 12px; font-weight: 700; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; backdrop-filter: blur(10px); }
+        .brand-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.2); padding: 8px 20px; border-radius: 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
         .brand-icon { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse-glow 2s ease-in-out infinite; }
         @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 5px var(--primary); opacity: 1; } 50% { box-shadow: 0 0 15px var(--primary); opacity: 0.7; } }
         .main-title { font-size: clamp(42px, 9vw, 58px); font-weight: 900; line-height: 1.05; margin-bottom: 20px; background: linear-gradient(135deg, #ffffff 0%, #b0b0b0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .subtitle { font-size: 17px; color: rgba(255, 255, 255, 0.5); font-weight: 400; max-width: 340px; margin: 0 auto; line-height: 1.7; }
         .menu-cards-section { padding: 20px 32px 60px; display: flex; flex-direction: column; gap: 24px; }
-        .game-card { position: relative; background: linear-gradient(135deg, var(--surface) 0%, rgba(22, 22, 29, 0.8) 100%); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; padding: 36px 32px; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden; text-decoration: none; color: inherit; display: block; }
-        .game-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.02) 100%); opacity: 0; transition: opacity 0.4s; }
+        .game-card { position: relative; background: linear-gradient(135deg, var(--surface) 0%, rgba(22, 22, 29, 0.8) 100%); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; padding: 32px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .game-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.02) 100%); opacity: 0; transition: opacity 0.4s; border-radius: 28px; }
         .game-card:hover::before, .game-card:active::before { opacity: 1; }
-        .game-card:hover, .game-card:active { transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05); }
+        .game-card:hover, .game-card:active { transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1); }
         .card-glow { position: absolute; width: 200px; height: 200px; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; transition: all 0.4s; }
         .card-quiz .card-glow { background: var(--primary); top: -80px; right: -60px; }
         .card-runner .card-glow { background: var(--gold); bottom: -80px; left: -60px; }
@@ -70,32 +70,41 @@
         .icon-runner { background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%); color: var(--gold); box-shadow: 0 8px 24px rgba(255, 215, 0, 0.15); }
         .card-title-group { flex: 1; }
         .card-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.5px; }
-        .card-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.6); }
+        .card-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.7); }
         .card-description { font-size: 15px; color: rgba(255, 255, 255, 0.45); line-height: 1.6; position: relative; z-index: 2; }
-        .card-arrow { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.4); font-size: 18px; transition: all 0.3s; z-index: 2; }
+        .card-arrow { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(255, 255, 255, 0.5); transition: all 0.3s; }
         .game-card:hover .card-arrow { background: rgba(255, 255, 255, 0.12); transform: translateY(-50%) translateX(4px); color: rgba(255, 255, 255, 0.7); }
 
+        /* === DIFFICULTY SELECTOR === */
+        .difficulty-selector { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; }
+        .diff-btn { padding: 10px 20px; border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.2); background: transparent; color: rgba(255, 255, 255, 0.6); cursor: pointer; font-weight: 700; transition: all 0.3s; }
+        .diff-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+        .diff-btn:hover { border-color: rgba(255, 255, 255, 0.5); }
+
         /* === QUIZ === */
-        .quiz-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); flex-shrink: 0; }
+        .quiz-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .back-btn { width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .back-btn:hover, .back-btn:active { background: rgba(255, 255, 255, 0.15); transform: scale(0.96); }
-        .score-display { display: flex; align-items: center; gap: 10px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.2); padding: 10px 20px; border-radius: 30px; font-weight: 800; font-size: 16px; color: var(--primary); }
+        .score-display { display: flex; align-items: center; gap: 10px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.2); padding: 10px 20px; border-radius: 30px; font-weight: 800; }
         .quiz-container { display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; padding: 40px 24px; gap: 40px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        .food-card { width: 100%; max-width:360px; background: linear-gradient(180deg, var(--surface) 0%, rgba(22, 22, 29, 0.9) 100%); border-radius: 32px; padding: 56px 32px; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05); text-align: center; position: relative; overflow: hidden; }
-        .food-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; background: radial-gradient(circle, rgba(0, 230, 118, 0.08) 0%, transparent 70%); pointer-events: none; }
+        .food-card { width: 100%; max-width: 360px; background: linear-gradient(180deg, var(--surface) 0%, rgba(22, 22, 29, 0.9) 100%); border-radius: 32px; padding: 56px 32px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
+        .food-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; background: radial-gradient(circle, rgba(0, 230, 118, 0.08) 0%, transparent 70%); filter: blur(40px); }
         .food-emoji { font-size: 120px; display: block; margin-bottom: 24px; animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3)); }
         @keyframes pop-in { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 70% { transform: scale(1.15) rotate(2deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-        .food-name { font-size: 28px; font: 0; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .food-name { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: -0.5px; }
         .food-question { font-size: 15px; color: rgba(255, 255, 255, 0.45); font-weight: 500; }
+        .streak-display { font-size: 14px; color: var(--primary); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(0, 230, 118, 0.15); padding: 4px 10px; border-radius: 20px; }
         .quiz-controls { display: flex; gap: 20px; width: 100%; max-width: 380px; flex-shrink: 0; }
-        .answer-btn { flex: 1; height: 120px; border-radius: 24px; border: none; font-family: inherit; font-size: 19px; font-weight: 800; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
-        .answer-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%); opacity: 0; transition: opacity 0.2s; }
+        .answer-btn { flex: 1; height: 120px; border-radius: 24px; border: none; font-family: inherit; font-size: 19px; font-weight: 800; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: all 0.15s; }
+        .answer-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%); opacity: 0; transition: opacity 0.2s; border-radius: 24px; }
         .answer-btn:hover::before, .answer-btn:active::before { opacity: 1; }
         .btn-yes { background: linear-gradient(135deg, var(--primary) 0%, #00c853 100%); box-shadow: 0 12px 0 #009624, 0 15px 30px rgba(0, 230, 118, 0.3); }
         .btn-no { background: linear-gradient(135deg, var(--danger) 0%, #dd2c00 100%); box-shadow: 0 12px 0 #bf360c, 0 15px 30px rgba(255, 61, 0, 0.3); }
         .answer-btn:hover { transform: translateY(-2px); }
         .answer-btn:active { transform: translateY(8px); box-shadow: 0 4px 0 currentColor, 0 8px 20px rgba(0, 0, 0, 0.2); }
         .btn-label { font-size: 11px; opacity: 0.75; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
+        .btn-score { font-size: 16px; font-weight: 900; }
 
         /* === RUNNER - ESTILO MINION RUSH REAL === */
         .runner-game {
@@ -125,7 +134,7 @@
         .pipe-left-main {
             position: absolute; left: 0; top: 8%;
             width: 18%; height: 42%;
-            background: linear-gradient(to right, #0D47A1 0%, #1565C0 20%, #1976D2 45%, #42A5F5 70%, #64B5F6 90%, #90CAF9E 100%);
+            background: linear-gradient(to right, #0D47A1 0%, #1565C0 20%, #1976D2 45%, #42A5F5 70%, #64B5F6 90%, #90CAF9 100%);
             z-index: 3;
             clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
             box-shadow: 8px 0 25px rgba(13, 71, 161, 0.4);
@@ -143,7 +152,7 @@
         .pipe-right-main {
             position: absolute; right: 0; top: 5%;
             width: 20%; height: 48%;
-            background: linear-gradient(to left, #0D47A1 0%, #1565C0 20%, #1976D2 45%, #42A5F5 70%, #64B5F6 90%, #90CAF9E 100%);
+            background: linear-gradient(to left, #0D47A1 0%, #1565C0 20%, #1976D2 45%, #42A5F5 70%, #64B5F6 90%, #90CAF9 100%);
             z-index: 3;
             clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
             box-shadow: -8px 0 25px rgba(13, 71, 161, 0.4);
@@ -165,7 +174,7 @@
             box-shadow: 0 8px 20px rgba(13, 71, 161, 0.3);
         }
 
-        /* Suelo negre con líneas naranjas */
+        /* Suelo negro con líneas naranjas */
         .corridor-floor {
             position: absolute; bottom: 0; left: 0; right: 0; height: 58%;
             background: linear-gradient(to bottom,
@@ -234,7 +243,7 @@
             box-shadow: 0 0 25px rgba(255, 152, 0, 0.6);
         }
 
-        /* === MINION REALISTA - LLARG I ESTIL MINION RUSH === */
+        /* === MINION REALISTA === */
         .player-container {
             position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
             width: 120px; height: 150px;
@@ -247,7 +256,6 @@
         /* MINION REAL - PROPORCIONS CORRECTES */
         .minion-character {
             position: relative;
-            /* MÉS GRAN I ESTRETIT */
             width: 110px;
             height: 150px;
             
@@ -266,21 +274,19 @@
             }
         }
 
-        /* CUERPO DEL MINION - OVALADO Y ALARGAT */
+        /* CUERPO DEL MINION - OVALADO Y ALARGADO */
         .minion-body {
             position: absolute;
             bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
             
-            /* Forma ovalada/rodona com més volum */
             width: 95px;
             height: 105px;
             
             background: 
                 radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.5) 0%, transparent 45%),
                 radial-gradient(ellipse at 75% 85%, rgba(139,69,19,0.2) 0%, transparent 55%),
-                /* Color base amarillo brillant */
                 linear-gradient(145deg, 
                     #FFE93A 0%, 
                     #FFE93A 12%,
@@ -291,7 +297,7 @@
                     #CC9918 98%
                 );
                 
-            border-radius: 48px 48px 45px 45px; /* Més redondeado */
+            border-radius: 48px 48px 45px 45px;
             
             box-shadow: 
                 inset 0 -20px 38px rgba(101, 67, 33, 0.32),
@@ -388,7 +394,7 @@
             overflow: hidden;
         }
 
-        /* Iris marró */
+        /* Iris marrón */
         .minion-iris {
             position: absolute;
             top: 50%;
@@ -459,7 +465,7 @@
             border-radius: 50%;
         }
 
-        /* BRAZOS - MÉS CURTS I GROSOS */
+        /* BRAZOS - MÉS CURTOS I GROSOS */
         .minion-arm-left {
             position: absolute;
             top: 48px;
@@ -574,7 +580,7 @@
             50% { transform: rotateZ(28deg) rotateY(-8deg) rotateX(-4deg); }
         }
 
-        /* BOCA - MÉS PETITA I BLANCA */
+        /* BOCA */
         .minion-mouth-container {
             position: absolute;
             bottom: 28px;
@@ -650,7 +656,7 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.35);
         }
 
-        /* PANTALONS AZULS - MÉS CURTS */
+        /* PANTALONS AZULS */
         .minion-legs-container {
             position: absolute;
             bottom: -26px;
@@ -710,7 +716,7 @@
             50% { transform: translateY(-16px) rotateX(-18deg) rotateZ(-12deg); }
         }
 
-        /* ZAPATOS - MÉS PETITS I BRILLANTS */
+        /* ZAPATOS */
         .minion-shoe {
             position: absolute;
             bottom: -8px;
@@ -725,7 +731,7 @@
                 #2D2D2D 28%,
                 #1A1A1A 60%,
                 #0D0D0D 90%,
-                #0505050 100%
+                #050505 100%
             );
             
             border-radius: 10px 10px 12px 12px;
@@ -737,9 +743,9 @@
                 inset 0 -2px 4px rgba(0,0,0,0.35);
         }
 
-        /* ESTATS DEL MINION */
+        /* ESTADOS DEL MINION */
         .player-jump .minion-character {
-            animation: jumpReal 0.62s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: jumpReal 0.62s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         }
 
         @keyframes jumpReal {
@@ -753,7 +759,7 @@
         }
 
         .player-slide .minion-character {
-            animation: slideReal 0.72s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: slideReal 0.72s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         }
 
         @keyframes slideReal {
@@ -764,7 +770,7 @@
             100% { transform: translateY(0) scaleY(1) scaleX(1) rotateX(0deg) rotateZ(0deg); }
         }
 
-        /* OBSTÁCLES */
+        /* OBSTACLES */
         .obstacle-3d {
             position: absolute;
             display: flex;
@@ -773,6 +779,7 @@
             pointer-events: none;
             will-change: transform, opacity;
             z-index: 40;
+            font-size: 48px;
         }
         
         .obs-hit {
@@ -816,6 +823,8 @@
             padding: 0 20px;
             z-index: 100;
             pointer-events: none;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .hud-stat {
@@ -1006,383 +1015,396 @@
 <!-- QUIZ -->
 <div id="viewQuiz" class="app-view view-hidden">
     <div class="quiz-header">
-        <button class="back-btn" onclick="nav.to('menu')"><i class="fa-solid fa-arrow-left"></i></button>
-        <div class="score-display"><i class="fa-solid fa-star"></i><span id="qScoreVal">0</span></div>
+        <button class="back-btn" onclick="nav.to('menu')"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="score-display"><span>🎯</span><span id="scoreQuiz">0</span></div>
     </div>
-    
     <div class="quiz-container">
-        <div class="food-card">
-            <span id="qEmoji" class="food-emoji">🍎</span>
-            <h2 id="qName" class="food-name">Poma</h2>
-            <p class="food-question">És saludable?</p>
+        <div class="difficulty-selector">
+            <button class="diff-btn active" data-diff="easy" onclick="setQuizDifficulty('easy')">Fàcil</button>
+            <button class="diff-btn" data-diff="medium" onclick="setQuizDifficulty('medium')">Mitjà</button>
+            <button class="diff-btn" data-diff="hard" onclick="setQuizDifficulty('hard')">Difícil</button>
         </div>
-        
+        <div class="food-card">
+            <span class="food-emoji" id="foodEmoji">🍎</span>
+            <h2 class="food-name" id="foodName">Poma</h2>
+            <p class="food-question">És una opció saludable?</p>
+            <div class="streak-display" id="streakDisplay" style="display:none;">
+                <span>🔥</span>
+                <span id="streakCount">0</span>
+                <span>streak</span>
+                <span id="multiplier" class="streak-badge">x1</span>
+            </div>
+        </div>
         <div class="quiz-controls">
-            <button class="answer-btn btn-yes" onclick="quiz.ans(true)"><i class="fa-solid fa-check" style="font-size: 28px;"></i><span class="btn-label">SÍ</span></button>
-            <button class="answer-btn btn-no" onclick="quiz.ans(false)"><i class="fa-solid fa-xmark" style="font-size: 28px;"></i><span class="btn-label">NO</span></button>
+            <button class="answer-btn btn-yes" onclick="answerQuiz(true)">
+                <span class="btn-label">Sí</span>
+                <span class="btn-score" id="scoreYes">+10</span>
+            </button>
+            <button class="answer-btn btn-no" onclick="answerQuiz(false)">
+                <span class="btn-label">No</span>
+                <span class="btn-score" id="scoreNo">+10</span>
+            </button>
         </div>
     </div>
 </div>
 
-<!-- RUNNER - MINION RUSH REAL -->
+<!-- RUNNER -->
 <div id="viewRunner" class="app-view view-hidden">
-    
-    <div id="runnerGameArea" class="runner-game">
-        <!-- Fondo azul -->
+    <div class="runner-game">
         <div class="lab-walls"></div>
-        
-        <!-- Techo/tubería -->
-        <div class="pipe-top-ceiling"></div>
-        
-        <!-- Tubo izquierda -->
         <div class="pipe-left-main"></div>
         <div class="pipe-left-bottom"></div>
-        
-        <!-- Tubo derecha -->
         <div class="pipe-right-main"></div>
         <div class="pipe-right-bottom"></div>
-        
-        <!-- Suelo negro -->
+        <div class="pipe-top-ceiling"></div>
         <div class="corridor-floor"></div>
-        
-        <!-- Líneas naranjas -->
         <div class="floor-lines-orange"></div>
-        
-        <!-- Bordes naranjos -->
         <div class="border-left-orange"></div>
         <div class="border-right-orange"></div>
-        
-        <!-- HUD -->
+
         <div class="runner-hud">
-            <div class="hud-stat" style="color: #FFD700;"><i class="fa-solid fa-star"></i><span id="rScore">0</span></div>
-            <div class="hud-stat" style="color: #FF5252;"><span id="rLives">❤️❤️❤️</span></div>
+            <div class="hud-stat"><span>📏</span><span id="distance">0</span>m</div>
+            <div class="hud-stat"><span>💰</span><span id="coins">0</span></div>
+            <div class="hud-stat"><span>❤️</span><span id="health">3</span></div>
         </div>
 
-        <!-- MINION REALISTA -->
-        <div class="player-container" id="player">
+        <div class="player-container">
             <div class="minion-character">
-                <div class="minion-shadow"></div>
-                
-                <!-- Goggle -->
-                <div class="minion-goggle-frame">
-                    <div class="minion-eye-white">
-                        <div class="minion-iris"><div class="minion-pupil"></div></div>
+                <div class="minion-body">
+                    <div class="minion-goggle-frame">
+                        <div class="minion-eye-white">
+                            <div class="minion-iris">
+                                <div class="minion-pupil"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="minion-mouth-container">
+                        <div class="minion-mouth">
+                            <div class="minion-teeth"></div>
+                            <div class="minion-tongue"></div>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Cuerpo ovalado -->
-                <div class="minion-body"></div>
-                
-                <!-- Brazos -->
                 <div class="minion-arm-left"></div>
                 <div class="minion-arm-right"></div>
-                
-                <!-- Boca -->
-                <div class="minion-mouth-container">
-                    <div class="minion-mouth">
-                        <div class="minion-teeth"></div>
-                        <div class="minion-tongue"></div>
-                    </div>
-                </div>
-                
-                <!-- Patas -->
                 <div class="minion-legs-container">
-                    <div class="minion-leg left"><div class="minion-shoe"></div></div>
-                    <div class="minion-leg right"><div class="minion-shoe"></div></div>
+                    <div class="minion-leg left">
+                        <div class="minion-shoe"></div>
+                    </div>
+                    <div class="minion-leg right">
+                        <div class="minion-shoe"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Overlay Inicio -->
-    <div id="runnerOverlay" class="game-overlay">
-        <div class="overlay-icon-large">🟡</div>
-        <h2 class="overlay-title">MINION RUN</h2>
-        <p class="overlay-subtitle">
-            Corre pel corredor del laboratori!<br><br>
-            ⬅️ ➡️ Canvia de carril<br>
-            ⬆️ Saltar sobre obstacles<br>
-            ⬇️ Ajupa't sota obstacles<br><br>
-            🍌 Recull bananes<br>
-            🔬 Estil Minion Rush!
-        </p>
-        <button class="primary-btn" onclick="runner.start()">▶ COMENÇAR</button>
-        <button class="secondary-btn" onclick="nav.to('menu')"><i class="fas fa-times"></i></button>
-    </div>
-
-    <!-- Game Over -->
-    <div id="runnerGameOver" class="game-overlay game-over-overlay" style="display:none">
-        <div class="overlay-icon-large" style="font-size: 95px;">💥</div>
-        <h2 class="overlay-title" style="color: white;">GAME OVER</h2>
-        <p class="final-score-label" style="color: rgba(255,255,255,0.9);">Puntuació Final</p>
-        <h1 class="final-score-value" id="finalRScore">0</h1>
-        <button class="primary-btn" onclick="runner.start()" style="background: linear-gradient(135deg, #FFF 0%, #E0E0E0 100%); color: #D32F2F;">🔄 TORNAR-HO A PROVAR</button>
-        <button class="secondary-btn" onclick="nav.to('menu')" style="background: rgba(255,255,255,0.28); color: white; border-color: rgba(255,255,255,0.42);"><i class="fas fa-home"></i></button>
+        <div id="gameOverlay" class="game-overlay" style="display:none;">
+            <div class="overlay-icon-large">🎉</div>
+            <div class="final-score-label">Final Score</div>
+            <div class="final-score-value" id="finalScore">0</div>
+            <button class="primary-btn" onclick="nav.to('menu')">Tornar al Menú</button>
+            <button class="secondary-btn" onclick="restartRunner()">🔄</button>
+        </div>
     </div>
 </div>
 
 <script>
-// AUDIO
-const Aud = {
-    ctx: null,
-    init: function(){ if(!this.ctx) this.ctx = new(window.AudioContext||window.webkitAudioContext)(); if(this.ctx.state==='suspended') this.ctx.resume(); },
-    t: function(f, type, d, v=0.1){ if(!this.ctx)return; const o=this.ctx.createOscillator(), g=this.ctx.createGain(); o.type=type; o.frequency.value=f; g.gain.setValueAtTime(v, this.ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime+d); o.connect(g); g.connect(this.ctx.destination); o.start(); o.stop(this.ctx.currentTime+d); },
-    click: function(){ this.init(); this.t(800, 'sine', 0.05); },
-    coin: function(){ this.init(); this.t(988, 'sine', 0.08); setTimeout(()=>this.t(1319, 'sine', 0.12), 60); },
-    hit: function(){ this.init(); this.t(100, 'sawtooth', 0.35, 0.25); },
-    jump: function(){ this.init(); this.t(350, 'square', 0.08, 0.06); setTimeout(()=>this.t(523, 'square', 0.08, 0.06), 50); },
-    slide: function(){ this.init(); this.t(180, 'triangle', 0.12, 0.07); },
-    banana: function(){ this.init(); this.t(440, 'sine', 0.06); setTimeout(()=>this.t(554, 'sine', 0.08), 40); setTimeout(()=>this.t(659, 'sine', 0.1), 80); }
-};
+    // Enhanced Food Database with difficulty levels
+    const foodDatabase = {
+        easy: [
+            { name: 'Poma', emoji: '🍎', healthy: true },
+            { name: 'Plàtan', emoji: '🍌', healthy: true },
+            { name: 'Zanahòria', emoji: '🥕', healthy: true },
+            { name: 'Bròquil', emoji: '🥦', healthy: true },
+            { name: 'Galeta', emoji: '🍪', healthy: false },
+            { name: 'Xocolata', emoji: '🍫', healthy: false },
+            { name: 'Beguda gaseosa', emoji: '🥤', healthy: false },
+            { name: 'Llimona', emoji: '🍋', healthy: true },
+        ],
+        medium: [
+            { name: 'Bròquil', emoji: '🥦', healthy: true },
+            { name: 'Peix', emoji: '🐟', healthy: true },
+            { name: 'Ou', emoji: '🥚', healthy: true },
+            { name: 'Fruites seces', emoji: '🥜', healthy: true },
+            { name: 'Formatge', emoji: '🧀', healthy: true },
+            { name: 'Pizza', emoji: '🍕', healthy: false },
+            { name: 'Burgesa', emoji: '🍔', healthy: false },
+            { name: 'Patates fregides', emoji: '🍟', healthy: false },
+            { name: 'Donut', emoji: '🍩', healthy: false },
+            { name: 'Xuxes', emoji: '🍰', healthy: false },
+        ],
+        hard: [
+            { name: 'Kiwi', emoji: '🥝', healthy: true },
+            { name: 'Mango', emoji: '🥭', healthy: true },
+            { name: 'Meló', emoji: '🍈', healthy: true },
+            { name: 'Síndria', emoji: '🍉', healthy: true },
+            { name: 'Iogurt natural', emoji: '🍶', healthy: true },
+            { name: 'Oli d\'oliva', emoji: '🫒', healthy: true },
+            { name: 'Pastís', emoji: '🎂', healthy: false },
+            { name: 'Gelat', emoji: '🍦', healthy: false },
+            { name: 'Bonbons', emoji: '🍬', healthy: false },
+            { name: 'Refrescant', emoji: '🥃', healthy: false },
+        ]
+    };
 
-// NAV
-const nav = {
-    to: function(viewId) {
-        Aud.click();
-        document.querySelectorAll('.app-view').forEach(v => { v.classList.remove('active-view'); v.classList.add('view-hidden'); });
-        const target = document.getElementById('view'+viewId.charAt(0).toUpperCase()+viewId.slice(1));
-        if(target) { target.classList.remove('view-hidden'); void target.offsetWidth; target.classList.add('active-view'); }
-        if(viewId === 'quiz') quiz.init();
-        if(viewId !== 'runner') runner.stop();
-        if(viewId === 'menu') { const sw = document.querySelector('.menu-scroll-wrapper'); if(sw) setTimeout(() => sw.scrollTop = 0, 100); }
-    }
-};
-
-// QUIZ
-const foods=[{e:'🥦',n:'Broquil',g:1},{e:'🍎',n:'Poma',g:1},{e:'🥑',n:'Alvocat',g:1},{e:'🍗',n:'Pollastre',g:1},{e:'🍩',n:'Donut',g:0},{e:'🔔',n:'Hamburguesa',g:0},{e:'🍟',n:'Patates',g:0},{e:'🍕',n:'Pizza',g:0},{e:'🍇',n:'Raim',g:1},{e:'🍓',n:'Maduixa',g:1},{e:'🧁',n:'Pastís',g:0},{e:'🥤',n:'Refresc',g:0}];
-const quiz = {
-    active: false, score: 0,
-    init: function(){ this.active=true; this.score=0; document.getElementById('qScoreVal').innerText='0'; this.loadFood(); },
-    loadFood: function(){
-        const f = foods[Math.floor(Math.random()*foods.length)];
-        this.currentFood = f;
-        document.getElementById('qEmoji').innerText=f.e;
-        document.getElementById('qName').innerText=f.n;
-        const el = document.getElementById('qEmoji');
-        el.style.animation = 'none';
-        void el.offsetWidth;
-        el.style.animation = 'pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    },
-    ans: function(yes){
-        if(!this.active) return;
-        Aud.init();
-        const correct = (yes && this.currentFood.g) || (!yes && !this.currentFood.g);
-        if(correct){ this.score += 10; Aud.coin(); } else { this.score = Math.max(0, this.score - 5); Aud.hit(); }
-        document.getElementById('qScoreVal').innerText = this.score;
-        const el = document.getElementById('qEmoji');
-        el.style.transform='scale(0)';
-        setTimeout(()=>{ el.style.transform='scale(1)'; this.loadFood(); }, 150);
-    }
-};
-
-// RUNNER - MINION RUSH REAL
-const runner = {
-    active: false, score: 0, lives: 3, lane: 1,
-    speed: 0.02, objects: [], animId: null, spawnTimer: 0,
-    playerState: 'run',
-    
-    project: function(lane, z) {
-        const vpX = window.innerWidth / 2;
-        const vpY = window.innerHeight * 0.32;
-        const baseY = window.innerHeight * 0.89;
-        const laneOffsets = [-0.38, 0, 0.38];
-        const baseX = vpX + laneOffsets[lane] * window.innerWidth;
-        const depth = Math.pow(z, 1.4);
-        const x = vpX + (baseX - vpX) * depth;
-        const y = vpY + (baseY - vpY) * depth;
-        const scale = Math.pow(z, 1.8) * 3.2;
-        return { x, y, scale };
-    },
-
-    start: function(){
-        Aud.init();
-        this.active=true; 
-        this.score=0; 
-        this.lives=3; 
-        this.lane=1; 
-        this.speed=0.02;
-        this.objects=[]; 
-        this.spawnTimer=0;
-        this.playerState = 'run';
-        
-        document.getElementById('runnerOverlay').style.display='none';
-        document.getElementById('runnerGameOver').style.display='none';
-        document.querySelectorAll('.obstacle-3d').forEach(e=>e.remove());
-        
-        const p = document.getElementById('player');
-        p.style.left = '50%';
-        p.className = 'player-container';
-        
-        this.updateHUD();
-        this.loop();
-    },
-    
-    stop: function(){ this.active=false; if(this.animId) cancelAnimationFrame(this.animId); },
-    
-    moveLane: function(dir){
-        if(!this.active || this.playerState !== 'run') return;
-        Aud.jump();
-        if(dir==='left' && this.lane > 0) this.lane--;
-        if(dir==='right' && this.lane < 2) this.lane++;
-        const positions = ['13%', '50%', '87%'];
-        document.getElementById('player').style.left = positions[this.lane];
-    },
-
-    jump: function(){
-        if(!this.active || this.playerState !== 'run') return;
-        this.playerState = 'jump';
-        const p = document.getElementById('player');
-        p.classList.remove('player-slide');
-        p.classList.add('player-jump');
-        Aud.jump();
-        setTimeout(() => { p.classList.remove('player-jump'); this.playerState = 'run'; }, 620);
-    },
-
-    slide: function(){
-        if(!this.active || this.playerState !== 'run') return;
-        this.playerState = 'slide';
-        const p = document.getElementById('player');
-        p.classList.remove('player-jump');
-        p.classList.add('player-slide');
-        Aud.slide();
-        setTimeout(() => { p.classList.remove('player-slide'); this.playerState = 'run'; }, 720);
-    },
-
-    spawn: function(){
-        const lane = Math.floor(Math.random()*3);
-        const rand = Math.random();
-        let type, emoji, className;
-        
-        if(rand < 0.35) { type='coin'; emoji='🍌'; className='obstacle-coin'; }
-        else if(rand < 0.55) { type='low'; emoji='⚙️'; className='obstacle-low'; }
-        else if(rand < 0.75) { type='high'; emoji='🔧'; className='obstacle-high'; }
-        else if(rand < 0.88) { type='lane'; emoji='🔩'; className='obstacle-lane'; }
-        else { type='lane'; emoji='⚡'; className='obstacle-lane'; }
-        
-        const el = document.createElement('div');
-        el.className=`obstacle-3d ${className}`;
-        el.innerText=emoji;
-        document.getElementById('runnerGameArea').appendChild(el);
-        this.objects.push({ el, z: 0.35, lane, type, hit: false });
-    },
-
-    loop: function(){
-        if(!this.active) return;
-        this.animId = requestAnimationFrame(() => this.loop());
-        
-        if(this.speed < 0.06) this.speed += 0.000012;
-        
-        this.score += Math.floor(this.speed * 16);
-        this.updateHUD();
-        
-        this.spawnTimer += this.speed;
-        const spawnRate = Math.max(0.38, 0.74 - (this.speed * 5.5));
-        if(this.spawnTimer > spawnRate) { this.spawn(); this.spawnTimer = 0; }
-
-        for(let i=this.objects.length-1; i>=0; i--){
-            let o = this.objects[i];
-            o.z += this.speed; 
+    // Navigation System
+    const nav = {
+        to: function(view) {
+            document.querySelectorAll('.app-view').forEach(v => {
+                v.classList.remove('active-view');
+                v.classList.add('view-hidden');
+            });
+            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active-view');
+            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('view-hidden');
             
-            if(o.z > 1.35){
-                o.el.remove();
-                this.objects.splice(i,1);
-                continue;
-            }
-            
-            const proj = this.project(o.lane, o.z);
-            
-            o.el.style.left = proj.x + 'px';
-            o.el.style.top = proj.y + 'px';
-            o.el.style.transform = `translate(-50%, -50%) scale(${proj.scale})`;
-            o.el.style.zIndex = Math.floor(o.z * 100);
-            o.el.style.fontSize = Math.max(22, Math.min(95, 50 * proj.scale)) + 'px';
-            
-            o.el.classList.remove('obstacle-near', 'obstacle-mid');
-            
-            if(o.z > 0.78) { o.el.classList.add('obstacle-near'); }
-            else { o.el.classList.add('obstacle-mid'); }
-
-            if(!o.hit && o.z > 0.82 && o.z < 0.96 && o.lane === this.lane){
-                let isColliding = false;
-                
-                if(o.type === 'coin' || o.type === 'banana') { 
-                    this.score += 75; 
-                    Aud.banana(); 
-                    o.hit=true; 
-                    o.el.classList.add('obs-hit'); 
-                } 
-                else if(o.type === 'lane') { isColliding = true; }
-                else if(o.type === 'low' && this.playerState !== 'jump') { isColliding = true; }
-                else if(o.type === 'high' && this.playerState !== 'slide') { isColliding = true; }
-                
-                if(isColliding) { o.hit = true; this.registerHit(o); }
-            }
+            if (view === 'quiz') initQuiz();
+            if (view === 'runner') initRunner();
         }
-    },
+    };
 
-    registerHit: function(o){
-        this.lives--;
-        Aud.hit();
-        if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-        o.el.classList.add('obs-hit'); 
-        this.updateHUD();
-        
-        const area = document.getElementById('runnerGameArea');
-        area.style.boxShadow = 'inset 0 0 130px rgba(255,0,0,0.75)';
-        setTimeout(() => area.style.boxShadow = 'none', 380);
-        
-        if(this.lives <= 0) this.gameOver();
-    },
+    // QUIZ GAME ENHANCED
+    let quizState = {
+        score: 0,
+        streak: 0,
+        multiplier: 1,
+        difficulty: 'easy',
+        currentFood: null,
+        timeBonus: 0,
+        questionsAnswered: 0
+    };
 
-    updateHUD: function(){
-        document.getElementById('rScore').innerText = this.score;
-        document.getElementById('rLives').innerText = '❤️'.repeat(Math.max(0, this.lives));
-    },
-
-    gameOver: function(){
-        this.stop();
-        document.getElementById('finalRScore').innerText = this.score;
-        document.getElementById('runnerGameOver').style.display='flex';
-        if(this.score > 1000) confetti({ particleCount: 250, spread: 105, origin: { y: 0.5 }, colors: ['#FFD700', '#FFA000', '#FFE135', '#FFF'] });
+    function setQuizDifficulty(difficulty) {
+        quizState.difficulty = difficulty;
+        document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-diff="${difficulty}"]`).classList.add('active');
+        loadNextFood();
     }
-};
 
-// CONTROLS TOUCH
-let touchStartX = 0, touchStartY = 0;
+    function initQuiz() {
+        quizState = { score: 0, streak: 0, multiplier: 1, difficulty: 'easy', currentFood: null, timeBonus: 0, questionsAnswered: 0 };
+        document.getElementById('scoreQuiz').textContent = '0';
+        setQuizDifficulty('easy');
+    }
 
-document.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-}, {passive: true});
+    function loadNextFood() {
+        const foods = foodDatabase[quizState.difficulty];
+        quizState.currentFood = foods[Math.floor(Math.random() * foods.length)];
+        document.getElementById('foodEmoji').textContent = quizState.currentFood.emoji;
+        document.getElementById('foodName').textContent = quizState.currentFood.name;
+        
+        const baseScore = quizState.difficulty === 'easy' ? 10 : quizState.difficulty === 'medium' ? 15 : 20;
+        const scoreWithMultiplier = Math.floor(baseScore * quizState.multiplier);
+        document.getElementById('scoreYes').textContent = '+' + scoreWithMultiplier;
+        document.getElementById('scoreNo').textContent = '+' + scoreWithMultiplier;
+    }
 
-document.addEventListener('touchend', e => {
-    if(!runner.active) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    const absDx = Math.abs(dx);
-    const absDy = Math.abs(dy);
-    
-    if(Math.max(absDx, absDy) > 20) {
-        if(absDx > absDy) {
-            if(dx > 0) runner.moveLane('right'); 
-            else runner.moveLane('left');
+    function answerQuiz(answer) {
+        const isCorrect = answer === quizState.currentFood.healthy;
+        const baseScore = quizState.difficulty === 'easy' ? 10 : quizState.difficulty === 'medium' ? 15 : 20;
+        const earnedPoints = Math.floor(baseScore * quizState.multiplier);
+        
+        if (isCorrect) {
+            quizState.score += earnedPoints;
+            quizState.streak++;
+            quizState.multiplier = Math.min(1 + (quizState.streak * 0.1), 3);
+            
+            // Visual feedback for streak
+            if (quizState.streak >= 3) {
+                document.getElementById('streakDisplay').style.display = 'flex';
+                document.getElementById('streakCount').textContent = quizState.streak;
+                document.getElementById('multiplier').textContent = 'x' + quizState.multiplier.toFixed(1);
+                
+                if (quizState.streak % 5 === 0) {
+                    confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+                }
+            }
         } else {
-            if(dy < 0) runner.jump(); 
-            else runner.slide();
+            quizState.streak = 0;
+            quizState.multiplier = 1;
+            document.getElementById('streakDisplay').style.display = 'none';
+        }
+        
+        quizState.questionsAnswered++;
+        document.getElementById('scoreQuiz').textContent = quizState.score;
+        loadNextFood();
+    }
+
+    // RUNNER GAME ENHANCED
+    let runnerState = {
+        isRunning: false,
+        playerPos: 50,
+        distance: 0,
+        coins: 0,
+        health: 3,
+        speed: 1,
+        score: 0,
+        obstacles: [],
+        gameTime: 0
+    };
+
+    const gameConfig = {
+        playerWidth: 120,
+        playerHeight: 150,
+        gameWidth: window.innerWidth,
+        gameHeight: window.innerHeight,
+        minObstacleInterval: 80,
+        maxObstacleInterval: 150
+    };
+
+    function initRunner() {
+        runnerState = {
+            isRunning: true,
+            playerPos: 50,
+            distance: 0,
+            coins: 0,
+            health: 3,
+            speed: 1,
+            score: 0,
+            obstacles: [],
+            gameTime: 0
+        };
+
+        document.getElementById('gameOverlay').style.display = 'none';
+        document.getElementById('distance').textContent = '0';
+        document.getElementById('coins').textContent = '0';
+        document.getElementById('health').textContent = '3';
+
+        document.addEventListener('keydown', handleRunnerInput);
+        document.addEventListener('touchstart', handleRunnerInput);
+        
+        gameLoop();
+    }
+
+    function handleRunnerInput(e) {
+        const playerContainer = document.querySelector('.player-container');
+        const currentLeft = parseInt(window.getComputedStyle(playerContainer).left);
+        
+        if (e.key === 'ArrowLeft' || e.key === 'a') {
+            const newPos = Math.max(0, currentLeft - 60);
+            playerContainer.style.left = newPos + 'px';
+            runnerState.playerPos = (newPos / gameConfig.gameWidth) * 100;
+        } else if (e.key === 'ArrowRight' || e.key === 'd') {
+            const newPos = Math.min(gameConfig.gameWidth - gameConfig.playerWidth, currentLeft + 60);
+            playerContainer.style.left = newPos + 'px';
+            runnerState.playerPos = (newPos / gameConfig.gameWidth) * 100;
+        } else if (e.key === ' ' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            jump();
+        }
+
+        // Touch support
+        if (e.touches) {
+            const touchX = e.touches[0].clientX;
+            if (touchX < gameConfig.gameWidth / 3) handleRunnerInput({ key: 'ArrowLeft' });
+            else if (touchX > (gameConfig.gameWidth * 2) / 3) handleRunnerInput({ key: 'ArrowRight' });
+            else jump();
         }
     }
-}, {passive: true});
 
-// TECLADO
-document.addEventListener('keydown', e => {
-    if(!runner.active) return;
-    switch(e.key) {
-        case 'ArrowLeft': e.preventDefault(); runner.moveLane('left'); break;
-        case 'ArrowRight': e.preventDefault(); runner.moveLane('right'); break;
-        case 'ArrowUp': case ' ': e.preventDefault(); runner.jump(); break;
-        case 'ArrowDown': e.preventDefault(); runner.slide(); break;
+    function jump() {
+        const playerContainer = document.querySelector('.player-container');
+        if (!playerContainer.classList.contains('player-jump')) {
+            playerContainer.classList.add('player-jump');
+            setTimeout(() => playerContainer.classList.remove('player-jump'), 620);
+        }
     }
-});
+
+    function gameLoop() {
+        if (!runnerState.isRunning) return;
+
+        runnerState.gameTime++;
+        runnerState.distance = Math.floor(runnerState.gameTime / 10);
+        runnerState.speed = 1 + (runnerState.distance / 1000) * 0.5;
+
+        // Generate obstacles
+        if (Math.random() < 0.02 * runnerState.speed) {
+            createObstacle();
+        }
+
+        // Update obstacles
+        document.querySelectorAll('.obstacle-3d').forEach(obstacle => {
+            const top = parseFloat(obstacle.style.top) + runnerState.speed * 8;
+            obstacle.style.top = top + 'px';
+
+            if (top > gameConfig.gameHeight) {
+                obstacle.remove();
+            } else {
+                checkCollision(obstacle);
+            }
+        });
+
+        document.getElementById('distance').textContent = runnerState.distance;
+        document.getElementById('coins').textContent = runnerState.coins;
+        document.getElementById('health').textContent = runnerState.health;
+
+        if (runnerState.health <= 0) {
+            endRunner();
+            return;
+        }
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    function createObstacle() {
+        const types = ['wall', 'coin', 'wall'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        const left = Math.random() * (gameConfig.gameWidth - 50);
+        
+        const obstacle = document.createElement('div');
+        obstacle.className = 'obstacle-3d';
+        obstacle.style.left = left + 'px';
+        obstacle.style.top = '-50px';
+        
+        if (type === 'wall') {
+            obstacle.textContent = '🧱';
+            obstacle.dataset.type = 'wall';
+        } else {
+            obstacle.textContent = '💰';
+            obstacle.dataset.type = 'coin';
+            obstacle.classList.add('obstacle-coin');
+        }
+
+        document.querySelector('.runner-game').appendChild(obstacle);
+    }
+
+    function checkCollision(obstacle) {
+        const playerContainer = document.querySelector('.player-container');
+        const playerRect = playerContainer.getBoundingClientRect();
+        const obstacleRect = obstacle.getBoundingClientRect();
+
+        if (!(playerRect.right < obstacleRect.left || 
+              playerRect.left > obstacleRect.right || 
+              playerRect.bottom < obstacleRect.top || 
+              playerRect.top > obstacleRect.bottom)) {
+            
+            if (obstacle.dataset.type === 'coin') {
+                runnerState.coins += 5;
+                runnerState.score += 5;
+                obstacle.classList.add('obs-hit');
+                setTimeout(() => obstacle.remove(), 200);
+            } else {
+                runnerState.health--;
+                obstacle.classList.add('obs-hit');
+            }
+        }
+    }
+
+    function endRunner() {
+        runnerState.isRunning = false;
+        document.getElementById('finalScore').textContent = runnerState.distance;
+        document.getElementById('gameOverlay').style.display = 'flex';
+        document.removeEventListener('keydown', handleRunnerInput);
+    }
+
+    function restartRunner() {
+        initRunner();
+    }
+
+    // Initialize menu
+    window.addEventListener('load', () => {
+        initQuiz();
+    });
 </script>
+
 </body>
 </html>
