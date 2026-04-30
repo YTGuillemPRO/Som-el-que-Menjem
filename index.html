@@ -1124,12 +1124,13 @@ h1::after {
     </div>
   </div>
 
+  <!-- ✅ CAMBIADO: Guillem Varela Cors - Ahora incluye "Supervisor de Treball" -->
   <div id="guillem-view" class="view">
     <div class="selection-icon icon-circle blue selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
       <iconify-icon icon="solar:user-rounded-bold-duotone"></iconify-icon>
     </div>
     <h1 data-text="Guillem Varela Cors">Guillem Varela Cors</h1>
-    <p class="subtitle">Creador de la web</p>
+    <p class="subtitle">Creador de la web · Supervisor de Treball</p>
     <div class="back-btn" onclick="goBack()">
       <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
       Tornar
@@ -1190,7 +1191,7 @@ let audioCtx;
 
 function playClick() {
   try {
-    if (!audioCtx) audioCtx = new AudioCtx();
+    if (!audioCtx) audioCtx = new AudioContext();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain);
@@ -1206,7 +1207,7 @@ function playClick() {
 
 function playWhoosh() {
   try {
-    if (!audioCtx) audioCtx = new AudioCtx();
+    if (!audioCtx) audioCtx = new AudioContext();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
