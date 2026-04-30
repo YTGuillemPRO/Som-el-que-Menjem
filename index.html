@@ -64,7 +64,6 @@ body {
   padding: 40px 16px;
 }
 
-/* ========== CANVAS FONS ========== */
 #bgCanvas {
   position: fixed;
   inset: 0;
@@ -80,7 +79,6 @@ body {
   pointer-events: none;
 }
 
-/* Aurora Boreal */
 .aurora {
   position: absolute;
   inset: 0;
@@ -163,7 +161,6 @@ body {
   opacity: 0.2;
 }
 
-/* ========== SPARKLE TRAIL ========== */
 .sparkle-trail {
   position: fixed;
   border-radius: 50%;
@@ -177,7 +174,6 @@ body {
   100% { transform: scale(0); opacity: 0; }
 }
 
-/* ========== PANELL ========== */
 .glass-panel {
   position: relative;
   z-index: 10;
@@ -189,7 +185,6 @@ body {
   transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
 }
 
-/* ========== TÍTOL 3D ÈPIC ========== */
 h1 {
   font-size: clamp(28px, 5.5vw, 48px);
   font-weight: 900;
@@ -211,7 +206,6 @@ h1 {
   filter: drop-shadow(0 0 30px rgba(96,165,250,0.2));
 }
 
-/* Ombra 3D del títol */
 h1::after {
   content: attr(data-text);
   position: absolute;
@@ -267,7 +261,6 @@ h1::after {
 
 .fade-section { opacity: 0; transform: translateY(16px); animation: slideUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.85s forwards; }
 
-/* ========== GRAELLA ========== */
 .main-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -275,7 +268,6 @@ h1::after {
   margin-bottom: 44px;
 }
 
-/* ========== TARGETES CYBERPUNK ========== */
 .nav-card {
   position: relative;
   background: var(--card-bg);
@@ -290,7 +282,6 @@ h1::after {
   transform-style: preserve-3d;
 }
 
-/* Vora animada rotativa */
 .nav-card::before {
   content: '';
   position: absolute;
@@ -330,7 +321,6 @@ h1::after {
 .nav-card[data-color="purple"] { --card-color: rgba(124,58,237,0.7); }
 .nav-card[data-color="cyan"] { --card-color: rgba(6,182,212,0.7); }
 
-/* Escàner de llum */
 .nav-card .scan-line {
   position: absolute;
   top: 0;
@@ -360,7 +350,6 @@ h1::after {
 .nav-card[data-color="purple"] .scan-line { --card-scan-color: rgba(124,58,237,0.12); }
 .nav-card[data-color="cyan"] .scan-line { --card-scan-color: rgba(6,182,212,0.12); }
 
-/* Glow interior que segueix el ratolí */
 .nav-card .card-glow {
   position: absolute;
   inset: 0;
@@ -393,7 +382,6 @@ h1::after {
   animation: none !important;
 }
 
-/* Ripple */
 .ripple {
   position: absolute;
   border-radius: 50%;
@@ -414,7 +402,6 @@ h1::after {
 
 .nav-card .card-inner { position: relative; z-index: 3; }
 
-/* Icona amb halo pulsant */
 .icon-circle {
   width: 54px;
   height: 54px;
@@ -495,7 +482,6 @@ h1::after {
 .nav-card[data-color="purple"]:hover .arrow { color: var(--purple-light); }
 .nav-card[data-color="cyan"]:hover .arrow { color: var(--cyan-light); }
 
-/* ========== VISTES ========== */
 .view {
   display: none;
   opacity: 0;
@@ -631,7 +617,6 @@ h1::after {
 .author-link:hover { color: var(--purple-light); text-shadow: 0 0 16px rgba(124,58,237,0.5); }
 .author-link:hover::after { width: 100%; }
 
-/* ========== COST ========== */
 .cost-options-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 32px; max-width: 440px; margin-left: auto; margin-right: auto; }
 
 .cost-option-card {
@@ -746,7 +731,6 @@ h1::after {
 .cost-option-card.co-enter:nth-child(2) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
 .cost-option-card.co-enter:nth-child(3) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s forwards; }
 
-/* ========== ENTREVISTES ========== */
 .entrevistes-image-container {
   position: relative;
   width: 100%;
@@ -807,6 +791,184 @@ h1::after {
 
 .entrevistes-image-container:hover .zoom-hint { opacity: 1; transform: translateY(0); }
 
+/* ========== MAKING OFF GALLERY ========== */
+.makingoff-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.makingoff-gallery .gallery-item:nth-child(5) {
+  grid-column: span 2;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+  border: 1.5px solid rgba(6,182,212,0.12);
+  box-shadow: 0 4px 20px -6px rgba(6,182,212,0.15);
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+.gallery-item.gi-enter:nth-child(1) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s forwards; }
+.gallery-item.gi-enter:nth-child(2) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
+.gallery-item.gi-enter:nth-child(3) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.35s forwards; }
+.gallery-item.gi-enter:nth-child(4) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.45s forwards; }
+.gallery-item.gi-enter:nth-child(5) { animation: cardEnter 0.6s cubic-bezier(0.16,1,0.3,1) 0.55s forwards; }
+
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6) 100%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.gallery-item:hover::before { opacity: 1; }
+
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(6,182,212,0.12) 0%, transparent 50%);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.gallery-item:hover::after { opacity: 1; }
+
+.gallery-item:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: rgba(6,182,212,0.4);
+  box-shadow: 0 20px 60px -12px rgba(6,182,212,0.35), 0 0 0 4px rgba(6,182,212,0.06);
+  animation: none !important;
+  opacity: 1;
+}
+
+.gallery-item:active {
+  transform: scale(0.96) !important;
+  transition-duration: 0.1s;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+.makingoff-gallery .gallery-item:nth-child(5) img {
+  min-height: 180px;
+  max-height: 220px;
+}
+
+.gallery-item:hover img { transform: scale(1.08); }
+
+.gallery-item .gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 16px;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+
+.gallery-item:hover .gallery-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-item .gallery-caption span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.gallery-item .gallery-zoom {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none;
+  color: var(--cyan-light);
+  font-size: 16px;
+}
+
+.gallery-item:hover .gallery-zoom {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gallery-item .gallery-number {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(6,182,212,0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(6,182,212,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--cyan-light);
+}
+
+.makingoff-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: rgba(6,182,212,0.08);
+  border: 1px solid rgba(6,182,212,0.15);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cyan-light);
+}
+
+.makingoff-counter iconify-icon { font-size: 16px; }
+
 /* ========== MODAL ========== */
 .modal-overlay {
   position: fixed;
@@ -850,20 +1012,59 @@ h1::after {
 
 .modal-close:hover {
   transform: scale(1.2) rotate(90deg);
-  background: rgba(124,58,237,0.25);
-  border-color: rgba(124,58,237,0.4);
-  color: var(--purple-light);
+  background: rgba(6,182,212,0.25);
+  border-color: rgba(6,182,212,0.4);
+  color: var(--cyan-light);
 }
 
 .modal-image {
   max-width: 100%;
   max-height: 85vh;
   border-radius: 18px;
-  box-shadow: 0 40px 120px -24px rgba(124,58,237,0.5);
-  border: 2px solid rgba(124,58,237,0.25);
+  box-shadow: 0 40px 120px -24px rgba(6,182,212,0.4);
+  border: 2px solid rgba(6,182,212,0.2);
 }
 
-/* ========== PILLS ========== */
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  z-index: 10;
+  font-size: 20px;
+}
+
+.modal-nav:hover {
+  background: rgba(6,182,212,0.25);
+  border-color: rgba(6,182,212,0.4);
+  color: var(--cyan-light);
+  transform: translateY(-50%) scale(1.15);
+}
+
+.modal-prev { left: -60px; }
+.modal-next { right: -60px; }
+
+.modal-counter {
+  position: absolute;
+  bottom: -44px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 .insti-pill {
   position: fixed; bottom: 24px; right: 24px;
   display: flex; align-items: center; gap: 9px;
@@ -942,7 +1143,6 @@ h1::after {
 .social-pill iconify-icon { font-size: 18px; color: var(--purple-light); transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1); }
 .social-pill:hover iconify-icon { transform: rotate(-12deg) scale(1.3); }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 640px) {
   body { padding: 20px 12px; }
   .glass-panel { padding: 32px 20px; }
@@ -959,6 +1159,12 @@ h1::after {
   #bgCanvas { opacity: 0.3; }
   h1 { filter: none; }
   h1::after { display: none; }
+  .makingoff-gallery { grid-template-columns: 1fr; gap: 10px; }
+  .makingoff-gallery .gallery-item:nth-child(5) { grid-column: span 1; }
+  .gallery-item img { min-height: 140px; }
+  .modal-prev { left: -4px; }
+  .modal-next { right: -4px; }
+  .modal-nav { width: 36px; height: 36px; font-size: 16px; background: rgba(0,0,0,0.6); }
 }
 </style>
 </head>
@@ -1124,7 +1330,62 @@ h1::after {
     </div>
   </div>
 
-  <!-- ✅ CAMBIADO: Guillem Varela Cors - Ahora incluye "Supervisor de Treball" -->
+  <!-- ========== VISTA MAKING OFF ========== -->
+  <div id="makingoff-view" class="view">
+    <div class="selection-icon icon-circle cyan selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
+      <iconify-icon icon="solar:clapperboard-bold-duotone"></iconify-icon>
+    </div>
+    <h1 data-text="Making off">Making off</h1>
+    <p class="subtitle">Darrere de càmeres: el procés creatiu del projecte</p>
+
+    <div class="makingoff-gallery" id="makingoffGallery">
+      <div class="gallery-item gi-enter" onclick="openGalleryModal(0)">
+        <img src="https://z-cdn-media.chatglm.cn/files/abd3e375-0c44-4233-86f7-a6ce7e8282a8.jpg?auth_key=1877556428-185a9899a482477eb2efbc0da5bf9877-0-5131ab320a1bf4ca8de7f835908cf3b8" alt="Il·lustracions de verdures i ingredients" loading="lazy">
+        <div class="gallery-number">1</div>
+        <div class="gallery-zoom"><iconify-icon icon="solar:magnifer-zoom-in-bold-duotone" width="16"></iconify-icon></div>
+        <div class="gallery-caption"><span>Il·lustracions de verdures i ingredients</span></div>
+      </div>
+
+      <div class="gallery-item gi-enter" onclick="openGalleryModal(1)">
+        <img src="https://z-cdn-media.chatglm.cn/files/5b28e170-853f-4367-b86e-57d32150daad.jpg?auth_key=1877556428-bae80ec78f324c7a9f794c6ac6031a40-0-0503ec4262499a3c1a7b3da245939049" alt="Presentació a l'aula" loading="lazy">
+        <div class="gallery-number">2</div>
+        <div class="gallery-zoom"><iconify-icon icon="solar:magnifer-zoom-in-bold-duotone" width="16"></iconify-icon></div>
+        <div class="gallery-caption"><span>Presentació a l'aula</span></div>
+      </div>
+
+      <div class="gallery-item gi-enter" onclick="openGalleryModal(2)">
+        <img src="https://z-cdn-media.chatglm.cn/files/cdb407b0-86ca-4bc7-8206-b1eab6228e28.jpg?auth_key=1877556428-719fadceccd44fec9c094438c5cdbe32-0-4fbb26992ccb9e6d918d266a2e8271e3" alt="Panell de mesures i activitats" loading="lazy">
+        <div class="gallery-number">3</div>
+        <div class="gallery-zoom"><iconify-icon icon="solar:magnifer-zoom-in-bold-duotone" width="16"></iconify-icon></div>
+        <div class="gallery-caption"><span>Panell de mesures i activitats</span></div>
+      </div>
+
+      <div class="gallery-item gi-enter" onclick="openGalleryModal(3)">
+        <img src="https://z-cdn-media.chatglm.cn/files/b213d0ac-92dd-4151-9eb4-b1a3efa62c97.jpg?auth_key=1877556428-0e708a09c80c4c08979364a3462011f8-0-86e57e35322fd8eab12ddbac3e3670fb" alt="Preparació de materials" loading="lazy">
+        <div class="gallery-number">4</div>
+        <div class="gallery-zoom"><iconify-icon icon="solar:magnifer-zoom-in-bold-duotone" width="16"></iconify-icon></div>
+        <div class="gallery-caption"><span>Preparació de materials</span></div>
+      </div>
+
+      <div class="gallery-item gi-enter" onclick="openGalleryModal(4)">
+        <img src="https://z-cdn-media.chatglm.cn/files/0ff36fb8-8a35-459b-9183-d337d6433412.jpg?auth_key=1877556428-d0e95057c5d8490db608e373c49af7c7-0-79fc64cb6f4efa0ca35da46f403d14d2" alt="Disseny 3D a l'ordinador" loading="lazy">
+        <div class="gallery-number">5</div>
+        <div class="gallery-zoom"><iconify-icon icon="solar:magnifer-zoom-in-bold-duotone" width="16"></iconify-icon></div>
+        <div class="gallery-caption"><span>Disseny 3D a l'ordinador</span></div>
+      </div>
+    </div>
+
+    <div class="makingoff-counter">
+      <iconify-icon icon="solar:camera-bold-duotone"></iconify-icon>
+      5 fotos del procés
+    </div>
+
+    <div class="back-btn" onclick="goBack()">
+      <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+      Tornar
+    </div>
+  </div>
+
   <div id="guillem-view" class="view">
     <div class="selection-icon icon-circle blue selection-icon-enter" style="width:64px;height:64px;border-radius:18px;font-size:28px;margin:0 auto 18px;">
       <iconify-icon icon="solar:user-rounded-bold-duotone"></iconify-icon>
@@ -1169,6 +1430,24 @@ h1::after {
       <img id="modalImage" src="" alt="Imatge ampliada" class="modal-image">
     </div>
   </div>
+
+  <!-- ========== MODAL GALERIA (amb navegació) ========== -->
+  <div id="galleryModal" class="modal-overlay" onclick="closeGalleryModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeGalleryModal()">
+        <iconify-icon icon="solar:close-circle-bold-duotone" width="24"></iconify-icon>
+      </button>
+      <button class="modal-nav modal-prev" onclick="galleryPrev(event)">
+        <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+      </button>
+      <button class="modal-nav modal-next" onclick="galleryNext(event)">
+        <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+      </button>
+      <img id="galleryModalImage" src="" alt="Foto del making off" class="modal-image">
+      <div class="modal-counter" id="galleryModalCounter"></div>
+    </div>
+  </div>
+
 </div>
 
 <a href="https://www.instagram.com/institutescolaeltemple/" target="_blank" class="social-pill" id="socialBtn">
@@ -1185,13 +1464,12 @@ h1::after {
 </a>
 
 <script>
-/* ========== SO D'INTERFÍCIE (Subtil) ========== */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
 function playClick() {
   try {
-    if (!audioCtx) audioCtx = new AudioContext();
+    if (!audioCtx) audioCtx = new AudioCtx();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain);
@@ -1207,7 +1485,7 @@ function playClick() {
 
 function playWhoosh() {
   try {
-    if (!audioCtx) audioCtx = new AudioContext();
+    if (!audioCtx) audioCtx = new AudioCtx();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
@@ -1227,7 +1505,7 @@ function playWhoosh() {
   } catch(e) {}
 }
 
-/* ========== CANVAS: PARTÍCULES + METEORS ========== */
+/* ========== CANVAS ========== */
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let cW, cH;
@@ -1335,7 +1613,6 @@ function animateCanvas() {
   ctx.clearRect(0, 0, cW, cH);
   particles.forEach(p => { p.update(); p.draw(); });
   drawConnections();
-
   meteorTimer++;
   if (meteorTimer > 120 + Math.random() * 200) {
     meteorTimer = 0;
@@ -1343,7 +1620,6 @@ function animateCanvas() {
     if (m) m.reset();
   }
   meteors.forEach(m => { m.update(); m.draw(); });
-
   requestAnimationFrame(animateCanvas);
 }
 animateCanvas();
@@ -1470,33 +1746,83 @@ function btnRipple(e) {
   ripple.addEventListener('animationend', () => ripple.remove());
 }
 
-/* ========== CONFETTI BURST ========== */
+/* ========== CONFETTI ========== */
 function confettiBurst(x, y, colors) {
   confetti({
-    particleCount: 60,
-    spread: 80,
+    particleCount: 60, spread: 80,
     origin: { x: x / window.innerWidth, y: y / window.innerHeight },
-    colors,
-    ticks: 130,
-    gravity: 0.9,
-    scalar: 0.9,
-    shapes: ['circle', 'square'],
-    startVelocity: 35
+    colors, ticks: 130, gravity: 0.9, scalar: 0.9,
+    shapes: ['circle', 'square'], startVelocity: 35
   });
-  // Segona onada més petita
   setTimeout(() => {
     confetti({
-      particleCount: 25,
-      spread: 120,
+      particleCount: 25, spread: 120,
       origin: { x: x / window.innerWidth, y: y / window.innerHeight },
-      colors,
-      ticks: 100,
-      gravity: 1.1,
-      scalar: 0.7,
-      shapes: ['circle'],
-      startVelocity: 20
+      colors, ticks: 100, gravity: 1.1, scalar: 0.7,
+      shapes: ['circle'], startVelocity: 20
     });
   }, 150);
+}
+
+/* ========== FOTOS MAKING OFF ========== */
+const makingoffPhotos = [
+  { src: 'https://z-cdn-media.chatglm.cn/files/abd3e375-0c44-4233-86f7-a6ce7e8282a8.jpg?auth_key=1877556428-185a9899a482477eb2efbc0da5bf9877-0-5131ab320a1bf4ca8de7f835908cf3b8', caption: 'Il·lustracions de verdures i ingredients' },
+  { src: 'https://z-cdn-media.chatglm.cn/files/5b28e170-853f-4367-b86e-57d32150daad.jpg?auth_key=1877556428-bae80ec78f324c7a9f794c6ac6031a40-0-0503ec4262499a3c1a7b3da245939049', caption: 'Presentació a l\'aula' },
+  { src: 'https://z-cdn-media.chatglm.cn/files/cdb407b0-86ca-4bc7-8206-b1eab6228e28.jpg?auth_key=1877556428-719fadceccd44fec9c094438c5cdbe32-0-4fbb26992ccb9e6d918d266a2e8271e3', caption: 'Panell de mesures i activitats' },
+  { src: 'https://z-cdn-media.chatglm.cn/files/b213d0ac-92dd-4151-9eb4-b1a3efa62c97.jpg?auth_key=1877556428-0e708a09c80c4c08979364a3462011f8-0-86e57e35322fd8eab12ddbac3e3670fb', caption: 'Preparació de materials' },
+  { src: 'https://z-cdn-media.chatglm.cn/files/0ff36fb8-8a35-459b-9183-d337d6433412.jpg?auth_key=1877556428-d0e95057c5d8490db608e373c49af7c7-0-79fc64cb6f4efa0ca35da46f403d14d2', caption: 'Disseny 3D a l\'ordinador' }
+];
+
+let currentGalleryIndex = 0;
+
+function openGalleryModal(index) {
+  playClick();
+  currentGalleryIndex = index;
+  const modal = document.getElementById('galleryModal');
+  const img = document.getElementById('galleryModalImage');
+  const counter = document.getElementById('galleryModalCounter');
+  img.src = makingoffPhotos[index].src;
+  counter.textContent = `${index + 1} / ${makingoffPhotos.length} — ${makingoffPhotos[index].caption}`;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal() {
+  playClick();
+  document.getElementById('galleryModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function galleryPrev(e) {
+  e.stopPropagation();
+  playClick();
+  currentGalleryIndex = (currentGalleryIndex - 1 + makingoffPhotos.length) % makingoffPhotos.length;
+  const img = document.getElementById('galleryModalImage');
+  const counter = document.getElementById('galleryModalCounter');
+  img.style.opacity = '0';
+  img.style.transform = 'scale(0.9) translateX(40px)';
+  setTimeout(() => {
+    img.src = makingoffPhotos[currentGalleryIndex].src;
+    counter.textContent = `${currentGalleryIndex + 1} / ${makingoffPhotos.length} — ${makingoffPhotos[currentGalleryIndex].caption}`;
+    img.style.opacity = '1';
+    img.style.transform = 'scale(1) translateX(0)';
+  }, 200);
+}
+
+function galleryNext(e) {
+  e.stopPropagation();
+  playClick();
+  currentGalleryIndex = (currentGalleryIndex + 1) % makingoffPhotos.length;
+  const img = document.getElementById('galleryModalImage');
+  const counter = document.getElementById('galleryModalCounter');
+  img.style.opacity = '0';
+  img.style.transform = 'scale(0.9) translateX(-40px)';
+  setTimeout(() => {
+    img.src = makingoffPhotos[currentGalleryIndex].src;
+    counter.textContent = `${currentGalleryIndex + 1} / ${makingoffPhotos.length} — ${makingoffPhotos[currentGalleryIndex].caption}`;
+    img.style.opacity = '1';
+    img.style.transform = 'scale(1) translateX(0)';
+  }, 200);
 }
 
 /* ========== NAVEGACIÓ ========== */
@@ -1524,12 +1850,19 @@ function showView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const v = document.getElementById(viewId);
     v.classList.add('active');
-    // Reinicia animacions d'entrada
     v.querySelectorAll('.selection-icon-enter').forEach(el => {
       el.style.animation = 'none';
       void el.offsetWidth;
       el.style.animation = '';
     });
+    // Reinicia animacions de la galeria
+    if (viewId === 'makingoff-view') {
+      v.querySelectorAll('.gallery-item').forEach(el => {
+        el.classList.remove('gi-enter');
+        void el.offsetWidth;
+        el.classList.add('gi-enter');
+      });
+    }
     panel.style.transform = 'scale(1) translateY(0)';
     panel.style.opacity = '1';
     initTilt();
@@ -1591,6 +1924,14 @@ function navTo(type, e) {
     setTimeout(() => confettiBurst(cx, cy, ['#444','#666','#888','#aaa']), 400);
     return;
   }
+  if (type === 'making-off') {
+    viewHistory.push('makingoff-view');
+    showView('makingoff-view');
+    const cx = e ? e.clientX : window.innerWidth / 2;
+    const cy = e ? e.clientY : window.innerHeight / 2;
+    setTimeout(() => confettiBurst(cx, cy, ['#06b6d4','#22d3ee','#67e8f9','#cffafe']), 400);
+    return;
+  }
   const meta = sectionMeta[type];
   if (!meta) return;
   showSelection(meta, getConfettiColors(meta.iconClass), e);
@@ -1624,7 +1965,7 @@ function goBack() {
   }
 }
 
-/* ========== MODAL ========== */
+/* ========== MODAL IMATGE (entrevistes) ========== */
 function openImageModal(src) {
   playClick();
   const modal = document.getElementById('imageModal');
@@ -1641,33 +1982,43 @@ function closeImageModal() {
   document.body.style.overflow = '';
 }
 
+/* ========== AUTORS ========== */
 function showGuillemView(e) {
   e.preventDefault(); playClick();
   viewHistory.push('guillem-view');
   showView('guillem-view');
-  const cx = e.clientX, cy = e.clientY;
-  setTimeout(() => confettiBurst(cx, cy, ['#2563eb','#60a5fa','#93c5fd','#dbeafe']), 400);
+  setTimeout(() => confettiBurst(e.clientX, e.clientY, ['#2563eb','#60a5fa','#93c5fd','#dbeafe']), 400);
 }
 
 function showYasserView(e) {
   e.preventDefault(); playClick();
   viewHistory.push('yasser-view');
   showView('yasser-view');
-  const cx = e.clientX, cy = e.clientY;
-  setTimeout(() => confettiBurst(cx, cy, ['#ea580c','#f97316','#fdba74','#fff7ed']), 400);
+  setTimeout(() => confettiBurst(e.clientX, e.clientY, ['#ea580c','#f97316','#fdba74','#fff7ed']), 400);
 }
 
 function showJulianView(e) {
   e.preventDefault(); playClick();
   viewHistory.push('julian-view');
   showView('julian-view');
-  const cx = e.clientX, cy = e.clientY;
-  setTimeout(() => confettiBurst(cx, cy, ['#059669','#10b981','#6ee7b7','#ecfdf5']), 400);
+  setTimeout(() => confettiBurst(e.clientX, e.clientY, ['#059669','#10b981','#6ee7b7','#ecfdf5']), 400);
 }
 
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeImageModal(); });
+/* ========== TECLAT ========== */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeImageModal();
+    closeGalleryModal();
+  }
+  // Navegació amb fletxes dins la galeria
+  const galleryModal = document.getElementById('galleryModal');
+  if (galleryModal.classList.contains('active')) {
+    if (e.key === 'ArrowLeft') galleryPrev(e);
+    if (e.key === 'ArrowRight') galleryNext(e);
+  }
+});
 
-/* ========== CONFETTI EN PILLS ========== */
+/* ========== CONFETTI PILLS ========== */
 document.getElementById('confettiBtn').addEventListener('mouseenter', () => {
   confetti({ particleCount: 20, spread: 35, origin: { x: 0.92, y: 0.92 }, colors: ['#2563eb','#60a5fa','#93c5fd'], ticks: 80, gravity: 1.2, scalar: 0.8 });
 });
@@ -1677,6 +2028,10 @@ document.getElementById('forumBtn').addEventListener('mouseenter', () => {
 document.getElementById('socialBtn').addEventListener('mouseenter', () => {
   confetti({ particleCount: 20, spread: 35, origin: { x: 0.08, y: 0.92 }, colors: ['#7c3aed','#8b5cf6','#c4b5fd'], ticks: 80, gravity: 1.2, scalar: 0.8 });
 });
+
+/* ========== Transició modal image ========== */
+const galleryModalImage = document.getElementById('galleryModalImage');
+galleryModalImage.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
 </script>
 
 </body>
