@@ -19,10 +19,16 @@
             --text: #ffffff;
             --accent: #2979ff;
             --surface: #16161d;
+            --cat-fruites: #FF6B6B;
+            --cat-verdures: #51CF66;
+            --cat-proteines: #FF922B;
+            --cat-lactis: #845EF7;
+            --cat-cereals: #FCC419;
+            --cat-dolcos: #F06595;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
-        
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
@@ -38,855 +44,372 @@
             background: var(--bg); z-index: 10;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
         }
-        
+
         .view-hidden { transform: translateY(30px) scale(0.95); opacity: 0; pointer-events: none; z-index: 0; }
         .active-view { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; z-index: 10; }
 
         /* === MENÚ === */
         .menu-container { display: flex; flex-direction: column; height: 100%; position: relative; background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0f 50%, #000000 100%); }
-        .menu-scroll-wrapper { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; position: relative; }
+        .menu-scroll-wrapper { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
         .menu-scroll-wrapper::-webkit-scrollbar { width: 4px; }
         .menu-scroll-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .menu-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .menu-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
         .menu-content-full { min-height: 100%; display: flex; flex-direction: column; padding-bottom: 60px; }
-        .menu-header { padding: 80px 40px 50px; text-align: center; position: relative; }
-        .brand-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.2); padding: 8px 20px; border-radius: 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+        .menu-header { padding: 80px 40px 50px; text-align: center; }
+        .brand-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.2); padding: 8px 20px; border-radius: 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
         .brand-icon { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse-glow 2s ease-in-out infinite; }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 5px var(--primary); opacity: 1; } 50% { box-shadow: 0 0 15px var(--primary); opacity: 0.7; } }
-        .main-title { font-size: clamp(42px, 9vw, 58px); font-weight: 900; line-height: 1.05; margin-bottom: 20px; background: linear-gradient(135deg, #ffffff 0%, #b0b0b0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .subtitle { font-size: 17px; color: rgba(255, 255, 255, 0.5); font-weight: 400; max-width: 340px; margin: 0 auto; line-height: 1.7; }
+        @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 5px var(--primary); opacity: 1; } 50% { box-shadow: 0 0 15px var(--primary); opacity: 0.7; } }
+        .main-title { font-size: clamp(42px,9vw,58px); font-weight: 900; line-height: 1.05; margin-bottom: 20px; background: linear-gradient(135deg,#fff 0%,#b0b0b0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 17px; color: rgba(255,255,255,0.5); font-weight: 400; max-width: 340px; margin: 0 auto; line-height: 1.7; }
         .menu-cards-section { padding: 20px 32px 60px; display: flex; flex-direction: column; gap: 24px; }
-        .game-card { position: relative; background: linear-gradient(135deg, var(--surface) 0%, rgba(22, 22, 29, 0.8) 100%); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; padding: 32px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .game-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.02) 100%); opacity: 0; transition: opacity 0.4s; border-radius: 28px; }
+        .game-card { position: relative; background: linear-gradient(135deg, var(--surface) 0%, rgba(22,22,29,0.8) 100%); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 32px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+        .game-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.02) 100%); opacity: 0; transition: opacity 0.4s; border-radius: 28px; }
         .game-card:hover::before, .game-card:active::before { opacity: 1; }
-        .game-card:hover, .game-card:active { transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1); }
+        .game-card:hover, .game-card:active { transform: translateY(-4px) scale(1.01); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
         .card-glow { position: absolute; width: 200px; height: 200px; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; transition: all 0.4s; }
         .card-quiz .card-glow { background: var(--primary); top: -80px; right: -60px; }
-        .card-runner .card-glow { background: var(--gold); bottom: -80px; left: -60px; }
+        .card-classify .card-glow { background: var(--accent); bottom: -80px; left: -60px; }
         .game-card:hover .card-glow { opacity: 0.25; transform: scale(1.2); }
         .card-header { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; position: relative; z-index: 2; }
         .card-icon { width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
-        .icon-quiz { background: linear-gradient(135deg, rgba(0, 230, 118, 0.15) 0%, rgba(0, 230, 118, 0.05) 100%); color: var(--primary); box-shadow: 0 8px 24px rgba(0, 230, 118, 0.15); }
-        .icon-runner { background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%); color: var(--gold); box-shadow: 0 8px 24px rgba(255, 215, 0, 0.15); }
+        .icon-quiz { background: linear-gradient(135deg, rgba(0,230,118,0.15) 0%, rgba(0,230,118,0.05) 100%); color: var(--primary); box-shadow: 0 8px 24px rgba(0,230,118,0.15); }
+        .icon-classify { background: linear-gradient(135deg, rgba(41,121,255,0.15) 0%, rgba(41,121,255,0.05) 100%); color: var(--accent); box-shadow: 0 8px 24px rgba(41,121,255,0.15); }
         .card-title-group { flex: 1; }
         .card-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.5px; }
-        .card-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.7); }
-        .card-description { font-size: 15px; color: rgba(255, 255, 255, 0.45); line-height: 1.6; position: relative; z-index: 2; }
-        .card-arrow { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(255, 255, 255, 0.5); transition: all 0.3s; }
-        .game-card:hover .card-arrow { background: rgba(255, 255, 255, 0.12); transform: translateY(-50%) translateX(4px); color: rgba(255, 255, 255, 0.7); }
-
-        /* === DIFFICULTY SELECTOR === */
-        .difficulty-selector { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; }
-        .diff-btn { padding: 10px 20px; border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.2); background: transparent; color: rgba(255, 255, 255, 0.6); cursor: pointer; font-weight: 700; transition: all 0.3s; }
-        .diff-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
-        .diff-btn:hover { border-color: rgba(255, 255, 255, 0.5); }
+        .card-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px; border-radius: 20px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+        .card-description { font-size: 15px; color: rgba(255,255,255,0.45); line-height: 1.6; position: relative; z-index: 2; }
+        .card-arrow { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(255,255,255,0.5); transition: all 0.3s; }
+        .game-card:hover .card-arrow { background: rgba(255,255,255,0.12); transform: translateY(-50%) translateX(4px); color: rgba(255,255,255,0.7); }
 
         /* === QUIZ === */
-        .quiz-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .back-btn { width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .back-btn:hover, .back-btn:active { background: rgba(255, 255, 255, 0.15); transform: scale(0.96); }
-        .score-display { display: flex; align-items: center; gap: 10px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.2); padding: 10px 20px; border-radius: 30px; font-weight: 800; }
+        .quiz-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .back-btn { width: 48px; height: 48px; border-radius: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .back-btn:hover, .back-btn:active { background: rgba(255,255,255,0.15); transform: scale(0.96); }
+        .score-display { display: flex; align-items: center; gap: 10px; background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.2); padding: 10px 20px; border-radius: 30px; font-weight: 800; }
         .quiz-container { display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; padding: 40px 24px; gap: 40px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        .food-card { width: 100%; max-width: 360px; background: linear-gradient(180deg, var(--surface) 0%, rgba(22, 22, 29, 0.9) 100%); border-radius: 32px; padding: 56px 32px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
-        .food-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; background: radial-gradient(circle, rgba(0, 230, 118, 0.08) 0%, transparent 70%); filter: blur(40px); }
-        .food-emoji { font-size: 120px; display: block; margin-bottom: 24px; animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3)); }
+        .food-card { width: 100%; max-width: 360px; background: linear-gradient(180deg, var(--surface) 0%, rgba(22,22,29,0.9) 100%); border-radius: 32px; padding: 56px 32px; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .food-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,230,118,0.08) 0%, transparent 70%); filter: blur(40px); }
+        .food-emoji { font-size: 120px; display: block; margin-bottom: 24px; animation: pop-in 0.5s cubic-bezier(0.175,0.885,0.32,1.275); filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3)); }
         @keyframes pop-in { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 70% { transform: scale(1.15) rotate(2deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
         .food-name { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: -0.5px; }
-        .food-question { font-size: 15px; color: rgba(255, 255, 255, 0.45); font-weight: 500; }
-        .streak-display { font-size: 14px; color: var(--primary); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .streak-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(0, 230, 118, 0.15); padding: 4px 10px; border-radius: 20px; }
+        .food-question { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 500; }
+        .streak-display { font-size: 14px; color: var(--primary); font-weight: 700; margin-top: 12px; display: flex; align-items: center; gap: 6px; }
+        .streak-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(0,230,118,0.15); padding: 4px 10px; border-radius: 20px; }
         .quiz-controls { display: flex; gap: 20px; width: 100%; max-width: 380px; flex-shrink: 0; }
         .answer-btn { flex: 1; height: 120px; border-radius: 24px; border: none; font-family: inherit; font-size: 19px; font-weight: 800; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: all 0.15s; }
-        .answer-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%); opacity: 0; transition: opacity 0.2s; border-radius: 24px; }
+        .answer-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%); opacity: 0; transition: opacity 0.2s; border-radius: 24px; }
         .answer-btn:hover::before, .answer-btn:active::before { opacity: 1; }
-        .btn-yes { background: linear-gradient(135deg, var(--primary) 0%, #00c853 100%); box-shadow: 0 12px 0 #009624, 0 15px 30px rgba(0, 230, 118, 0.3); }
-        .btn-no { background: linear-gradient(135deg, var(--danger) 0%, #dd2c00 100%); box-shadow: 0 12px 0 #bf360c, 0 15px 30px rgba(255, 61, 0, 0.3); }
+        .btn-yes { background: linear-gradient(135deg, var(--primary) 0%, #00c853 100%); box-shadow: 0 12px 0 #009624, 0 15px 30px rgba(0,230,118,0.3); }
+        .btn-no { background: linear-gradient(135deg, var(--danger) 0%, #dd2c00 100%); box-shadow: 0 12px 0 #bf360c, 0 15px 30px rgba(255,61,0,0.3); }
         .answer-btn:hover { transform: translateY(-2px); }
-        .answer-btn:active { transform: translateY(8px); box-shadow: 0 4px 0 currentColor, 0 8px 20px rgba(0, 0, 0, 0.2); }
+        .answer-btn:active { transform: translateY(8px); box-shadow: 0 4px 0 currentColor, 0 8px 20px rgba(0,0,0,0.2); }
         .btn-label { font-size: 11px; opacity: 0.75; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
         .btn-score { font-size: 16px; font-weight: 900; }
+        .difficulty-selector { display: flex; gap: 12px; justify-content: center; margin-bottom: 10px; }
+        .diff-btn { padding: 10px 20px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); cursor: pointer; font-weight: 700; font-family: inherit; transition: all 0.3s; }
+        .diff-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+        .diff-btn:hover { border-color: rgba(255,255,255,0.5); }
 
-        /* === RUNNER - MINION RUSH STYLE === */
-        .runner-game {
-            position: absolute; inset: 0;
-            background: linear-gradient(to bottom,
-                #1565C0 0%,
-                #1976D2 15%,
-                #42A5F5 35%,
-                #64B5F6 55%,
-                #90CAF9 80%,
-                #BBDEFB 92%,
-                #E3F2FD 100%
-            );
-            overflow: hidden; touch-action: none; z-index: 1;
-            perspective: 1200px;
+        /* === CLASSIFY GAME === */
+        .classify-container {
+            display: flex; flex-direction: column; height: 100%;
+            background: linear-gradient(160deg, #0d1117 0%, #0a0a0f 40%, #0f0f18 100%);
+            position: relative; overflow: hidden;
         }
 
-        /* Lab walls */
-        .lab-walls {
-            position: absolute; inset: 0;
-            background:
-                repeating-linear-gradient(90deg, transparent 0px, transparent 160px, rgba(33, 150, 243, 0.06) 160px, rgba(33, 150, 243, 0.02) 180px),
-                repeating-linear-gradient(0deg, transparent 0px, transparent 280px, rgba(25, 118, 210, 0.04) 280px, rgba(25, 118, 210, 0.015) 300px);
-            z-index: 1;
+        .classify-bg-emoji {
+            position: absolute; font-size: 80px; opacity: 0.03;
+            pointer-events: none; z-index: 0;
+            animation: float-emoji 18s ease-in-out infinite;
+        }
+        .classify-bg-emoji:nth-child(1) { top: 8%; left: 5%; animation-delay: 0s; }
+        .classify-bg-emoji:nth-child(2) { top: 25%; right: 8%; animation-delay: -4s; font-size: 60px; }
+        .classify-bg-emoji:nth-child(3) { bottom: 20%; left: 12%; animation-delay: -8s; font-size: 70px; }
+        .classify-bg-emoji:nth-child(4) { bottom: 35%; right: 5%; animation-delay: -12s; font-size: 50px; }
+        .classify-bg-emoji:nth-child(5) { top: 55%; left: 50%; animation-delay: -6s; font-size: 90px; }
+
+        @keyframes float-emoji {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(5deg); }
+            66% { transform: translateY(10px) rotate(-3deg); }
         }
 
-        .pipe-left-main {
-            position: absolute; left: 0; top: 8%;
-            width: 18%; height: 42%;
-            background: linear-gradient(to right, #0D47A1 0%, #1565C0 20%, #1976D2 45%, #42A5F5 70%, #64B5F6 90%, #90CAF9 100%);
-            z-index: 3;
-            clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
-            box-shadow: 8px 0 25px rgba(13, 71, 161, 0.4);
+        .classify-header {
+            padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            z-index: 10; flex-shrink: 0;
         }
 
-        .pipe-left-bottom {
-            position: absolute; left: 2%; top: 56%;
-            width: 12%; height: 28%;
-            background: linear-gradient(to right, #0277BD, #039BE5, #29B6F6);
-            border-radius: 8px;
-            z-index: 3;
-            box-shadow: 4px 0 15px rgba(21, 101, 192, 0.35);
+        .classify-progress-wrap {
+            flex: 1; display: flex; align-items: center; gap: 12px;
         }
 
-        .pipe-right-main {
-            position: absolute; right: 0; top: 5%;
-            width: 20%; height: 48%;
-            background: linear-gradient(to left, #0D47A1 0%, #1565C0 20%, #1976D2 45%, #42A5F5 70%, #64B5F6 90%, #90CAF9 100%);
-            z-index: 3;
-            clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
-            box-shadow: -8px 0 25px rgba(13, 71, 161, 0.4);
+        .classify-progress-bar {
+            flex: 1; height: 8px; background: rgba(255,255,255,0.08);
+            border-radius: 10px; overflow: hidden;
         }
 
-        .pipe-right-bottom {
-            position: absolute; right: 3%; top: 60%;
-            width: 14%; height: 26%;
-            background: linear-gradient(to left, #0277BD, #039BE5, #29B6F6);
-            border-radius: 8px;
-            z-index: 3;
-            box-shadow: -4px 0 15px rgba(21, 101, 192, 0.35);
+        .classify-progress-fill {
+            height: 100%; width: 10%;
+            background: linear-gradient(90deg, var(--accent), #64B5F6);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
         }
 
-        .pipe-top-ceiling {
-            position: absolute; top: 0; left: 0; right: 0; height: 12%;
-            background: linear-gradient(to bottom, #0D47A1 0%, #1565C0 30%, #1976D2 60%, #42A5F5 85%, #64B5F6 100%);
-            z-index: 3;
-            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.3);
+        .classify-progress-text {
+            font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.6);
+            min-width: 38px; text-align: right;
         }
 
-        /* THREE LANE SYSTEM */
-        .lanes-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70%;
-            z-index: 2;
-            display: flex;
-            flex-direction: row;
-            perspective: 1000px;
+        .classify-score-badge {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(41,121,255,0.12); border: 1px solid rgba(41,121,255,0.25);
+            padding: 8px 16px; border-radius: 24px; font-weight: 800; font-size: 15px;
         }
 
-        .lane {
-            flex: 1;
-            position: relative;
-            border-right: 2px solid rgba(255, 152, 0, 0.3);
-            background: linear-gradient(to bottom,
-                #212121 0%,
-                #303030 20%,
-                #383838 40%,
-                #424242 60%,
-                #505050 80%,
-                #5a5a5a 95%,
-                #616161 100%
-            );
-            transform: perspective(900px) rotateX(22deg);
-            transform-style: preserve-3d;
-            overflow: hidden;
+        .classify-body {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 24px 20px 32px; gap: 28px;
+            z-index: 5; overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .lane:last-child { border-right: none; }
-
-        .lane-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                repeating-linear-gradient(0deg,
-                    transparent 0px,
-                    transparent 55px,
-                    #FF9800 55px,
-                    #FF9800 62px,
-                    transparent 62px
-                );
-            z-index: 3;
-            mask-image: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-            animation: floor-scroll 0.2s linear infinite;
+        .classify-food-card {
+            width: 100%; max-width: 340px;
+            background: linear-gradient(180deg, var(--surface) 0%, rgba(22,22,29,0.9) 100%);
+            border-radius: 28px; padding: 44px 28px 32px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative; text-align: center;
+            transition: border-color 0.4s, box-shadow 0.4s;
         }
 
-        @keyframes floor-scroll {
-            from { background-position: 0 0; }
-            to { background-position: 0 62px; }
+        .classify-food-card::before {
+            content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(41,121,255,0.1) 0%, transparent 70%);
+            filter: blur(30px); pointer-events: none;
         }
 
-        .lane-border {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #FFC107, #FF9800, #F57C00);
-            z-index: 4;
-            clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
-            box-shadow: inset 0 0 25px rgba(255, 152, 0, 0.3);
-            transform: perspective(900px) rotateY(12deg) skewX(-3deg);
+        .classify-food-card.card-correct {
+            border-color: rgba(0,230,118,0.5);
+            box-shadow: 0 0 40px rgba(0,230,118,0.15);
         }
 
-        .lane:nth-child(1) .lane-border { transform: perspective(900px) rotateY(12deg) skewX(-3deg); }
-        .lane:nth-child(2) .lane-border { display: none; }
-        .lane:nth-child(3) .lane-border { transform: perspective(900px) rotateY(-12deg) skewX(3deg); clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); }
-
-        /* PLAYER CONTAINER - THREE LANES */
-        .player-container {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 140px;
-            height: 170px;
-            z-index: 50;
-            transition: left 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            perspective: 800px;
-            pointer-events: none;
+        .classify-food-card.card-wrong {
+            border-color: rgba(255,61,0,0.5);
+            box-shadow: 0 0 40px rgba(255,61,0,0.15);
         }
 
-        /* MINION CHARACTER */
-        .minion-character {
-            position: relative;
-            width: 130px;
-            height: 170px;
-            animation: runReal 0.2s ease-in-out infinite;
-            transform-origin: bottom center;
-            transform-style: preserve-3d;
-            filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.7));
+        @keyframes gentle-appear {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes runReal {
-            0%, 100% { transform: translateY(0) scaleY(1) scaleX(1) rotateY(0deg) rotateZ(0deg); }
-            50% { transform: translateY(-25px) scaleY(1.1) scaleX(0.94) rotateY(6deg) rotateZ(3deg); }
+        .classify-food-emoji {
+            font-size: 90px; display: block; margin-bottom: 16px;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
         }
 
-        /* BODY */
-        .minion-body {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 120px;
-            background: 
-                radial-gradient(ellipse 40% 30% at 20% 20%, rgba(255,255,255,0.6) 0%, transparent 50%),
-                radial-gradient(ellipse 35% 45% at 80% 75%, rgba(139,69,19,0.25) 0%, transparent 60%),
-                linear-gradient(135deg, 
-                    #FFE93A 0%, 
-                    #FFDF35 18%,
-                    #F4D03F 40%,
-                    #E8BF2D 65%,
-                    #DDAA1C 88%,
-                    #CC9918 100%
-                );
-            border-radius: 55px 55px 50px 50px;
-            box-shadow: 
-                inset 0 -22px 45px rgba(101, 67, 33, 0.35),
-                inset 0 22px 40px rgba(255, 255, 255, 0.52),
-                inset -8px 0 18px rgba(0,0,0,0.18),
-                inset 8px 0 18px rgba(255,255,255,0.2),
-                0 18px 40px rgba(0, 0, 0, 0.45),
-                0 8px 15px rgba(0, 0, 0, 0.3);
-            overflow: visible;
-            transform-style: preserve-3d;
+        .classify-food-name {
+            font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 6px;
         }
 
-        .minion-body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                repeating-linear-gradient(90deg, 
-                    transparent 0px, 
-                    transparent 13px, 
-                    rgba(255,255,255,0.05) 13px, 
-                    rgba(255,255,255,0.05) 14px
-                ),
-                repeating-linear-gradient(0deg, 
-                    transparent 0px, 
-                    transparent 24px, 
-                    rgba(0,0,0,0.025) 24px, 
-                    rgba(0,0,0,0.025) 25px
-                );
-            border-radius: inherit;
+        .classify-food-question {
+            font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 500;
         }
 
-        /* GOGGLE FRAME */
-        .minion-goggle-frame {
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%) translateZ(15px);
-            width: 85px;
-            height: 78px;
-            background: linear-gradient(150deg, 
-                #AAAAAA 0%, 
-                #888888 20%,
-                #666666 40%,
-                #444444 65%,
-                #252525 88%,
-                #0D0D0D 100%
-            );
-            border-radius: 42px 42px 38px 38px;
-            border: 5px solid #000;
-            box-shadow: 
-                0 12px 32px rgba(0,0,0,0.7),
-                inset 0 6px 14px rgba(255,255,255,0.3),
-                inset 0 -6px 14px rgba(0,0,0,0.55),
-                0 4px 8px rgba(0,0,0, 0.4);
-            z-index: 12;
-            transform-style: preserve-3d;
+        .classify-tip {
+            margin-top: 16px; padding: 12px 16px;
+            background: rgba(255,255,255,0.04); border-radius: 14px;
+            font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5;
+            border-left: 3px solid var(--accent);
+            animation: tip-appear 0.3s ease-out;
         }
 
-        .minion-eye-left {
-            position: absolute;
-            top: 50%;
-            left: 28%;
-            transform: translate(-50%, -50%) translateZ(10px);
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #F0F0F0 20%, #E0E0E0 50%, #C0C0C0 80%, #A0A0A0 100%);
-            border-radius: 50%;
-            border: 2px solid #666;
-            box-shadow: 
-                inset 0 5px 12px rgba(0,0,0,0.12),
-                0 3px 8px rgba(0,0,0,0.25),
-                inset 0 -2px 6px rgba(0,0,0,0.08);
-            overflow: hidden;
+        @keyframes tip-appear {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .minion-eye-right {
-            position: absolute;
-            top: 50%;
-            right: 28%;
-            transform: translate(50%, -50%) translateZ(10px);
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #F0F0F0 20%, #E0E0E0 50%, #C0C0C0 80%, #A0A0A0 100%);
-            border-radius: 50%;
-            border: 2px solid #666;
-            box-shadow: 
-                inset 0 5px 12px rgba(0,0,0,0.12),
-                0 3px 8px rgba(0,0,0,0.25),
-                inset 0 -2px 6px rgba(0,0,0,0.08);
-            overflow: hidden;
+        .classify-categories {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; width: 100%; max-width: 380px;
         }
 
-        .minion-iris {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 16px;
-            height: 16px;
-            background: radial-gradient(circle at 35% 35%,
-                #8B7D52 0%,
-                #6D5E43 30%,
-                #494129 60%,
-                #2C1D10 85%,
-                #0A0602 100%
-            );
-            border-radius: 50%;
-            animation: lookReal 4.5s ease-in-out infinite;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.6);
+        .cat-btn {
+            display: flex; align-items: center; gap: 10px;
+            padding: 16px 18px; border-radius: 18px;
+            border: 2px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer; font-family: inherit;
+            font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.75);
+            transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+            position: relative; overflow: hidden;
         }
 
-        @keyframes lookReal {
-            0%, 100% { transform: translate(-50%, -50%); }
-            20% { transform: translate(-35%, -50%); }
-            40% { transform: translate(-50%, -35%); }
-            60% { transform: translate(-65%, -50%); }
-            80% { transform: translate(-50%, -65%); }
+        .cat-btn::before {
+            content: ''; position: absolute; inset: 0;
+            opacity: 0; transition: opacity 0.3s; border-radius: 16px;
         }
 
-        .minion-pupil {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 9px;
-            height: 9px;
-            background: radial-gradient(circle at 38% 38%, #111 0%, #000 100%);
-            border-radius: 50%;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        .cat-btn:hover, .cat-btn:active {
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(255,255,255,0.2);
         }
 
-        .minion-pupil::after {
-            content: '';
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            width: 5px;
-            height: 5px;
-            background: radial-gradient(circle, #FFF 0%, #DDD 100%);
-            border-radius: 50%;
+        .cat-btn:hover::before { opacity: 1; }
+
+        .cat-btn .cat-emoji { font-size: 22px; flex-shrink: 0; }
+
+        .cat-btn.cat-correct {
+            border-color: var(--primary) !important;
+            background: rgba(0,230,118,0.15) !important;
+            color: #fff !important;
+            transform: scale(1.04);
+            box-shadow: 0 0 24px rgba(0,230,118,0.2);
         }
 
-        /* ARMS */
-        .minion-arm-left {
-            position: absolute;
-            top: 55px;
-            left: -18px;
-            width: 26px;
-            height: 60px;
-            background: linear-gradient(98deg,
-                #CC9918 0%,
-                #FFE93A 24%,
-                #F4D03F 50%,
-                #E8BF2D 76%,
-                #DDAA1C 100%
-            );
-            border-radius: 15px;
-            transform-origin: top center;
-            animation: armLeftReal 0.2s ease-in-out infinite;
-            box-shadow: 
-                inset 6px 0 10px rgba(255,255,255,0.35),
-                8px 6px 16px rgba(0,0,0,0.35),
-                inset -5px 0 8px rgba(0,0,0,0.18);
-            transform-style: preserve-3d;
+        .cat-btn.cat-wrong {
+            border-color: var(--danger) !important;
+            background: rgba(255,61,0,0.12) !important;
+            animation: shake 0.4s ease;
         }
 
-        .minion-arm-left::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(180deg, #555 0%, #333 45%, #1a1a1a 80%, #0a0a0a 100%);
-            border-radius: 50%;
-            border: 4px solid #000;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.6), inset 0 3px 8px rgba(255,255,255,0.15);
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
         }
 
-        .minion-arm-right {
-            position: absolute;
-            top: 55px;
-            right: -18px;
-            width: 26px;
-            height: 60px;
-            background: linear-gradient(262deg,
-                #CC9918 0%,
-                #FFE93A 24%,
-                #F4D03F 50%,
-                #E8BF2D 76%,
-                #DDAA1C 100%
-            );
-            border-radius: 15px;
-            transform-origin: top center;
-            animation: armRightReal 0.2s ease-in-out infinite;
-            box-shadow: 
-                inset -6px 0 10px rgba(255,255,255,0.35),
-                -8px 6px 16px rgba(0,0,0,0.35),
-                inset 5px 0 8px rgba(255,255,255,0.2);
-            transform-style: preserve-3d;
-        }
+        .cat-btn[data-category="fruites"]::before { background: rgba(255,107,107,0.08); }
+        .cat-btn[data-category="verdures"]::before { background: rgba(81,207,102,0.08); }
+        .cat-btn[data-category="proteines"]::before { background: rgba(255,146,43,0.08); }
+        .cat-btn[data-category="lactis"]::before { background: rgba(132,94,247,0.08); }
+        .cat-btn[data-category="cereals"]::before { background: rgba(252,196,25,0.08); }
+        .cat-btn[data-category="dolcos"]::before { background: rgba(240,101,149,0.08); }
 
-        .minion-arm-right::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(180deg, #555 0%, #333 45%, #1a1a1a 80%, #0a0a0a 100%);
-            border-radius: 50%;
-            border: 4px solid #000;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.6), inset 0 3px 8px rgba(255,255,255,0.15);
-        }
+        .cat-btn[data-category="fruites"]:hover { border-color: rgba(255,107,107,0.4); }
+        .cat-btn[data-category="verdures"]:hover { border-color: rgba(81,207,102,0.4); }
+        .cat-btn[data-category="proteines"]:hover { border-color: rgba(255,146,43,0.4); }
+        .cat-btn[data-category="lactis"]:hover { border-color: rgba(132,94,247,0.4); }
+        .cat-btn[data-category="cereals"]:hover { border-color: rgba(252,196,25,0.4); }
+        .cat-btn[data-category="dolcos"]:hover { border-color: rgba(240,101,149,0.4); }
 
-        @keyframes armLeftReal {
-            0%, 100% { transform: rotateZ(28deg) rotateY(-10deg) rotateX(5deg); }
-            50% { transform: rotateZ(-32deg) rotateY(10deg) rotateX(-5deg); }
-        }
-
-        @keyframes armRightReal {
-            0%, 100% { transform: rotateZ(-28deg) rotateY(10deg) rotateX(5deg); }
-            50% { transform: rotateZ(32deg) rotateY(-10deg) rotateX(-5deg); }
-        }
-
-        /* MOUTH */
-        .minion-mouth-container {
-            position: absolute;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 28px;
-            z-index: 8;
-        }
-
-        .minion-mouth {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg,
-                #4D2E1A 0%,
-                #361D0E 45%,
-                #1F1209 75%,
-                #0F0704 100%
-            );
-            border-radius: 0 0 25px 25px;
-            border: 4px solid #070503;
-            box-shadow: 
-                inset 0 -10px 18px rgba(0,0,0,0.7),
-                0 6px 12px rgba(0,0,0,0.32),
-                inset 0 7px 10px rgba(255,255,255,0.08);
-            overflow: hidden;
-        }
-
-        .minion-teeth {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 14px;
-            background: linear-gradient(180deg, #FAFAFA 0%, #E8E8E8 100%);
-            clip-path: polygon(0 0, 8% 100%, 16% 0, 24% 100%, 32% 0, 40% 100%, 48% 0, 56% 100%, 64% 0, 72% 100%, 80% 0, 88% 100%, 100% 100%);
-            box-shadow: 0 1px 5px rgba(0,0,0,0.18);
-        }
-
-        .minion-tongue {
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 22px;
-            height: 11px;
-            background: linear-gradient(180deg, #F44336 0%, #D32F2F 65%, #B71C1C 100%);
-            border-radius: 0 0 12px 12px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
-        }
-
-        /* PANTS */
-        .minion-legs-container {
-            position: absolute;
-            bottom: -32px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 85px;
-            height: 42px;
-            display: flex;
-            justify-content: space-between;
-            transform-style: preserve-3d;
-        }
-
-        .minion-leg {
-            width: 30px;
-            height: 42px;
-            background: linear-gradient(180deg,
-                #5C6BC0 0%,
-                #3F51B5 25%,
-                #303F9F 50%,
-                #283593 75%,
-                #1A237E 100%
-            );
-            border-radius: 15px 15px 18px 18px;
-            box-shadow: 
-                inset 5px 0 8px rgba(255,255,255,0.24),
-                inset -5px 0 8px rgba(0,0,0,0.22),
-                0 6px 14px rgba(0,0,0,0.4),
-                0 2px 6px rgba(0,0,0,0.22);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-        }
-
-        .minion-leg.left { animation: legLeftReal 0.2s ease-in-out infinite; }
-        .minion-leg.right { animation: legRightReal 0.2s ease-in-out infinite; animation-delay: 0.1s; }
-
-        @keyframes legLeftReal {
-            0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(0deg); }
-            50% { transform: translateY(-18px) rotateX(20deg) rotateZ(14deg); }
-        }
-
-        @keyframes legRightReal {
-            0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(0deg); }
-            50% { transform: translateY(-18px) rotateX(-20deg) rotateZ(-14deg); }
-        }
-
-        .minion-shoe {
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 20px;
-            background: linear-gradient(180deg,
-                #4A4A4A 0%,
-                #323232 30%,
-                #1F1F1F 65%,
-                #0D0D0D 100%
-            );
-            border-radius: 12px 12px 14px 14px;
-            border: 4px solid #000;
-            box-shadow: 
-                0 8px 20px rgba(0,0,0,0.6),
-                0 4px 8px rgba(0,0,0,0.35),
-                inset 0 4px 6px rgba(255,255,255,0.18),
-                inset 0 -2px 5px rgba(0,0,0,0.4);
-        }
-
-        /* JUMP & SLIDE */
-        .player-jump .minion-character {
-            animation: jumpReal 0.62s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-        }
-
-        @keyframes jumpReal {
-            0% { transform: translateY(0) scaleY(1) scaleX(1); }
-            15% { transform: translateY(-100px) scaleY(1.18) scaleX(0.88); }
-            35% { transform: translateY(-220px) scaleY(1.25) scaleX(0.85); }
-            52% { transform: translateY(-230px) scaleY(1.28) scaleX(0.82); }
-            70% { transform: translateY(-210px) scaleY(1.22) scaleX(0.86); }
-            85% { transform: translateY(-90px) scaleY(1.13) scaleX(0.90); }
-            100% { transform: translateY(0) scaleY(1) scaleX(1); }
-        }
-
-        .player-slide .minion-character {
-            animation: slideReal 0.72s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-        }
-
-        @keyframes slideReal {
-            0% { transform: translateY(0) scaleY(1) scaleX(1); }
-            18% { transform: translateY(45px) scaleY(0.28) scaleX(1.6); }
-            50% { transform: translateY(48px) scaleY(0.25) scaleX(1.65); }
-            82% { transform: translateY(45px) scaleY(0.27) scaleX(1.62); }
-            100% { transform: translateY(0) scaleY(1) scaleX(1); }
-        }
-
-        /* OBSTACLES - 3D depth */
-        .obstacle-3d {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            will-change: transform, opacity, font-size;
-            z-index: 40;
-            font-size: 24px;
-        }
-
-        .obs-far { font-size: 16px; opacity: 0.4; filter: brightness(0.7); }
-        .obs-mid { font-size: 32px; opacity: 0.7; filter: brightness(0.9); }
-        .obs-near { font-size: 56px; opacity: 1; filter: brightness(1.2) saturate(1.2) drop-shadow(0 15px 35px rgba(0,0,0,0.5)); }
-        
-        .obs-hit {
-            opacity: 0 !important;
-            transform: translate(-50%, -50%) scale(4) !important;
-            transition: opacity 0.2s, transform 0.2s !important;
-        }
-
-        .obstacle-coin {
-            animation: spinCoin 0.3s linear infinite, bounceCoin 1s ease-in-out infinite;
-        }
-
-        @keyframes spinCoin {
-            from { transform: translate(-50%, -50%) rotateY(0deg); }
-            to { transform: translate(-50%, -50%) rotateY(360deg); }
-        }
-
-        @keyframes bounceCoin {
-            0%, 100% { margin-top: 0; }
-            50% { margin-top: -14px; }
-        }
-
-        /* HUD */
-        .runner-hud {
-            position: absolute;
-            top: 12px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 100;
-            pointer-events: none;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .hud-stat {
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(22px);
-            padding: 12px 23px;
-            border-radius: 25px;
-            border: 2.5px solid rgba(255, 255, 255, 0.22);
-            font-weight: 900;
-            font-size: 17px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.16);
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
-        }
-
-        /* Lane indicators */
-        .lane-indicators {
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
-            z-index: 100;
-        }
-
-        .lane-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.2s;
-        }
-
-        .lane-dot.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 0 12px var(--primary);
-        }
-
-        /* Overlays */
+        /* OVERLAY BASE */
         .game-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 300;
-            background: linear-gradient(135deg, rgba(79, 195, 247, 0.97) 0%, rgba(129, 212, 250, 0.97) 50%, rgba(139, 195, 74, 0.97) 100%);
+            position: absolute; inset: 0; z-index: 300;
             backdrop-filter: blur(30px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            text-align: center;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 40px; text-align: center;
         }
-        
+
+        .classify-overlay {
+            background: linear-gradient(160deg, rgba(13,17,23,0.97) 0%, rgba(10,10,15,0.97) 50%, rgba(15,15,24,0.97) 100%);
+        }
+
         .overlay-icon-large {
-            font-size: 115px;
-            margin-bottom: 28px;
-            filter: drop-shadow(0 22px 45px rgba(0, 0, 0, 0.38));
-            animation: bounceIcon 1.2s ease-in-out infinite;
+            font-size: 100px; margin-bottom: 24px;
+            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.4));
+            animation: bounceIcon 1.4s ease-in-out infinite;
         }
 
         @keyframes bounceIcon {
-            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
-            22% { transform: translateY(-22px) scale(1.09) rotate(-5deg); }
-            44% { transform: translateY(0) scale(1) rotate(0deg); }
-            66% { transform: translateY(-14px) scale(1.05) rotate(4deg); }
-            88% { transform: translateY(0) scale(1) rotate(0deg); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-14px) scale(1.06); }
         }
 
         .overlay-title {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 14px;
-            letter-spacing: -2px;
-            color: #1B5E20;
-            text-shadow: 0 6px 12px rgba(0, 0, 0, 0.24), 0 0 45px rgba(255, 255, 255, 0.68);
+            font-size: 34px; font-weight: 900; margin-bottom: 12px;
+            letter-spacing: -1px; color: #fff;
         }
 
         .overlay-subtitle {
-            font-size: 16px;
-            color: rgba(0, 0, 0, 0.64);
-            margin-bottom: 42px;
-            line-height: 1.8;
-            max-width: 350px;
-            font-weight: 500;
+            font-size: 15px; color: rgba(255,255,255,0.45);
+            margin-bottom: 36px; line-height: 1.7; max-width: 320px;
         }
+
+        .cat-preview-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin-bottom: 36px; width: 100%; max-width: 300px;
+        }
+
+        .cat-preview-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 10px 6px; border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5);
+        }
+
+        .cat-preview-item .cp-emoji { font-size: 24px; }
 
         .primary-btn {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
-            color: #1B5E20;
-            border: none;
-            padding: 23px 55px;
-            border-radius: 56px;
-            font-size: 21px;
-            font-weight: 900;
-            font-family: inherit;
-            cursor: pointer;
-            width: 100%;
-            max-width: 310px;
-            box-shadow: 0 11px 0 #F57C00, 0 18px 45px rgba(255, 152, 0, 0.5);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--accent) 0%, #1565C0 100%);
+            color: #fff; border: none; padding: 20px 50px;
+            border-radius: 50px; font-size: 18px; font-weight: 900;
+            font-family: inherit; cursor: pointer; width: 100%; max-width: 280px;
+            box-shadow: 0 10px 0 #0D47A1, 0 16px 40px rgba(41,121,255,0.3);
+            transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+            letter-spacing: 0.5px;
         }
 
-        .primary-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 0 #F57C00, 0 24px 55px rgba(255, 152, 0, 0.6);
-        }
-
-        .primary-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 5px 0 #F57C00, 0 8px 26px rgba(255, 152, 0, 0.34);
-        }
+        .primary-btn:hover { transform: translateY(-3px); box-shadow: 0 13px 0 #0D47A1, 0 22px 50px rgba(41,121,255,0.4); }
+        .primary-btn:active { transform: translateY(6px); box-shadow: 0 4px 0 #0D47A1, 0 8px 20px rgba(41,121,255,0.2); }
 
         .secondary-btn {
-            background: rgba(255, 255, 255, 0.37);
-            border: 2.5px solid rgba(255, 255, 255, 0.6);
-            color: #1B5E20;
-            font-size: 34px;
-            margin-top: 30px;
-            cursor: pointer;
-            padding: 17px 30px;
-            border-radius: 50%;
-            transition: all 0.2s;
-            font-weight: 700;
+            background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+            color: #fff; font-size: 22px; margin-top: 18px; cursor: pointer;
+            padding: 14px 24px; border-radius: 50%; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .secondary-btn:hover {
-            background: rgba(255, 255, 255, 0.58);
-            transform: scale(1.15);
+        .secondary-btn:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
+
+        /* RESULTATS */
+        .results-accuracy {
+            font-size: 72px; font-weight: 900; color: var(--accent);
+            margin-bottom: 8px;
+            text-shadow: 0 6px 20px rgba(41,121,255,0.4);
         }
 
-        .final-score-label {
-            font-size: 15px;
-            color: rgba(0, 0, 0, 0.54);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
+        .results-correct {
+            font-size: 16px; color: rgba(255,255,255,0.5); font-weight: 600;
+            margin-bottom: 6px;
         }
 
-        .final-score-value {
-            font-size: 84px;
-            font-weight: 900;
-            color: #FFD700;
-            margin-bottom: 42px;
-            text-shadow: 0 8px 22px rgba(255, 152, 0, 0.6), 0 0 55px rgba(255, 215, 0, 0.75);
+        .results-score-big {
+            font-size: 20px; font-weight: 800; color: var(--gold);
+            margin-bottom: 24px;
         }
 
-        .game-over-overlay {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.97) 0%, rgba(211, 47, 47, 0.97) 100%) !important;
+        .results-message {
+            font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.7;
+            margin-bottom: 36px; max-width: 300px;
         }
+
+        .results-breakdown {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 8px; margin-bottom: 28px; width: 100%; max-width: 280px;
+        }
+
+        .breakdown-item {
+            padding: 10px 6px; border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+        }
+
+        .breakdown-item .bi-emoji { font-size: 20px; display: block; margin-bottom: 2px; }
+        .breakdown-item .bi-count { font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.7); }
 
         @media (max-width: 480px) {
             .menu-header { padding: 64px 24px 40px; }
-            .main-title { font-size: clamp(38px, 10vw, 52px); }
+            .main-title { font-size: clamp(38px,10vw,52px); }
             .menu-cards-section { padding: 16px 20px 48px; gap: 20px; }
             .game-card { padding: 28px 24px; }
             .card-icon { width: 56px; height: 56px; font-size: 24px; }
@@ -895,9 +418,13 @@
             .card-arrow { width: 40px; height: 40px; right: 20px; }
             .quiz-controls { gap: 16px; }
             .answer-btn { height: 110px; font-size: 17px; }
-            .minion-character { transform: scale(0.8); }
-            .overlay-title { font-size: 37px; }
-            .final-score-value { font-size: 66px; }
+            .classify-food-emoji { font-size: 72px; }
+            .classify-food-name { font-size: 22px; }
+            .classify-categories { gap: 10px; }
+            .cat-btn { padding: 14px 14px; font-size: 13px; }
+            .cat-btn .cat-emoji { font-size: 20px; }
+            .overlay-title { font-size: 28px; }
+            .results-accuracy { font-size: 56px; }
         }
     </style>
 </head>
@@ -909,9 +436,9 @@
         <div class="menu-scroll-wrapper">
             <div class="menu-content-full">
                 <div class="menu-header">
-                    <div class="brand-badge"><span class="brand-icon"></span>Nutri • Dash</div>
+                    <div class="brand-badge"><span class="brand-icon"></span>Nutri &bull; Dash</div>
                     <h1 class="main-title">Benvingut</h1>
-                    <p class="subtitle">Desafia la teva ment i les teves reflexes en dues experiències úniques i emocionants</p>
+                    <p class="subtitle">Desafia la teva ment i aprèn sobre nutrició amb dues experiències educatives</p>
                 </div>
                 <div class="menu-cards-section">
                     <button class="game-card card-quiz" onclick="nav.to('quiz')">
@@ -924,14 +451,14 @@
                         <p class="card-description">Ràpid, mental i adictiu. Identifica aliments saludables en un rellotge contrarellotge.</p>
                     </button>
 
-                    <button class="game-card card-runner" onclick="nav.to('runner')">
+                    <button class="game-card card-classify" onclick="nav.to('classify')">
                         <div class="card-glow"></div>
                         <div class="card-header">
-                            <div class="card-icon icon-runner"><i class="fa-solid fa-bolt"></i></div>
-                            <div class="card-title-group"><h3 class="card-title">Mode Carrera</h3><span class="card-tag">Acció</span></div>
+                            <div class="card-icon icon-classify"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div class="card-title-group"><h3 class="card-title">Mode Classificació</h3><span class="card-tag">Educatiu</span></div>
                             <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
                         </div>
-                        <p class="card-description">Minion Run Laboratori: Córrer pel corredor secret amb tres carrils!</p>
+                        <p class="card-description">Aprèn a classificar els aliments en els seus grups nutricionals. Calm i educatiu.</p>
                     </button>
                 </div>
             </div>
@@ -956,9 +483,7 @@
             <h2 class="food-name" id="foodName">Poma</h2>
             <p class="food-question">És una opció saludable?</p>
             <div class="streak-display" id="streakDisplay" style="display:none;">
-                <span>🔥</span>
-                <span id="streakCount">0</span>
-                <span>streak</span>
+                <span>🔥</span><span id="streakCount">0</span><span>streak</span>
                 <span id="multiplier" class="streak-badge">x1</span>
             </div>
         </div>
@@ -975,93 +500,59 @@
     </div>
 </div>
 
-<!-- RUNNER -->
-<div id="viewRunner" class="app-view view-hidden">
-    <div class="runner-game">
-        <div class="lab-walls"></div>
-        <div class="pipe-left-main"></div>
-        <div class="pipe-left-bottom"></div>
-        <div class="pipe-right-main"></div>
-        <div class="pipe-right-bottom"></div>
-        <div class="pipe-top-ceiling"></div>
+<!-- CLASSIFY -->
+<div id="viewClassify" class="app-view view-hidden">
+    <div class="classify-container">
+        <!-- Fons decoratiu -->
+        <div class="classify-bg-emoji">🥦</div>
+        <div class="classify-bg-emoji">🐟</div>
+        <div class="classify-bg-emoji">🌾</div>
+        <div class="classify-bg-emoji">🧀</div>
+        <div class="classify-bg-emoji">🍎</div>
 
-        <div class="runner-hud">
-            <div class="hud-stat"><span>📏</span><span id="distance">0</span>m</div>
-            <div class="hud-stat"><span>💰</span><span id="coins">0</span></div>
-            <div class="hud-stat"><span>❤️</span><span id="health">3</span></div>
-        </div>
-
-        <!-- THREE LANES -->
-        <div class="lanes-container">
-            <div class="lane">
-                <div class="lane-lines"></div>
-                <div class="lane-border"></div>
-            </div>
-            <div class="lane">
-                <div class="lane-lines"></div>
-            </div>
-            <div class="lane">
-                <div class="lane-lines"></div>
-                <div class="lane-border"></div>
-            </div>
-        </div>
-
-        <!-- MINION PLAYER -->
-        <div class="player-container">
-            <div class="minion-character">
-                <div class="minion-body">
-                    <div class="minion-goggle-frame">
-                        <div class="minion-eye-left">
-                            <div class="minion-iris">
-                                <div class="minion-pupil"></div>
-                            </div>
-                        </div>
-                        <div class="minion-eye-right">
-                            <div class="minion-iris">
-                                <div class="minion-pupil"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="minion-mouth-container">
-                        <div class="minion-mouth">
-                            <div class="minion-teeth"></div>
-                            <div class="minion-tongue"></div>
-                        </div>
-                    </div>
+        <!-- Capçalera -->
+        <div class="classify-header">
+            <button class="back-btn" onclick="nav.to('menu')"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="classify-progress-wrap">
+                <div class="classify-progress-bar">
+                    <div class="classify-progress-fill" id="classifyProgressFill"></div>
                 </div>
-                <div class="minion-arm-left"></div>
-                <div class="minion-arm-right"></div>
-                <div class="minion-legs-container">
-                    <div class="minion-leg left">
-                        <div class="minion-shoe"></div>
-                    </div>
-                    <div class="minion-leg right">
-                        <div class="minion-shoe"></div>
-                    </div>
-                </div>
+                <span class="classify-progress-text" id="classifyProgressText">1/10</span>
+            </div>
+            <div class="classify-score-badge">
+                <span>⭐</span><span id="classifyScore">0</span>
             </div>
         </div>
 
-        <!-- LANE INDICATORS -->
-        <div class="lane-indicators">
-            <div class="lane-dot active" id="laneDot0"></div>
-            <div class="lane-dot" id="laneDot1"></div>
-            <div class="lane-dot" id="laneDot2"></div>
+        <!-- Cos del joc -->
+        <div class="classify-body">
+            <div class="classify-food-card" id="classifyFoodCard">
+                <span class="classify-food-emoji" id="classifyEmoji">🍎</span>
+                <h3 class="classify-food-name" id="classifyName">Poma</h3>
+                <p class="classify-food-question">A quin grup pertany?</p>
+                <div class="classify-tip" id="classifyTip" style="display:none;"></div>
+            </div>
+
+            <div class="classify-categories" id="classifyCategories">
+                <!-- Es generen via JS -->
+            </div>
         </div>
 
-        <!-- OVERLAY -->
-        <div id="gameOverlay" class="game-overlay" style="display:none;">
-            <div class="overlay-icon-large">🎉</div>
-            <div class="final-score-label">Final Score</div>
-            <div class="final-score-value" id="finalScore">0</div>
-            <button class="primary-btn" onclick="nav.to('menu')">Tornar al Menú</button>
-            <button class="secondary-btn" onclick="restartRunner()">🔄</button>
+        <!-- Overlay inici / resultats -->
+        <div id="classifyOverlay" class="game-overlay classify-overlay">
+            <div class="overlay-icon-large">📚</div>
+            <div class="overlay-title">Classifica els Aliments</div>
+            <div class="overlay-subtitle">Identifica a quin grup nutricional pertany cada aliment i aprèn curiositats sobre nutrició</div>
+            <div class="cat-preview-grid" id="catPreviewGrid">
+                <!-- Es genera via JS -->
+            </div>
+            <button class="primary-btn" onclick="startClassify()">Començar</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Enhanced Food Database
+    // ========== DADES ==========
     const foodDatabase = {
         easy: [
             { name: 'Poma', emoji: '🍎', healthy: true },
@@ -1077,59 +568,130 @@
             { name: 'Bròquil', emoji: '🥦', healthy: true },
             { name: 'Peix', emoji: '🐟', healthy: true },
             { name: 'Ou', emoji: '🥚', healthy: true },
-            { name: 'Fruites seces', emoji: '🥜', healthy: true },
+            { name: 'Fruits secs', emoji: '🥜', healthy: true },
             { name: 'Formatge', emoji: '🧀', healthy: true },
             { name: 'Pizza', emoji: '🍕', healthy: false },
-            { name: 'Burgesa', emoji: '🍔', healthy: false },
+            { name: 'Hamburguesa', emoji: '🍔', healthy: false },
             { name: 'Patates fregides', emoji: '🍟', healthy: false },
         ],
         hard: [
             { name: 'Kiwi', emoji: '🥝', healthy: true },
             { name: 'Mango', emoji: '🥭', healthy: true },
-            { name: 'Meló', emoji: '🍈', healthy: true },
             { name: 'Síndria', emoji: '🍉', healthy: true },
             { name: 'Iogurt natural', emoji: '🍶', healthy: true },
             { name: 'Oli d\'oliva', emoji: '🫒', healthy: true },
             { name: 'Pastís', emoji: '🎂', healthy: false },
             { name: 'Gelat', emoji: '🍦', healthy: false },
+            { name: 'Caramel', emoji: '🍭', healthy: false },
         ]
     };
 
-    // Navigation
+    // Categories per al Mode Classificació
+    const categories = [
+        { id: 'fruites', name: 'Fruites', emoji: '🍎' },
+        { id: 'verdures', name: 'Verdures', emoji: '🥬' },
+        { id: 'proteines', name: 'Proteïnes', emoji: '🥩' },
+        { id: 'lactis', name: 'Lactis', emoji: '🧀' },
+        { id: 'cereals', name: 'Cereals', emoji: '🌾' },
+        { id: 'dolcos', name: 'Dolços', emoji: '🍬' }
+    ];
+
+    // Base de dades completa per classificar
+    const classifyFoods = [
+        // Fruites
+        { name: 'Poma', emoji: '🍎', category: 'fruites', tip: 'Rica en fibra i vitamina C. Ajuda a regular el trànsit intestinal.' },
+        { name: 'Plàtan', emoji: '🍌', category: 'fruites', tip: 'Font de potassi i energia ràpida. Ideal per esportistes.' },
+        { name: 'Taronja', emoji: '🍊', category: 'fruites', tip: 'Alta en vitamina C. Reforça el sistema immunitari.' },
+        { name: 'Raïm', emoji: '🍇', category: 'fruites', tip: 'Conté antioxidants i resveratrol, bo per al cor.' },
+        { name: 'Mango', emoji: '🥭', category: 'fruites', tip: 'Ric en vitamina A i C. Excel·lent per la pell i la vista.' },
+        { name: 'Maduixa', emoji: '🍓', category: 'fruites', tip: 'Baixa en calories i rica en vitamina C i antioxidants.' },
+        { name: 'Llimona', emoji: '🍋', category: 'fruites', tip: 'Excel·lent font de vitamina C. Afavoreix la digestió.' },
+        { name: 'Cirera', emoji: '🍒', category: 'fruites', tip: 'Conté antioxidants i fibra. Amb propietats antiinflamatòries.' },
+        { name: 'Préssec', emoji: '🍑', category: 'fruites', tip: 'Ric en vitamina A i potassi. Molt hidratant.' },
+        { name: 'Kiwi', emoji: '🥝', category: 'fruites', tip: 'Té més vitamina C que la taronja. Ric en fibra.' },
+        { name: 'Pera', emoji: '🍐', category: 'fruites', tip: 'Font de fibra i aigua. Molt suau per l\'estómac.' },
+        { name: 'Síndria', emoji: '🍉', category: 'fruites', tip: 'Molt hidratant (92% aigua). Conté licopè.' },
+
+        // Verdures
+        { name: 'Zanahòria', emoji: '🥕', category: 'verdures', tip: 'Rica en betacarotè i vitamina A. Bona per la vista.' },
+        { name: 'Bròquil', emoji: '🥦', category: 'verdures', tip: 'Super aliment: ric en vitamines C, K i fibra.' },
+        { name: 'Tomàquet', emoji: '🍅', category: 'verdures', tip: 'Font de licopè i vitamina C. Protegeix el cor.' },
+        { name: 'Enciam', emoji: '🥬', category: 'verdures', tip: 'Molt baix en calories i ric en aigua i fibra.' },
+        { name: 'Blat de moro', emoji: '🌽', category: 'verdures', tip: 'Font de fibra i energia. Conté vitamines del grup B.' },
+        { name: 'Pepino', emoji: '🥒', category: 'verdures', tip: 'Molt hidratant i baix en calories. Perfecte en amanides.' },
+        { name: 'Pebrot', emoji: '🫑', category: 'verdures', tip: 'Ric en vitamina C (més que la taronja!).' },
+        { name: 'Ceba', emoji: '🧅', category: 'verdures', tip: 'Propietats antibacterianes i antioxidants.' },
+        { name: 'Patata', emoji: '🥔', category: 'verdures', tip: 'Font de carbohidrats i potassi. Energia sostenida.' },
+        { name: 'Albergínia', emoji: '🍆', category: 'verdures', tip: 'Rica en fibra i antioxidants. Molt versàtil.' },
+        { name: 'All', emoji: '🧄', category: 'verdures', tip: 'Propietats medicinals reconegudes. Bo per al cor.' },
+        { name: 'Coliflor', emoji: '🥦', category: 'verdures', tip: 'Rica en vitamina C i fibra. Baixa en calories.' },
+
+        // Proteïnes
+        { name: 'Peix', emoji: '🐟', category: 'proteines', tip: 'Ric en Omega 3. Bo per al cor i el cervell.' },
+        { name: 'Ou', emoji: '🥚', category: 'proteines', tip: 'Proteïna completa d\'alta qualitat. Conté vitamina D.' },
+        { name: 'Pollastre', emoji: '🍗', category: 'proteines', tip: 'Proteïna magra ideal per als músculs.' },
+        { name: 'Carn', emoji: '🥩', category: 'proteines', tip: 'Font de ferro i vitamina B12. Amb moderació.' },
+        { name: 'Gambes', emoji: '🦐', category: 'proteines', tip: 'Riques en iode i proteïnes. Baixes en greix.' },
+        { name: 'Llentilles', emoji: '🫘', category: 'proteines', tip: 'Proteïna vegetal i fibra. Font de ferro.' },
+        { name: 'Cigrons', emoji: '🫘', category: 'proteines', tip: 'Rics en proteïna i fibra. Bons per al trànsit.' },
+        { name: 'Fruits secs', emoji: '🥜', category: 'proteines', tip: 'Greixos saludables i proteïna. Energia concentrada.' },
+
+        // Lactis
+        { name: 'Formatge', emoji: '🧀', category: 'lactis', tip: 'Font de calci i proteïna. Amb moderació per el greix.' },
+        { name: 'Llet', emoji: '🥛', category: 'lactis', tip: 'Essencial per als ossos. Font de calci i vitamina D.' },
+        { name: 'Iogurt', emoji: '🍶', category: 'lactis', tip: 'Probiòtics per a la salut intestinal. Ric en calci.' },
+        { name: 'Mantega', emoji: '🧈', category: 'lactis', tip: 'Alta en greixos saturats. Utilitza-la amb moderació.' },
+
+        // Cereals
+        { name: 'Pa', emoji: '🍞', category: 'cereals', tip: 'Font d\'energia i carbohidrats. El integral té més fibra.' },
+        { name: 'Arròs', emoji: '🍚', category: 'cereals', tip: 'Base energètica de moltes dietes. L\'integral és més nutritiu.' },
+        { name: 'Pasta', emoji: '🍝', category: 'cereals', tip: 'Carbohidrats per a l\'energia. La integral aporta més fibra.' },
+        { name: 'Civada', emoji: '🌾', category: 'cereals', tip: 'Rica en fibra soluble. Ajuda a reduir el colesterol.' },
+        { name: 'Cereals esmorzar', emoji: '🥣', category: 'cereals', tip: 'Font d\'energia matinal. Vigila el sucre afegit.' },
+
+        // Dolços
+        { name: 'Galeta', emoji: '🍪', category: 'dolcos', tip: 'Alta en sucre i greixos. Consum ocasional.' },
+        { name: 'Xocolata', emoji: '🍫', category: 'dolcos', tip: 'La negra (>70%) és la més saludable. Amb moderació!' },
+        { name: 'Gelat', emoji: '🍦', category: 'dolcos', tip: 'Alt en sucre i greixos. Com a premi de tant en tant.' },
+        { name: 'Pastís', emoji: '🎂', category: 'dolcos', tip: 'Alt en calories i sucre. Per a celebracions especials.' },
+        { name: 'Refresc', emoji: '🥤', category: 'dolcos', tip: 'Ple de sucre afegit. Millor aigua o infusions!' },
+        { name: 'Caramel', emoji: '🍭', category: 'dolcos', tip: 'Només sucre, sense nutrients. Consum molt ocasional.' },
+        { name: 'Rosquilla', emoji: '🍩', category: 'dolcos', tip: 'Fregida i alta en calories. Com a excepció.' },
+    ];
+
+    // ========== NAVEGACIÓ ==========
     const nav = {
         to: function(view) {
             document.querySelectorAll('.app-view').forEach(v => {
                 v.classList.remove('active-view');
                 v.classList.add('view-hidden');
             });
-            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active-view');
-            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('view-hidden');
-            
+            const target = document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1));
+            target.classList.add('active-view');
+            target.classList.remove('view-hidden');
+
             if (view === 'quiz') initQuiz();
-            if (view === 'runner') initRunner();
+            if (view === 'classify') initClassify();
         }
     };
 
-    // ===== QUIZ GAME =====
+    // ========== QUIZ ==========
     let quizState = {
-        score: 0,
-        streak: 0,
-        multiplier: 1,
-        difficulty: 'easy',
-        currentFood: null,
-        questionsAnswered: 0
+        score: 0, streak: 0, multiplier: 1,
+        difficulty: 'easy', currentFood: null
     };
 
-    function setQuizDifficulty(difficulty) {
-        quizState.difficulty = difficulty;
-        document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`[data-diff="${difficulty}"]`).classList.add('active');
+    function setQuizDifficulty(diff) {
+        quizState.difficulty = diff;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`[data-diff="${diff}"]`).classList.add('active');
         loadNextFood();
     }
 
     function initQuiz() {
-        quizState = { score: 0, streak: 0, multiplier: 1, difficulty: 'easy', currentFood: null, questionsAnswered: 0 };
+        quizState = { score: 0, streak: 0, multiplier: 1, difficulty: 'easy', currentFood: null };
         document.getElementById('scoreQuiz').textContent = '0';
+        document.getElementById('streakDisplay').style.display = 'none';
         setQuizDifficulty('easy');
     }
 
@@ -1138,251 +700,290 @@
         quizState.currentFood = foods[Math.floor(Math.random() * foods.length)];
         document.getElementById('foodEmoji').textContent = quizState.currentFood.emoji;
         document.getElementById('foodName').textContent = quizState.currentFood.name;
-        
-        const baseScore = quizState.difficulty === 'easy' ? 10 : quizState.difficulty === 'medium' ? 15 : 20;
-        const scoreWithMultiplier = Math.floor(baseScore * quizState.multiplier);
-        document.getElementById('scoreYes').textContent = '+' + scoreWithMultiplier;
-        document.getElementById('scoreNo').textContent = '+' + scoreWithMultiplier;
+        const base = quizState.difficulty === 'easy' ? 10 : quizState.difficulty === 'medium' ? 15 : 20;
+        const pts = Math.floor(base * quizState.multiplier);
+        document.getElementById('scoreYes').textContent = '+' + pts;
+        document.getElementById('scoreNo').textContent = '+' + pts;
     }
 
     function answerQuiz(answer) {
-        const isCorrect = answer === quizState.currentFood.healthy;
-        const baseScore = quizState.difficulty === 'easy' ? 10 : quizState.difficulty === 'medium' ? 15 : 20;
-        const earnedPoints = Math.floor(baseScore * quizState.multiplier);
-        
-        if (isCorrect) {
-            quizState.score += earnedPoints;
+        const correct = answer === quizState.currentFood.healthy;
+        const base = quizState.difficulty === 'easy' ? 10 : quizState.difficulty === 'medium' ? 15 : 20;
+        if (correct) {
+            quizState.score += Math.floor(base * quizState.multiplier);
             quizState.streak++;
             quizState.multiplier = Math.min(1 + (quizState.streak * 0.1), 3);
-            
             if (quizState.streak >= 3) {
                 document.getElementById('streakDisplay').style.display = 'flex';
                 document.getElementById('streakCount').textContent = quizState.streak;
                 document.getElementById('multiplier').textContent = 'x' + quizState.multiplier.toFixed(1);
-                
-                if (quizState.streak % 5 === 0) {
-                    confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
-                }
+                if (quizState.streak % 5 === 0) confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
             }
         } else {
             quizState.streak = 0;
             quizState.multiplier = 1;
             document.getElementById('streakDisplay').style.display = 'none';
         }
-        
-        quizState.questionsAnswered++;
         document.getElementById('scoreQuiz').textContent = quizState.score;
         loadNextFood();
     }
 
-    // ===== RUNNER GAME - THREE LANES =====
-    let runnerState = {
-        isRunning: false,
-        playerLane: 1,  // 0=left, 1=middle, 2=right
-        distance: 0,
-        coins: 0,
-        health: 3,
-        speed: 1,
+    // ========== CLASSIFY ==========
+    let classifyState = {
+        roundFoods: [],
+        currentIndex: 0,
         score: 0,
-        obstacles: [],
-        gameTime: 0
+        correct: 0,
+        total: 10,
+        isProcessing: false,
+        streak: 0,
+        catStats: {}
     };
 
-    const gameConfig = {
-        playerWidth: 140,
-        playerHeight: 170,
-        gameWidth: window.innerWidth,
-        gameHeight: window.innerHeight,
-        laneWidth: window.innerWidth / 3
-    };
+    function initClassify() {
+        // Generar botons de categories
+        const catContainer = document.getElementById('classifyCategories');
+        catContainer.innerHTML = '';
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'cat-btn';
+            btn.dataset.category = cat.id;
+            btn.innerHTML = `<span class="cat-emoji">${cat.emoji}</span><span>${cat.name}</span>`;
+            btn.onclick = () => classifyAnswer(cat.id);
+            catContainer.appendChild(btn);
+        });
 
-    function initRunner() {
-        runnerState = {
-            isRunning: true,
-            playerLane: 1,
-            distance: 0,
-            coins: 0,
-            health: 3,
-            speed: 1,
+        // Generar preview de categories per l'overlay
+        const previewGrid = document.getElementById('catPreviewGrid');
+        previewGrid.innerHTML = '';
+        categories.forEach(cat => {
+            const item = document.createElement('div');
+            item.className = 'cat-preview-item';
+            item.innerHTML = `<span class="cp-emoji">${cat.emoji}</span>${cat.name}`;
+            previewGrid.appendChild(item);
+        });
+
+        // Mostrar overlay d'inici
+        showClassifyStart();
+    }
+
+    function showClassifyStart() {
+        const overlay = document.getElementById('classifyOverlay');
+        overlay.style.display = 'flex';
+        overlay.innerHTML = `
+            <div class="overlay-icon-large">📚</div>
+            <div class="overlay-title">Classifica els Aliments</div>
+            <div class="overlay-subtitle">Identifica a quin grup nutricional pertany cada aliment i aprèn curiositats sobre nutrició</div>
+            <div class="cat-preview-grid" id="catPreviewGrid"></div>
+            <button class="primary-btn" onclick="startClassify()">Començar</button>
+        `;
+        // Re-render preview
+        const pg = document.getElementById('catPreviewGrid');
+        categories.forEach(cat => {
+            const item = document.createElement('div');
+            item.className = 'cat-preview-item';
+            item.innerHTML = `<span class="cp-emoji">${cat.emoji}</span>${cat.name}`;
+            pg.appendChild(item);
+        });
+    }
+
+    function startClassify() {
+        // Reset
+        classifyState = {
+            roundFoods: [],
+            currentIndex: 0,
             score: 0,
-            obstacles: [],
-            gameTime: 0
+            correct: 0,
+            total: 10,
+            isProcessing: false,
+            streak: 0,
+            catStats: {}
         };
 
-        document.getElementById('gameOverlay').style.display = 'none';
-        document.getElementById('distance').textContent = '0';
-        document.getElementById('coins').textContent = '0';
-        document.getElementById('health').textContent = '3';
-        updateLaneIndicators();
+        categories.forEach(c => classifyState.catStats[c.id] = { total: 0, correct: 0 });
 
-        document.addEventListener('keydown', handleRunnerInput);
-        document.addEventListener('touchstart', handleRunnerInput);
-        
-        gameLoop();
-    }
-
-    function handleRunnerInput(e) {
-        if (!runnerState.isRunning) return;
-
-        if (e.key === 'ArrowLeft' || e.key === 'a') {
-            runnerState.playerLane = Math.max(0, runnerState.playerLane - 1);
-            updatePlayerPosition();
-        } else if (e.key === 'ArrowRight' || e.key === 'd') {
-            runnerState.playerLane = Math.min(2, runnerState.playerLane + 1);
-            updatePlayerPosition();
-        } else if (e.key === ' ' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            jump();
-        }
-
-        if (e.touches) {
-            const touchX = e.touches[0].clientX;
-            if (touchX < gameConfig.gameWidth / 3) {
-                runnerState.playerLane = Math.max(0, runnerState.playerLane - 1);
-                updatePlayerPosition();
-            } else if (touchX > (gameConfig.gameWidth * 2) / 3) {
-                runnerState.playerLane = Math.min(2, runnerState.playerLane + 1);
-                updatePlayerPosition();
-            } else {
-                jump();
-            }
-        }
-    }
-
-    function updatePlayerPosition() {
-        const playerContainer = document.querySelector('.player-container');
-        const laneCenter = (runnerState.playerLane + 0.5) * gameConfig.laneWidth;
-        playerContainer.style.left = laneCenter + 'px';
-        updateLaneIndicators();
-    }
-
-    function updateLaneIndicators() {
-        document.querySelectorAll('.lane-dot').forEach((dot, i) => {
-            dot.classList.toggle('active', i === runnerState.playerLane);
+        // Seleccionar 10 aliments aleatoris intentant cobrir totes les categories
+        const byCat = {};
+        categories.forEach(c => byCat[c.id] = []);
+        classifyFoods.forEach(f => {
+            if (byCat[f.category]) byCat[f.category].push(f);
         });
-    }
 
-    function jump() {
-        const playerContainer = document.querySelector('.player-container');
-        if (!playerContainer.classList.contains('player-jump')) {
-            playerContainer.classList.add('player-jump');
-            setTimeout(() => playerContainer.classList.remove('player-jump'), 620);
-        }
-    }
-
-    function gameLoop() {
-        if (!runnerState.isRunning) return;
-
-        runnerState.gameTime++;
-        runnerState.distance = Math.floor(runnerState.gameTime / 10);
-        runnerState.speed = 1 + (runnerState.distance / 1000) * 0.5;
-
-        if (Math.random() < 0.02 * runnerState.speed) {
-            createObstacle();
-        }
-
-        // Update obstacles
-        document.querySelectorAll('.obstacle-3d').forEach(obstacle => {
-            const top = parseFloat(obstacle.dataset.startTop || -50) + runnerState.speed * 8;
-            obstacle.dataset.startTop = top;
-            obstacle.style.top = top + 'px';
-
-            const distanceToPlayer = gameConfig.gameHeight - top;
-            const scale = Math.max(0.3, Math.min(1, distanceToPlayer / gameConfig.gameHeight));
-            
-            if (scale < 0.5) {
-                obstacle.classList.add('obs-far');
-                obstacle.classList.remove('obs-mid', 'obs-near');
-            } else if (scale < 0.85) {
-                obstacle.classList.add('obs-mid');
-                obstacle.classList.remove('obs-far', 'obs-near');
-            } else {
-                obstacle.classList.add('obs-near');
-                obstacle.classList.remove('obs-far', 'obs-mid');
-            }
-
-            if (top > gameConfig.gameHeight) {
-                obstacle.remove();
-            } else {
-                checkCollision(obstacle);
+        // Assegurar almenys 1 de cada categoria (si hi ha 6 cats i 10 aliments)
+        const selected = [];
+        const catIds = Object.keys(byCat);
+        catIds.forEach(cid => {
+            const pool = byCat[cid];
+            if (pool.length > 0) {
+                const pick = pool[Math.floor(Math.random() * pool.length)];
+                selected.push({ ...pick });
             }
         });
 
-        document.getElementById('distance').textContent = runnerState.distance;
-        document.getElementById('coins').textContent = runnerState.coins;
-        document.getElementById('health').textContent = runnerState.health;
-
-        if (runnerState.health <= 0) {
-            endRunner();
-            return;
+        // Completar fins a 10 amb aliments aleatoris
+        while (selected.length < classifyState.total) {
+            const food = classifyFoods[Math.floor(Math.random() * classifyFoods.length)];
+            // Evitar duplicats
+            if (!selected.find(s => s.name === food.name)) {
+                selected.push({ ...food });
+            }
         }
 
-        requestAnimationFrame(gameLoop);
+        // Barrejar
+        for (let i = selected.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [selected[i], selected[j]] = [selected[j], selected[i]];
+        }
+
+        classifyState.roundFoods = selected;
+
+        // Amagar overlay
+        document.getElementById('classifyOverlay').style.display = 'none';
+
+        // Actualitzar UI
+        updateClassifyUI();
+        showClassifyFood();
     }
 
-    function createObstacle() {
-        const types = ['wall', 'coin', 'wall'];
-        const type = types[Math.floor(Math.random() * types.length)];
-        const lane = Math.floor(Math.random() * 3);
-        const laneCenter = (lane + 0.5) * gameConfig.laneWidth;
-        
-        const obstacle = document.createElement('div');
-        obstacle.className = 'obstacle-3d obs-far';
-        obstacle.style.left = laneCenter + 'px';
-        obstacle.style.top = '-50px';
-        obstacle.dataset.startTop = -50;
-        obstacle.dataset.lane = lane;
-        
-        if (type === 'wall') {
-            obstacle.textContent = '🧱';
-            obstacle.dataset.type = 'wall';
+    function showClassifyFood() {
+        const food = classifyState.roundFoods[classifyState.currentIndex];
+        const card = document.getElementById('classifyFoodCard');
+
+        document.getElementById('classifyEmoji').textContent = food.emoji;
+        document.getElementById('classifyName').textContent = food.name;
+        document.getElementById('classifyTip').style.display = 'none';
+        card.className = 'classify-food-card';
+
+        // Animació suau
+        card.style.animation = 'none';
+        card.offsetHeight;
+        card.style.animation = 'gentle-appear 0.4s ease-out';
+
+        // Netejar estats dels botons
+        clearCatHighlights();
+    }
+
+    function classifyAnswer(categoryId) {
+        if (classifyState.isProcessing) return;
+        classifyState.isProcessing = true;
+
+        const food = classifyState.roundFoods[classifyState.currentIndex];
+        const isCorrect = food.category === categoryId;
+
+        // Registrar estadística per categoria
+        classifyState.catStats[food.category].total++;
+
+        const card = document.getElementById('classifyFoodCard');
+
+        if (isCorrect) {
+            classifyState.correct++;
+            classifyState.streak++;
+            const bonus = Math.min(classifyState.streak - 1, 5) * 2;
+            classifyState.score += 10 + bonus;
+            classifyState.catStats[food.category].correct++;
+
+            card.classList.add('card-correct');
+            highlightCatButton(categoryId, true);
+
+            // Petita celebració
+            if (classifyState.streak >= 5 && classifyState.streak % 5 === 0) {
+                confetti({ particleCount: 30, spread: 50, origin: { y: 0.5 }, colors: ['#845EF7', '#64B5F6', '#fff'] });
+            }
         } else {
-            obstacle.textContent = '💰';
-            obstacle.dataset.type = 'coin';
-            obstacle.classList.add('obstacle-coin');
+            classifyState.streak = 0;
+            card.classList.add('card-wrong');
+            highlightCatButton(categoryId, false);
+            highlightCatButton(food.category, true);
         }
 
-        document.querySelector('.runner-game').appendChild(obstacle);
-    }
+        // Mostrar consell nutricional
+        const tipEl = document.getElementById('classifyTip');
+        tipEl.textContent = '💡 ' + food.tip;
+        tipEl.style.display = 'block';
 
-    function checkCollision(obstacle) {
-        if (obstacle.dataset.lane != runnerState.playerLane) return;
+        updateClassifyUI();
 
-        const playerContainer = document.querySelector('.player-container');
-        const playerRect = playerContainer.getBoundingClientRect();
-        const obstacleRect = obstacle.getBoundingClientRect();
+        // Passar al següent després d'un delay
+        setTimeout(() => {
+            classifyState.currentIndex++;
+            classifyState.isProcessing = false;
 
-        if (!(playerRect.right < obstacleRect.left || 
-              playerRect.left > obstacleRect.right || 
-              playerRect.bottom < obstacleRect.top || 
-              playerRect.top > obstacleRect.bottom)) {
-            
-            if (obstacle.dataset.type === 'coin') {
-                runnerState.coins += 5;
-                runnerState.score += 5;
-                obstacle.classList.add('obs-hit');
-                setTimeout(() => obstacle.remove(), 200);
+            if (classifyState.currentIndex >= classifyState.total) {
+                showClassifyResults();
             } else {
-                runnerState.health--;
-                obstacle.classList.add('obs-hit');
+                showClassifyFood();
             }
+        }, 1800);
+    }
+
+    function highlightCatButton(categoryId, isCorrect) {
+        const btn = document.querySelector(`.cat-btn[data-category="${categoryId}"]`);
+        if (!btn) return;
+        if (isCorrect) {
+            btn.classList.add('cat-correct');
+        } else {
+            btn.classList.add('cat-wrong');
         }
     }
 
-    function endRunner() {
-        runnerState.isRunning = false;
-        document.getElementById('finalScore').textContent = runnerState.distance;
-        document.getElementById('gameOverlay').style.display = 'flex';
-        document.removeEventListener('keydown', handleRunnerInput);
+    function clearCatHighlights() {
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.classList.remove('cat-correct', 'cat-wrong');
+        });
     }
 
-    function restartRunner() {
-        initRunner();
+    function updateClassifyUI() {
+        document.getElementById('classifyScore').textContent = classifyState.score;
+        const idx = Math.min(classifyState.currentIndex + 1, classifyState.total);
+        document.getElementById('classifyProgressText').textContent = idx + '/' + classifyState.total;
+        const pct = (idx / classifyState.total) * 100;
+        document.getElementById('classifyProgressFill').style.width = pct + '%';
     }
 
+    function showClassifyResults() {
+        const accuracy = Math.round((classifyState.correct / classifyState.total) * 100);
+
+        let message, icon;
+        if (accuracy >= 90) { message = 'Excel·lent! Ets un expert en nutrició!'; icon = '🏆'; }
+        else if (accuracy >= 70) { message = 'Molt bé! Saps molt sobre alimentació!'; icon = '🌟'; }
+        else if (accuracy >= 50) { message = 'Bé! Segueix aprenent sobre els aliments!'; icon = '📚'; }
+        else { message = 'Segueix practicant! Cada dia s\'aprèn algo nou!'; icon = '💪'; }
+
+        // Desgloss per categoria
+        let breakdownHTML = '<div class="results-breakdown">';
+        categories.forEach(cat => {
+            const stats = classifyState.catStats[cat.id];
+            if (stats.total > 0) {
+                breakdownHTML += `
+                    <div class="breakdown-item">
+                        <span class="bi-emoji">${cat.emoji}</span>
+                        <span class="bi-count">${stats.correct}/${stats.total}</span>
+                    </div>`;
+            }
+        });
+        breakdownHTML += '</div>';
+
+        const overlay = document.getElementById('classifyOverlay');
+        overlay.style.display = 'flex';
+        overlay.innerHTML = `
+            <div class="overlay-icon-large">${icon}</div>
+            <div class="overlay-title">${message}</div>
+            <div class="results-accuracy">${accuracy}%</div>
+            <div class="results-correct">${classifyState.correct} de ${classifyState.total} correctes</div>
+            <div class="results-score-big">⭐ ${classifyState.score} punts</div>
+            ${breakdownHTML}
+            <button class="primary-btn" onclick="startClassify()">Tornar a Jugar</button>
+            <button class="secondary-btn" onclick="nav.to('menu')"><i class="fa-solid fa-house"></i></button>
+        `;
+
+        if (accuracy >= 70) {
+            confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 }, colors: ['#845EF7', '#64B5F6', '#00e676', '#ffd700'] });
+        }
+    }
+
+    // ========== INIT ==========
     window.addEventListener('load', () => {
         initQuiz();
-        updatePlayerPosition();
     });
 </script>
 
